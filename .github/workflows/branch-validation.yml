@@ -1,0 +1,49 @@
+name: Branch Validation
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+
+jobs:
+  validate-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Branch Name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          TARGET="${{ github.base_ref }}"
+
+          echo "Source: $BRANCH"
+          echo "Target: $TARGET"
+
+          # development -> main
+          if [[ "$BRANCH" == "development" && "$TARGET" == "main" ]]; then
+            exit 0
+          fi
+
+          # hotfix/* -> main
+          if [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "main" ]]; then
+            exit 0
+          fi
+
+          # feature/* -> development
+          if [[ "$BRANCH" =~ ^feature\/.+$ && "$TARGET" == "development" ]]; then
+            exit 0
+          fi
+
+          # bug/* -> development
+          if [[ "$BRANCH" =~ ^bug\/.+$ && "$TARGET" == "development" ]]; then
+            exit 0
+          fi
+
+          echo "Invalid branch flow."
+          echo "Allowed:"
+          echo "feature/* -> development"
+          echo "bug/* -> development"
+          echo "development -> main"
+          echo "hotfix/* -> main"
+
+          exit 1
