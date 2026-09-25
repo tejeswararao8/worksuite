@@ -1,0 +1,30 @@
+name: Backend Build
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+    paths:
+      - 'hrms-platform/**'
+
+jobs:
+  backend-build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: hrms-platform
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Maven Build
+        run: mvn clean verify
