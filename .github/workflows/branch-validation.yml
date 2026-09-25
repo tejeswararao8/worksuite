@@ -14,23 +14,36 @@ jobs:
       - name: Validate Branch Name
         run: |
           BRANCH="${{ github.head_ref }}"
+          TARGET="${{ github.base_ref }}"
 
-          echo "Validating branch: $BRANCH"
+          echo "Source: $BRANCH"
+          echo "Target: $TARGET"
 
-          # Allow development branch
-          if [[ "$BRANCH" == "development" ]]; then
+          # development -> main
+          if [[ "$BRANCH" == "development" && "$TARGET" == "main" ]]; then
             exit 0
           fi
 
-          # Allow feature branches
-          if [[ "$BRANCH" =~ ^feature\/.+$ ]]; then
+          # hotfix/* -> main
+          if [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "main" ]]; then
             exit 0
           fi
 
-          # Allow bug branches
-          if [[ "$BRANCH" =~ ^bug\/.+$ ]]; then
+          # feature/* -> development
+          if [[ "$BRANCH" =~ ^feature\/.+$ && "$TARGET" == "development" ]]; then
             exit 0
           fi
 
-          echo "Only development, feature/* and bug/* branches are allowed"
+          # bug/* -> development
+          if [[ "$BRANCH" =~ ^bug\/.+$ && "$TARGET" == "development" ]]; then
+            exit 0
+          fi
+
+          echo "Invalid branch flow."
+          echo "Allowed:"
+          echo "feature/* -> development"
+          echo "bug/* -> development"
+          echo "development -> main"
+          echo "hotfix/* -> main"
+
           exit 1
