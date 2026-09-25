@@ -1,0 +1,27 @@
+name: Branch Validation
+
+on:
+  pull_request:
+    branches:
+      - development
+      - main
+
+jobs:
+  validate-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Branch Name
+        run: |
+          BRANCH="${{ github.head_ref }}"
+
+          if [[ "$BRANCH" =~ ^feature\/.+$ ]]; then
+            exit 0
+          fi
+
+          if [[ "$BRANCH" =~ ^bug\/.+$ ]]; then
+            exit 0
+          fi
+
+          echo "Only feature/* and bug/* branches are allowed"
+          exit 1
