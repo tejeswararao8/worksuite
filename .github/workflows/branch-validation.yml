@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Validate Branch Name
+      - name: Validate Branch Flow
         run: |
           BRANCH="${{ github.head_ref }}"
           TARGET="${{ github.base_ref }}"
@@ -20,30 +20,22 @@ jobs:
           echo "Target: $TARGET"
 
           # development -> main
-          if [[ "$BRANCH" == "development" && "$TARGET" == "main" ]]; then
-            exit 0
-          fi
+          [[ "$BRANCH" == "development" && "$TARGET" == "main" ]] && exit 0
 
-          # hotfix/* -> main
-          if [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "main" ]]; then
-            exit 0
-          fi
+          # main -> development
+          [[ "$BRANCH" == "main" && "$TARGET" == "development" ]] && exit 0
 
           # feature/* -> development
-          if [[ "$BRANCH" =~ ^feature\/.+$ && "$TARGET" == "development" ]]; then
-            exit 0
-          fi
+          [[ "$BRANCH" =~ ^feature\/.+$ && "$TARGET" == "development" ]] && exit 0
 
           # bug/* -> development
-          if [[ "$BRANCH" =~ ^bug\/.+$ && "$TARGET" == "development" ]]; then
-            exit 0
-          fi
+          [[ "$BRANCH" =~ ^bug\/.+$ && "$TARGET" == "development" ]] && exit 0
 
-          echo "Invalid branch flow."
-          echo "Allowed:"
-          echo "feature/* -> development"
-          echo "bug/* -> development"
-          echo "development -> main"
-          echo "hotfix/* -> main"
+          # hotfix/* -> main
+          [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "main" ]] && exit 0
 
+          # hotfix/* -> development
+          [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "development" ]] && exit 0
+
+          echo "Invalid branch flow"
           exit 1
