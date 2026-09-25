@@ -15,13 +15,22 @@ jobs:
         run: |
           BRANCH="${{ github.head_ref }}"
 
+          echo "Validating branch: $BRANCH"
+
+          # Allow development branch
+          if [[ "$BRANCH" == "development" ]]; then
+            exit 0
+          fi
+
+          # Allow feature branches
           if [[ "$BRANCH" =~ ^feature\/.+$ ]]; then
             exit 0
           fi
 
+          # Allow bug branches
           if [[ "$BRANCH" =~ ^bug\/.+$ ]]; then
             exit 0
           fi
 
-          echo "Only feature/* and bug/* branches are allowed"
+          echo "Only development, feature/* and bug/* branches are allowed"
           exit 1
