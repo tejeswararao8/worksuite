@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,9 +40,9 @@ public class PromotionController {
             description = "Creates a promotion request for an employee. The request starts in PENDING status and requires approval."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Promotion request created and pending approval"),
-            @ApiResponse(responseCode = "404", description = "Employee or target designation not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Promotion request created and pending approval"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee or target designation not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<PromotionDto.Response>> initiate(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -69,8 +68,8 @@ public class PromotionController {
             description = "Returns a paginated list of all promotion requests for the company, sorted by creation date descending."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of promotions"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of promotions"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<PagedResponse<PromotionDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -86,8 +85,8 @@ public class PromotionController {
             description = "Returns the complete promotion history for an employee, sorted by effective date descending."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Promotion history returned"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotion history returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found")
     })
     public ResponseEntity<ApiResponse<PagedResponse<PromotionDto.Response>>> getHistory(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -104,10 +103,10 @@ public class PromotionController {
             description = "Approves a pending promotion. Upon approval, the employee's designation is automatically updated."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Promotion approved — employee designation updated"),
-            @ApiResponse(responseCode = "404", description = "Promotion request not found"),
-            @ApiResponse(responseCode = "422", description = "Promotion is not in PENDING status"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotion approved — employee designation updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Promotion request not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Promotion is not in PENDING status"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<PromotionDto.Response>> approve(
             @Parameter(description = "Promotion UUID", required = true) @PathVariable UUID id) {
@@ -121,9 +120,9 @@ public class PromotionController {
             description = "Rejects a pending promotion request. The employee's designation remains unchanged."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Promotion rejected"),
-            @ApiResponse(responseCode = "404", description = "Promotion request not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotion rejected"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Promotion request not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<PromotionDto.Response>> reject(
             @Parameter(description = "Promotion UUID", required = true) @PathVariable UUID id,

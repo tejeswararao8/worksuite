@@ -1,7 +1,7 @@
 -- V3: Onboarding and Offboarding checklist tables
 
 CREATE TABLE IF NOT EXISTS onboarding_checklists (
-    id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id               UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id       UUID NOT NULL,
     employee_id      UUID NOT NULL,
     task_name        VARCHAR(255) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS onboarding_checklists (
 CREATE INDEX idx_onboarding_employee ON onboarding_checklists(employee_id, company_id);
 
 CREATE TABLE IF NOT EXISTS offboarding_checklists (
-    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id                  UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id          UUID NOT NULL,
     employee_id         UUID NOT NULL,
     task_name           VARCHAR(255) NOT NULL,

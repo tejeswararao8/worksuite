@@ -5,7 +5,7 @@
 -- COMPANIES
 -- =============================================
 CREATE TABLE companies (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID,
     name VARCHAR(255) NOT NULL,
     legal_name VARCHAR(255),
@@ -32,7 +32,7 @@ CREATE TABLE companies (
 -- BRANCHES
 -- =============================================
 CREATE TABLE branches (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     code VARCHAR(50) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE branches (
 -- DEPARTMENTS
 -- =============================================
 CREATE TABLE departments (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     code VARCHAR(50) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE departments (
 -- TEAMS
 -- =============================================
 CREATE TABLE teams (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -93,7 +93,7 @@ CREATE TABLE teams (
 -- DESIGNATIONS
 -- =============================================
 CREATE TABLE designations (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
@@ -111,7 +111,7 @@ CREATE TABLE designations (
 -- EMPLOYEES
 -- =============================================
 CREATE TABLE employees (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_code VARCHAR(50) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
@@ -150,7 +150,7 @@ CREATE TABLE employees (
 -- PERMISSIONS
 -- =============================================
 CREATE TABLE permissions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID,
     name VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(255),
@@ -167,7 +167,7 @@ CREATE TABLE permissions (
 -- ROLES
 -- =============================================
 CREATE TABLE roles (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255),
@@ -190,7 +190,7 @@ CREATE TABLE role_permissions (
 -- USERS
 -- =============================================
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
@@ -213,7 +213,7 @@ CREATE TABLE users (
 -- EMPLOYEE DOCUMENTS
 -- =============================================
 CREATE TABLE employee_documents (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     document_type VARCHAR(100) NOT NULL,
@@ -239,7 +239,7 @@ CREATE TABLE employee_documents (
 -- NOTIFICATIONS
 -- =============================================
 CREATE TABLE notifications (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     recipient_user_id UUID NOT NULL,
     title VARCHAR(255) NOT NULL,
@@ -260,7 +260,7 @@ CREATE TABLE notifications (
 -- AUDIT LOGS
 -- =============================================
 CREATE TABLE audit_logs (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     entity_name VARCHAR(100) NOT NULL,
     entity_id VARCHAR(255),
@@ -276,7 +276,7 @@ CREATE TABLE audit_logs (
 -- ONBOARDING CHECKLISTS
 -- =============================================
 CREATE TABLE onboarding_checklists (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     task_name VARCHAR(255) NOT NULL,
@@ -297,7 +297,7 @@ CREATE TABLE onboarding_checklists (
 -- PROBATION
 -- =============================================
 CREATE TABLE probations (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     start_date DATE NOT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE probations (
 -- TRANSFERS
 -- =============================================
 CREATE TABLE transfers (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     transfer_type VARCHAR(50) NOT NULL,
@@ -348,7 +348,7 @@ CREATE TABLE transfers (
 -- PROMOTIONS
 -- =============================================
 CREATE TABLE promotions (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     from_designation_id UUID,
@@ -370,7 +370,7 @@ CREATE TABLE promotions (
 -- ASSETS
 -- =============================================
 CREATE TABLE assets (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     asset_code VARCHAR(100) NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -398,7 +398,7 @@ CREATE TABLE assets (
 -- SKILLS & CERTIFICATIONS
 -- =============================================
 CREATE TABLE employee_skills (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     skill_name VARCHAR(255) NOT NULL,
@@ -414,7 +414,7 @@ CREATE TABLE employee_skills (
 );
 
 CREATE TABLE employee_certifications (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID NOT NULL DEFAULT RANDOM_UUID() PRIMARY KEY,
     company_id UUID NOT NULL,
     employee_id UUID NOT NULL,
     certification_name VARCHAR(255) NOT NULL,
@@ -439,9 +439,9 @@ CREATE INDEX idx_employees_department ON employees(department_id);
 CREATE INDEX idx_employees_status ON employees(employment_status);
 CREATE INDEX idx_employees_manager ON employees(manager_id);
 CREATE INDEX idx_documents_employee ON employee_documents(employee_id);
-CREATE INDEX idx_documents_expiry ON employee_documents(expiry_date) WHERE expiry_date IS NOT NULL;
+CREATE INDEX idx_documents_expiry ON employee_documents(expiry_date) ;
 CREATE INDEX idx_notifications_user ON notifications(recipient_user_id, company_id);
-CREATE INDEX idx_notifications_unread ON notifications(recipient_user_id, is_read) WHERE is_read = FALSE;
+CREATE INDEX idx_notifications_unread ON notifications(recipient_user_id, is_read) ;
 CREATE INDEX idx_audit_logs_company ON audit_logs(company_id);
 CREATE INDEX idx_audit_logs_entity ON audit_logs(entity_name, entity_id);
 CREATE INDEX idx_transfers_employee ON transfers(employee_id);

@@ -47,7 +47,7 @@ public class EmployeeDocument extends BaseEntity {
     @Column(name = "file_name")
     private String fileName;
 
-    @Column(name = "version")
+    @Column(name = "document_version")
     private Integer documentVersion;
 
     @Enumerated(EnumType.STRING)
