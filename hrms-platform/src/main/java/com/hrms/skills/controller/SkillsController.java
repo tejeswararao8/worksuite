@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,9 +36,9 @@ public class SkillsController {
                     "Proficiency levels: BEGINNER, INTERMEDIATE, ADVANCED, EXPERT."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Skill added successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Skill added successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> addSkill(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -70,8 +69,8 @@ public class SkillsController {
             description = "Returns all skills for an employee, grouped by skill type (PRIMARY and SECONDARY)."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Skills list returned"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Skills list returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found")
     })
     public ResponseEntity<ApiResponse<Void>> getSkills(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -85,9 +84,9 @@ public class SkillsController {
             description = "Removes a skill from an employee's profile."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Skill removed"),
-            @ApiResponse(responseCode = "404", description = "Skill not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Skill removed"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Skill not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> removeSkill(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -104,9 +103,9 @@ public class SkillsController {
                     "Optionally provide a credential URL for online verification."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Certification added successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Certification added successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> addCertification(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -139,8 +138,8 @@ public class SkillsController {
             description = "Returns all certifications for an employee including expiry status."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Certifications list returned"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Certifications list returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found")
     })
     public ResponseEntity<ApiResponse<Void>> getCertifications(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -154,9 +153,9 @@ public class SkillsController {
             description = "Removes a certification from an employee's profile."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Certification removed"),
-            @ApiResponse(responseCode = "404", description = "Certification not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Certification removed"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Certification not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> removeCertification(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,

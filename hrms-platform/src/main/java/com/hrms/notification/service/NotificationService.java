@@ -23,7 +23,6 @@ public class NotificationService {
     public void send(UUID companyId, UUID recipientUserId, String title,
                      String message, NotificationType type, String referenceId, String referenceType) {
         Notification notification = Notification.builder()
-                .companyId(companyId)
                 .recipientUserId(recipientUserId)
                 .title(title)
                 .message(message)
@@ -32,6 +31,7 @@ public class NotificationService {
                 .referenceType(referenceType)
                 .read(false)
                 .build();
+        notification.setCompanyId(companyId);
         notificationRepository.save(notification);
     }
 

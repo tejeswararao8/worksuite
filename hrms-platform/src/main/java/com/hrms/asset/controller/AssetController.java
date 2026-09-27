@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,9 +46,9 @@ public class AssetController {
                     "New assets start with AVAILABLE status."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Asset created with auto-generated asset code"),
-            @ApiResponse(responseCode = "400", description = "Validation error — name or assetType missing"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Asset created with auto-generated asset code"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — name or assetType missing"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<AssetDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -83,9 +82,9 @@ public class AssetController {
             description = "Returns full details of an asset including its current status, assigned employee, and assignment history."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Asset details returned"),
-            @ApiResponse(responseCode = "404", description = "Asset not found"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Asset details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Asset not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<AssetDto.Response>> findById(
             @Parameter(description = "Asset UUID", required = true) @PathVariable UUID id) {
@@ -100,8 +99,8 @@ public class AssetController {
                     "Includes available, assigned, in-repair, and retired assets."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of assets"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of assets"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<PagedResponse<AssetDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -118,9 +117,9 @@ public class AssetController {
                     "Employees can view their own assigned assets. Managers can view their team's assets."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of assets assigned to the employee"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "List of assets assigned to the employee"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<List<AssetDto.Response>>> findByEmployee(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -137,10 +136,10 @@ public class AssetController {
                     "An asset can only be assigned to one employee at a time — return it first before reassigning."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Asset assigned successfully"),
-            @ApiResponse(responseCode = "404", description = "Asset not found"),
-            @ApiResponse(responseCode = "422", description = "Asset is not available — it is already assigned or in repair"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Asset assigned successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Asset not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Asset is not available — it is already assigned or in repair"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<AssetDto.Response>> assign(
             @Parameter(description = "Asset UUID", required = true) @PathVariable UUID id,
@@ -169,9 +168,9 @@ public class AssetController {
                     "Return timestamp is recorded. The asset can then be reassigned to another employee."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Asset returned successfully — status is now AVAILABLE"),
-            @ApiResponse(responseCode = "404", description = "Asset not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Asset returned successfully — status is now AVAILABLE"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Asset not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<AssetDto.Response>> returnAsset(
             @Parameter(description = "Asset UUID", required = true) @PathVariable UUID id) {

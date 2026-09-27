@@ -4,7 +4,6 @@ import com.hrms.common.dto.ApiResponse;
 import com.hrms.dashboard.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +31,8 @@ public class DashboardController {
                     "documents expiring in 30 days."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Dashboard summary returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Dashboard summary returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<DashboardService.Summary>> getSummary() {
         return ResponseEntity.ok(ApiResponse.success(dashboardService.getSummary()));
@@ -46,8 +45,8 @@ public class DashboardController {
             description = "Returns employee count grouped by department. Used to render bar/pie charts on the dashboard."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Headcount by department returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Headcount by department returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Object>> headcountByDepartment() {
         return ResponseEntity.ok(ApiResponse.success(dashboardService.getHeadcountByDepartment()));
@@ -60,8 +59,8 @@ public class DashboardController {
             description = "Returns employee count grouped by branch/office location."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Headcount by branch returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Headcount by branch returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Object>> headcountByBranch() {
         return ResponseEntity.ok(ApiResponse.success(dashboardService.getHeadcountByBranch()));
@@ -74,8 +73,8 @@ public class DashboardController {
             description = "Returns monthly employee joining counts for the last 12 months."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Monthly joining trend data returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Monthly joining trend data returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Object>> joiningTrend(
             @Parameter(description = "Number of months to look back", example = "12")
@@ -90,8 +89,8 @@ public class DashboardController {
             description = "Returns count of documents expiring in the next 30 days."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Document expiry alert summary returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Document expiry alert summary returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Object>> documentExpiryAlerts() {
         return ResponseEntity.ok(ApiResponse.success(dashboardService.getDocumentExpiryAlerts()));
@@ -104,8 +103,8 @@ public class DashboardController {
             description = "Returns asset counts grouped by status (AVAILABLE, ASSIGNED, IN_REPAIR, RETIRED)."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Asset utilization summary returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Asset utilization summary returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Object>> assetUtilization() {
         return ResponseEntity.ok(ApiResponse.success(dashboardService.getAssetUtilization()));

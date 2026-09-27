@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,9 +43,9 @@ public class TeamController {
                     "Optionally assign a team lead via `leadEmployeeId`."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Team created successfully"),
-            @ApiResponse(responseCode = "400", description = "Validation error — name or departmentId missing"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Team created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — name or departmentId missing"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<TeamDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -76,9 +75,9 @@ public class TeamController {
             description = "Returns details of a specific team including its department and team lead references."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Team details returned"),
-            @ApiResponse(responseCode = "404", description = "Team not found"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Team details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Team not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<TeamDto.Response>> findById(
             @Parameter(description = "Team UUID", required = true) @PathVariable UUID id) {
@@ -92,8 +91,8 @@ public class TeamController {
             description = "Returns a paginated list of all active teams in the company, sorted alphabetically by name."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of teams"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of teams"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<PagedResponse<TeamDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -109,10 +108,10 @@ public class TeamController {
             description = "Updates team details. You can reassign the team lead or move the team to a different department."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Team updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Team not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Team updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Team not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
     })
     public ResponseEntity<ApiResponse<TeamDto.Response>> update(
             @Parameter(description = "Team UUID", required = true) @PathVariable UUID id,
@@ -127,9 +126,9 @@ public class TeamController {
             description = "Soft-deletes a team. Employees assigned to this team should be reassigned first."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Team deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Team not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Team deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Team not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Team UUID", required = true) @PathVariable UUID id) {

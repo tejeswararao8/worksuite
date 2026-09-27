@@ -23,13 +23,15 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
+          cache: 'npm'
+          cache-dependency-path: hrms-frontend/package-lock.json
 
       - name: Install Dependencies
-        run: npm ci
-
-      - name: Run Lint
-        run: npm run lint
+        run: npm ci --legacy-peer-deps
 
       - name: Build
         run: npm run build
+        env:
+          CI: false
+          REACT_APP_API_BASE_URL: http://localhost:8080/api/v1

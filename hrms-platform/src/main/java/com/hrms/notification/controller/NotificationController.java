@@ -6,7 +6,6 @@ import com.hrms.notification.dto.NotificationDto;
 import com.hrms.notification.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,8 +38,8 @@ public class NotificationController {
                     "Notification types: DOCUMENT_EXPIRY, ONBOARDING, OFFBOARDING, PROBATION, TRANSFER, PROMOTION, ASSET, GENERAL."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of notifications"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of notifications"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<PagedResponse<NotificationDto.Response>>> getMyNotifications(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -58,8 +57,8 @@ public class NotificationController {
                     "Use this to display a badge/counter on the notification bell icon in the UI."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Unread notification count returned"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Unread notification count returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<NotificationDto.UnreadCount>> getUnreadCount() {
         return ResponseEntity.ok(ApiResponse.success(notificationService.getUnreadCount()));
@@ -72,9 +71,9 @@ public class NotificationController {
             description = "Marks a specific notification as read by its ID."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Notification marked as read"),
-            @ApiResponse(responseCode = "404", description = "Notification not found"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Notification marked as read"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Notification not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<Void>> markAsRead(
             @Parameter(description = "Notification UUID", required = true) @PathVariable java.util.UUID id) {
@@ -91,8 +90,8 @@ public class NotificationController {
                     "This is typically triggered when the user opens the notification panel."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "All notifications marked as read"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "All notifications marked as read"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<Void>> markAllAsRead() {
         notificationService.markAllAsRead();
