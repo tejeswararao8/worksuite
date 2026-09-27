@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,10 +34,10 @@ public class ProbationController {
                     "Standard probation period is 3–6 months depending on company policy."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Probation initiated successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "422", description = "Employee already has an active probation"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Probation initiated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Employee already has an active probation"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<Void>> initiate(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -67,8 +66,8 @@ public class ProbationController {
             description = "Returns the current or most recent probation record for an employee."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Probation record returned"),
-            @ApiResponse(responseCode = "404", description = "No probation record found for this employee")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Probation record returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "No probation record found for this employee")
     })
     public ResponseEntity<ApiResponse<Void>> getByEmployee(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -84,10 +83,10 @@ public class ProbationController {
                     "An approval workflow notification is sent to the employee."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Probation confirmed — employee is now ACTIVE"),
-            @ApiResponse(responseCode = "404", description = "Probation record not found"),
-            @ApiResponse(responseCode = "422", description = "Probation is not in IN_PROGRESS status"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Probation confirmed — employee is now ACTIVE"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Probation record not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Probation is not in IN_PROGRESS status"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> confirm(
             @Parameter(description = "Probation UUID", required = true) @PathVariable UUID id) {
@@ -102,10 +101,10 @@ public class ProbationController {
                     "Provide a reason for the extension. The employee is notified of the extension."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Probation extended with new end date"),
-            @ApiResponse(responseCode = "404", description = "Probation record not found"),
-            @ApiResponse(responseCode = "422", description = "Probation cannot be extended — already confirmed or rejected"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Probation extended with new end date"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Probation record not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Probation cannot be extended — already confirmed or rejected"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> extend(
             @Parameter(description = "Probation UUID", required = true) @PathVariable UUID id,
@@ -133,9 +132,9 @@ public class ProbationController {
                     "Employee status changes to TERMINATED. A reason must be provided."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Probation rejected — offboarding process initiated"),
-            @ApiResponse(responseCode = "404", description = "Probation record not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Probation rejected — offboarding process initiated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Probation record not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> reject(
             @Parameter(description = "Probation UUID", required = true) @PathVariable UUID id,

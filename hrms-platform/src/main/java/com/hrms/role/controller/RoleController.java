@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,9 +37,9 @@ public class RoleController {
                     "Assign permissions from the available permission list."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Role created successfully"),
-            @ApiResponse(responseCode = "409", description = "Role with the same name already exists in this company"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Role created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Role with the same name already exists in this company"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<Void>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -73,8 +72,8 @@ public class RoleController {
                     "along with their assigned permissions."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of roles with permissions"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "List of roles with permissions"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> findAll() {
         return ResponseEntity.ok(ApiResponse.success(null));
@@ -87,8 +86,8 @@ public class RoleController {
             description = "Returns details of a specific role including all assigned permissions."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Role details returned"),
-            @ApiResponse(responseCode = "404", description = "Role not found")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Role details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Role not found")
     })
     public ResponseEntity<ApiResponse<Void>> findById(
             @Parameter(description = "Role UUID", required = true) @PathVariable UUID id) {
@@ -103,9 +102,9 @@ public class RoleController {
                     "Provide the complete list of permission IDs — existing permissions not in the list will be removed."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Role permissions updated"),
-            @ApiResponse(responseCode = "404", description = "Role not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Role permissions updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Role not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<Void>> updatePermissions(
             @Parameter(description = "Role UUID", required = true) @PathVariable UUID id,
@@ -134,8 +133,8 @@ public class RoleController {
             description = "Returns all system permissions that can be assigned to roles, grouped by module."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "List of all permissions grouped by module"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "List of all permissions grouped by module"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> listPermissions() {
         return ResponseEntity.ok(ApiResponse.success(null));

@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,10 +48,10 @@ public class DocumentController {
                     "Max file size: 10MB. Accepted formats: PDF, JPEG, PNG, DOCX."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Document uploaded successfully — returns metadata and pre-signed download URL"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "400", description = "Validation error — documentType or documentName missing, or file too large"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Document uploaded successfully — returns metadata and pre-signed download URL"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — documentType or documentName missing, or file too large"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<DocumentDto.Response>> upload(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -87,9 +86,9 @@ public class DocumentController {
                     "Each document includes a pre-signed S3 download URL valid for 60 minutes."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of documents with download URLs"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of documents with download URLs"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<PagedResponse<DocumentDto.Response>>> findAll(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -108,9 +107,9 @@ public class DocumentController {
                     "The pre-signed URL is valid for 60 minutes from the time of this request."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Document metadata and download URL returned"),
-            @ApiResponse(responseCode = "404", description = "Document not found or belongs to a different company"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Document metadata and download URL returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Document not found or belongs to a different company"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<DocumentDto.Response>> findById(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -127,9 +126,9 @@ public class DocumentController {
                     "This endpoint does not stream the file — it returns the URL only."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Pre-signed download URL returned"),
-            @ApiResponse(responseCode = "404", description = "Document not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Pre-signed download URL returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Document not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<String>> download(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -145,9 +144,9 @@ public class DocumentController {
                     "Deleted documents no longer appear in listings or expiry tracking."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Document deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Document not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Document deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Document not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,

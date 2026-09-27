@@ -7,7 +7,6 @@ import com.hrms.common.dto.PagedResponse;
 import com.hrms.common.util.SecurityUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,8 +39,8 @@ public class AuditLogController {
                     "Use this to track all system activity and changes made by users."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of audit logs"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of audit logs"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<PagedResponse<AuditLog>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -60,8 +59,8 @@ public class AuditLogController {
                     "Use this to see all changes made to a specific type of record."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Filtered audit logs returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Filtered audit logs returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<PagedResponse<AuditLog>>> findByEntity(
             @Parameter(description = "Entity type name (e.g. Employee, Department, Asset)", required = true, example = "Employee")
@@ -82,8 +81,8 @@ public class AuditLogController {
                     "Use this to see all changes made to a specific employee, asset, document, etc."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Change history for the record returned"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Change history for the record returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<PagedResponse<AuditLog>>> findByRecord(
             @Parameter(description = "Entity record UUID (e.g. employee ID, asset ID)", required = true)

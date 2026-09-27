@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,10 +35,10 @@ public class OffboardingController {
                     "An offboarding checklist is auto-created with default tasks."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Offboarding initiated — checklist created"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "422", description = "Offboarding already in progress for this employee"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Offboarding initiated — checklist created"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Offboarding already in progress for this employee"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<Void>> initiate(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -70,8 +69,8 @@ public class OffboardingController {
             description = "Returns the offboarding checklist for an employee with task statuses and completion progress."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Offboarding checklist returned"),
-            @ApiResponse(responseCode = "404", description = "No offboarding record found for this employee")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Offboarding checklist returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "No offboarding record found for this employee")
     })
     public ResponseEntity<ApiResponse<Void>> getChecklist(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -87,9 +86,9 @@ public class OffboardingController {
                     "and the user account is automatically disabled."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Task marked as completed"),
-            @ApiResponse(responseCode = "404", description = "Task not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Task marked as completed"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Task not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> completeTask(
             @Parameter(description = "Offboarding task UUID", required = true) @PathVariable UUID taskId) {
@@ -105,9 +104,9 @@ public class OffboardingController {
                     "User account is disabled. All assigned assets must be returned before completion."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Offboarding completed — employee account disabled"),
-            @ApiResponse(responseCode = "422", description = "Cannot complete — pending tasks or unreturned assets"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Offboarding completed — employee account disabled"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Cannot complete — pending tasks or unreturned assets"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> complete(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {

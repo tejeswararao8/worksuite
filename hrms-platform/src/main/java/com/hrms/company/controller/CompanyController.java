@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,10 +43,10 @@ public class CompanyController {
                     "Registration number must be unique across the platform."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Company created successfully"),
-            @ApiResponse(responseCode = "409", description = "Company with the same registration number already exists"),
-            @ApiResponse(responseCode = "400", description = "Validation error — required fields missing"),
-            @ApiResponse(responseCode = "403", description = "Access denied — SUPER_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Company created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Company with the same registration number already exists"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — required fields missing"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — SUPER_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<CompanyDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -85,9 +84,9 @@ public class CompanyController {
                     "SUPER_ADMIN can fetch any company. COMPANY_ADMIN can only fetch their own company."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Company details returned"),
-            @ApiResponse(responseCode = "404", description = "Company not found or has been deleted"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Company details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Company not found or has been deleted"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<CompanyDto.Response>> findById(
             @Parameter(description = "Company UUID", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -103,8 +102,8 @@ public class CompanyController {
                     "Results are sorted by creation date descending. Only accessible by SUPER_ADMIN."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of companies"),
-            @ApiResponse(responseCode = "403", description = "Access denied — SUPER_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of companies"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — SUPER_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<PagedResponse<CompanyDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -121,10 +120,10 @@ public class CompanyController {
                     "Registration number cannot be changed once set."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Company updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Company not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Company updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Company not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
     })
     public ResponseEntity<ApiResponse<CompanyDto.Response>> update(
             @Parameter(description = "Company UUID", required = true) @PathVariable UUID id,
@@ -141,9 +140,9 @@ public class CompanyController {
                     "This action is irreversible via the API. Only SUPER_ADMIN can delete companies."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Company deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Company not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — SUPER_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Company deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Company not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — SUPER_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Company UUID", required = true) @PathVariable UUID id) {

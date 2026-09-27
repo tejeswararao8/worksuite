@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,10 +44,10 @@ public class DepartmentController {
                     "Set `headEmployeeId` to assign a department head."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Department created successfully"),
-            @ApiResponse(responseCode = "409", description = "Department with the same code already exists"),
-            @ApiResponse(responseCode = "400", description = "Validation error — name or code missing"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Department created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Department with the same code already exists"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — name or code missing"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<DepartmentDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -79,9 +78,9 @@ public class DepartmentController {
             description = "Returns details of a specific department including its parent department and head employee references."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Department details returned"),
-            @ApiResponse(responseCode = "404", description = "Department not found"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Department details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Department not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<DepartmentDto.Response>> findById(
             @Parameter(description = "Department UUID", required = true) @PathVariable UUID id) {
@@ -95,8 +94,8 @@ public class DepartmentController {
             description = "Returns a paginated list of all active departments for the company, sorted alphabetically by name."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of departments"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of departments"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<PagedResponse<DepartmentDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -113,10 +112,10 @@ public class DepartmentController {
                     "You can reassign the department head or change the parent department."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Department updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Department not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Department updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Department not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
     })
     public ResponseEntity<ApiResponse<DepartmentDto.Response>> update(
             @Parameter(description = "Department UUID", required = true) @PathVariable UUID id,
@@ -132,9 +131,9 @@ public class DepartmentController {
                     "Sub-departments are not automatically deleted."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Department deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Department not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Department deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Department not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Department UUID", required = true) @PathVariable UUID id) {

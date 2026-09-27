@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -38,10 +37,10 @@ public class UserController {
                     "A welcome email with login credentials is sent to the employee."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "User account created — welcome email sent"),
-            @ApiResponse(responseCode = "409", description = "User account already exists for this email"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "User account created — welcome email sent"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "User account already exists for this email"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<Void>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -70,9 +69,9 @@ public class UserController {
             description = "Returns user account details including role, last login, and account status."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User details returned"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> findById(
             @Parameter(description = "User UUID", required = true) @PathVariable UUID id) {
@@ -88,9 +87,9 @@ public class UserController {
                     "The change takes effect on the user's next login."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User role updated"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User role updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN role required")
     })
     public ResponseEntity<ApiResponse<Void>> changeRole(
             @Parameter(description = "User UUID", required = true) @PathVariable UUID id,
@@ -116,9 +115,9 @@ public class UserController {
                     "This is typically done as part of the offboarding process."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User account deactivated"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User account deactivated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> deactivate(
             @Parameter(description = "User UUID", required = true) @PathVariable UUID id) {
@@ -132,9 +131,9 @@ public class UserController {
             description = "Re-activates a previously deactivated user account."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "User account activated"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "User account activated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> activate(
             @Parameter(description = "User UUID", required = true) @PathVariable UUID id) {
@@ -150,9 +149,9 @@ public class UserController {
                     "The new temporary password is sent to the user's email."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Password reset — temporary password sent to user's email"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Password reset — temporary password sent to user's email"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "User not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> resetPassword(
             @Parameter(description = "User UUID", required = true) @PathVariable UUID id) {

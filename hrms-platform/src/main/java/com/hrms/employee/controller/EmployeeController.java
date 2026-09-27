@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,10 +45,10 @@ public class EmployeeController {
                     "A user account can be created separately via POST /users."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Employee created successfully with auto-generated employee code"),
-            @ApiResponse(responseCode = "409", description = "An employee with the same email already exists in this company"),
-            @ApiResponse(responseCode = "400", description = "Validation error — required fields missing or invalid"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Employee created successfully with auto-generated employee code"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "An employee with the same email already exists in this company"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — required fields missing or invalid"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -93,9 +92,9 @@ public class EmployeeController {
                     "HR and COMPANY_ADMIN can view all employees in the company."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Employee profile returned"),
-            @ApiResponse(responseCode = "404", description = "Employee not found or belongs to a different company"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Employee profile returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found or belongs to a different company"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> findById(
             @Parameter(description = "Employee UUID", required = true, example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -112,8 +111,8 @@ public class EmployeeController {
                     "All filters are optional and can be combined. Results are paginated."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of matching employees"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of matching employees"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<PagedResponse<EmployeeDto.Response>>> search(
             @Parameter(description = "Search keyword — matches name, email, or employee code", example = "john")
@@ -142,10 +141,10 @@ public class EmployeeController {
                     "Only provided fields are updated (partial update)."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Employee updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Employee updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
     })
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> update(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID id,
@@ -163,10 +162,10 @@ public class EmployeeController {
                     "Employees can upload their own photo."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Photo uploaded and profile updated"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid file type or file too large"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Photo uploaded and profile updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Invalid file type or file too large"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> uploadPhoto(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID id,
@@ -185,9 +184,9 @@ public class EmployeeController {
                     "This is typically triggered as part of the Offboarding process."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Employee deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Employee deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID id) {

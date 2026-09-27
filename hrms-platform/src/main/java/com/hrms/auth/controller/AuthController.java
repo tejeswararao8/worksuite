@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,10 +33,10 @@ public class AuthController {
                     "The access token expires in 24 hours. Account is locked after 5 consecutive failed attempts for 30 minutes."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Login successful — returns access and refresh tokens"),
-            @ApiResponse(responseCode = "401", description = "Invalid email or password"),
-            @ApiResponse(responseCode = "423", description = "Account locked due to too many failed attempts"),
-            @ApiResponse(responseCode = "400", description = "Validation error — email or password missing")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Login successful — returns access and refresh tokens"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid email or password"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "423", description = "Account locked due to too many failed attempts"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — email or password missing")
     })
     public ResponseEntity<com.hrms.common.dto.ApiResponse<AuthDto.TokenResponse>> login(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -64,9 +63,9 @@ public class AuthController {
                     "Use this when the access token has expired. Refresh tokens are valid for 7 days."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "New access token issued"),
-            @ApiResponse(responseCode = "401", description = "Refresh token is invalid or expired"),
-            @ApiResponse(responseCode = "400", description = "Refresh token is missing")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "New access token issued"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Refresh token is invalid or expired"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Refresh token is missing")
     })
     public ResponseEntity<com.hrms.common.dto.ApiResponse<AuthDto.TokenResponse>> refresh(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -95,9 +94,9 @@ public class AuthController {
                     "After a successful change, the user must log in again with the new password."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Password changed successfully"),
-            @ApiResponse(responseCode = "400", description = "Current password is incorrect or new password fails validation"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated — JWT token missing or expired")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Password changed successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Current password is incorrect or new password fails validation"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated — JWT token missing or expired")
     })
     public ResponseEntity<com.hrms.common.dto.ApiResponse<Void>> changePassword(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(

@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,10 +35,10 @@ public class OnboardingController {
                     "Each task can be assigned to a responsible person with a due date."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Onboarding checklist created"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "422", description = "Onboarding already initiated for this employee"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Onboarding checklist created"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Onboarding already initiated for this employee"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> initiate(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -54,8 +53,8 @@ public class OnboardingController {
                     "Task statuses: PENDING, IN_PROGRESS, COMPLETED, SKIPPED."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Onboarding checklist returned"),
-            @ApiResponse(responseCode = "404", description = "No onboarding record found for this employee")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Onboarding checklist returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "No onboarding record found for this employee")
     })
     public ResponseEntity<ApiResponse<Void>> getChecklist(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId) {
@@ -70,9 +69,9 @@ public class OnboardingController {
                     "When all tasks are completed, the onboarding is marked as done and the employee is notified."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Task marked as completed"),
-            @ApiResponse(responseCode = "404", description = "Task not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Task marked as completed"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Task not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> completeTask(
             @Parameter(description = "Onboarding task UUID", required = true) @PathVariable UUID taskId) {
@@ -87,8 +86,8 @@ public class OnboardingController {
                     "Use this for company-specific onboarding steps not in the default template."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Custom task added to checklist"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Custom task added to checklist"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> addTask(
             @Parameter(description = "Onboarding task UUID", required = true) @PathVariable UUID taskId,

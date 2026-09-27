@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,9 +43,9 @@ public class DesignationController {
                     "Use `grade` for compensation banding (e.g. L1, L2, G3)."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Designation created successfully"),
-            @ApiResponse(responseCode = "400", description = "Validation error — title is required"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Designation created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — title is required"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<DesignationDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -76,9 +75,9 @@ public class DesignationController {
             description = "Returns details of a specific designation including its level and grade."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Designation details returned"),
-            @ApiResponse(responseCode = "404", description = "Designation not found"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Designation details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Designation not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<DesignationDto.Response>> findById(
             @Parameter(description = "Designation UUID", required = true) @PathVariable UUID id) {
@@ -92,8 +91,8 @@ public class DesignationController {
             description = "Returns a paginated list of all active designations for the company, sorted alphabetically by title."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of designations"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of designations"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<PagedResponse<DesignationDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -109,10 +108,10 @@ public class DesignationController {
             description = "Updates designation details. Changes to level or grade will reflect on all employees holding this designation."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Designation updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Designation not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Designation updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Designation not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
     })
     public ResponseEntity<ApiResponse<DesignationDto.Response>> update(
             @Parameter(description = "Designation UUID", required = true) @PathVariable UUID id,
@@ -128,9 +127,9 @@ public class DesignationController {
                     "their designation reference is retained for historical accuracy."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Designation deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Designation not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Designation deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Designation not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Designation UUID", required = true) @PathVariable UUID id) {
