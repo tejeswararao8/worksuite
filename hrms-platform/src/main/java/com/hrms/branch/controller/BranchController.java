@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -44,10 +43,10 @@ public class BranchController {
                     "Only one branch can be marked as head office."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Branch created successfully"),
-            @ApiResponse(responseCode = "409", description = "Branch with the same code already exists in this company"),
-            @ApiResponse(responseCode = "400", description = "Validation error — name or code missing"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Branch created successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Branch with the same code already exists in this company"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error — name or code missing"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<BranchDto.Response>> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -82,9 +81,9 @@ public class BranchController {
                     "Any authenticated user within the company can view branch details."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Branch details returned"),
-            @ApiResponse(responseCode = "404", description = "Branch not found or belongs to a different company"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Branch details returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Branch not found or belongs to a different company"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<BranchDto.Response>> findById(
             @Parameter(description = "Branch UUID", required = true) @PathVariable UUID id) {
@@ -98,8 +97,8 @@ public class BranchController {
             description = "Returns a paginated list of all active branches for the authenticated company, sorted alphabetically by name."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of branches"),
-            @ApiResponse(responseCode = "401", description = "Not authenticated")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of branches"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Not authenticated")
     })
     public ResponseEntity<ApiResponse<PagedResponse<BranchDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -116,10 +115,10 @@ public class BranchController {
                     "Branch code cannot be changed if employees are assigned to this branch."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Branch updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Branch not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied"),
-            @ApiResponse(responseCode = "400", description = "Validation error")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Branch updated successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Branch not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Validation error")
     })
     public ResponseEntity<ApiResponse<BranchDto.Response>> update(
             @Parameter(description = "Branch UUID", required = true) @PathVariable UUID id,
@@ -135,9 +134,9 @@ public class BranchController {
                     "Employees currently assigned to this branch should be transferred before deletion."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Branch deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Branch not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Branch deleted successfully"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Branch not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<Void>> delete(
             @Parameter(description = "Branch UUID", required = true) @PathVariable UUID id) {

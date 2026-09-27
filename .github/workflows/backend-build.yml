@@ -25,6 +25,24 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          cache: maven
 
-      - name: Maven Build
-        run: mvn clean verify
+      - name: Make mvnw executable
+        run: chmod +x mvnw
+
+      - name: Build
+        run: ./mvnw clean package -DskipTests
+
+      - name: Test
+        run: ./mvnw test
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: hrms_db
+          DB_USERNAME: hrms_user
+          DB_PASSWORD: hrms_pass
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          JWT_SECRET: hrms-super-secret-key-must-be-at-least-256-bits-long-for-hs256
+          AWS_REGION: ap-south-1
+          S3_BUCKET_NAME: hrms-documents
