@@ -3,7 +3,6 @@ package com.hrms.report.controller;
 import com.hrms.common.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,8 +30,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Report generated and returned as file download"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Report generated and returned as file download"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<byte[]> employeeReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -51,8 +50,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Department report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Department report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> departmentReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -68,8 +67,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Branch report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Branch report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> branchReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -85,8 +84,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Designation report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Designation report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> designationReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -103,8 +102,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Promotion report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Promotion report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> promotionReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -123,8 +122,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transfer report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Transfer report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> transferReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -144,8 +143,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Document expiry report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Document expiry report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> documentExpiryReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)
@@ -164,8 +163,8 @@ public class ReportController {
                     "Export formats: PDF, EXCEL, CSV."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Asset report generated"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Asset report generated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<byte[]> assetReport(
             @Parameter(description = "Export format", example = "EXCEL", required = true)

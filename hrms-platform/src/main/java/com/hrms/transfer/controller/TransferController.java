@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,9 +40,9 @@ public class TransferController {
             description = "Creates a transfer request for an employee. The request starts in PENDING status and requires approval."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Transfer request created and pending approval"),
-            @ApiResponse(responseCode = "404", description = "Employee not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Transfer request created and pending approval"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied — COMPANY_ADMIN or HR role required")
     })
     public ResponseEntity<ApiResponse<TransferDto.Response>> initiate(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -70,8 +69,8 @@ public class TransferController {
             description = "Returns a paginated list of all transfer requests for the company, sorted by creation date descending."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Paginated list of transfers"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Paginated list of transfers"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<PagedResponse<TransferDto.Response>>> findAll(
             @Parameter(description = "Page number (0-based)", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -87,8 +86,8 @@ public class TransferController {
             description = "Returns the complete transfer history for an employee, sorted by effective date descending."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transfer history returned"),
-            @ApiResponse(responseCode = "404", description = "Employee not found")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Transfer history returned"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Employee not found")
     })
     public ResponseEntity<ApiResponse<PagedResponse<TransferDto.Response>>> getHistory(
             @Parameter(description = "Employee UUID", required = true) @PathVariable UUID employeeId,
@@ -105,10 +104,10 @@ public class TransferController {
             description = "Approves a pending transfer. Upon approval, the employee's profile is automatically updated."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transfer approved — employee profile updated"),
-            @ApiResponse(responseCode = "404", description = "Transfer request not found"),
-            @ApiResponse(responseCode = "422", description = "Transfer is not in PENDING status"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Transfer approved — employee profile updated"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Transfer request not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "422", description = "Transfer is not in PENDING status"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<TransferDto.Response>> approve(
             @Parameter(description = "Transfer UUID", required = true) @PathVariable UUID id) {
@@ -122,9 +121,9 @@ public class TransferController {
             description = "Rejects a pending transfer request. The employee profile remains unchanged."
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Transfer rejected"),
-            @ApiResponse(responseCode = "404", description = "Transfer request not found"),
-            @ApiResponse(responseCode = "403", description = "Access denied")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Transfer rejected"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Transfer request not found"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "Access denied")
     })
     public ResponseEntity<ApiResponse<TransferDto.Response>> reject(
             @Parameter(description = "Transfer UUID", required = true) @PathVariable UUID id,
