@@ -6,7 +6,7 @@ on:
       - development
       - main
     paths:
-      - 'hrms-frontend/**'
+      - 'platform/frontend/**'
 
 jobs:
   frontend-build:
@@ -14,7 +14,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: hrms-frontend
+        working-directory: platform/frontend
 
     steps:
       - name: Checkout
@@ -24,8 +24,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'npm'
-          cache-dependency-path: hrms-frontend/package-lock.json
+          cache: npm
+          cache-dependency-path: platform/frontend/package-lock.json
 
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
