@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WorkSuite Platform — Architecture</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',sans-serif;background:#0f1117;color:#e2e8f0;}
+h1{text-align:center;padding:40px 20px 10px;font-size:2.2rem;color:#60a5fa;letter-spacing:1px;}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:40px;font-size:1rem;}
+.section{max-width:1400px;margin:0 auto 60px;padding:0 20px;}
+.section-title{font-size:1.3rem;font-weight:700;color:#f1f5f9;margin-bottom:16px;padding:10px 16px;background:#1e293b;border-left:4px solid #3b82f6;border-radius:4px;}
+.diagram-box{background:#1e293b;border-radius:12px;padding:24px;overflow-x:auto;}
+.mermaid{min-width:600px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;}
+@media(max-width:900px){.grid2,.grid3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<h1>🏢 WorkSuite Platform</h1>
+<p class="subtitle">All-in-one Multi-Tenant SaaS Workforce Management Platform — Complete Architecture</p>
+
+<!-- DIAGRAM 1: Full System Overview -->
+<div class="section">
+<div class="section-title">1. Full System Overview</div>
+<div class="diagram-box">
+<div class="mermaid">
+graph TB
+    subgraph CLIENTS["👥 Clients"]
+        WEB["🌐 Web Browser\nReact 19 SPA"]
+        MOB["📱 Mobile App\nReact Native"]
+        API_CLIENT["🔌 API Clients\nWebhooks / Integrations"]
+    end
+
+    subgraph GATEWAY["🔀 API Gateway Layer"]
+        LB["Load Balancer"]
+        RATE["Rate Limiter\n100 req/min/user"]
+        AUTH_GW["JWT Auth Filter\n+ Tenant Resolver"]
+    end
+
+    subgraph BACKEND["⚙️ WorkSuite Backend — Spring Boot 3.4 / Java 21"]
+        subgraph CORE["🧱 Core Platform Modules"]
+            C1["core-tenancy\ncompany_id isolation"]
+            C2["core-security\nJWT + RBAC"]
+            C3["core-audit\nAsync audit logs"]
+            C4["core-logging\nMDC traceId"]
+            C5["core-notification\nIn-app + Email"]
+            C6["core-workflow\nApproval engine"]
+            C7["core-document\nFile + expiry"]
+            C8["core-config\nPer-tenant config"]
+            C9["core-reporting\nExcel + CSV"]
+            C10["core-api\nApiResponse standards"]
+        end
+
+        subgraph MODULES["📦 Business Modules"]
+            M1["module-hr\nEmployee, Dept, Branch\nPromotion, Transfer"]
+            M2["module-leave\nLeave types, Apply\nApprove, Balance"]
+            M3["module-attendance\nPunch in/out\nGeo-fence, Biometric"]
+            M4["module-timesheet\nDaily/Weekly logs\nProject tracking"]
+            M5["module-shift\nRoster, Swap\nNight shift"]
+            M6["module-payroll\nGlobal engine\nTax rules, Payslips"]
+            M7["module-expense\nClaims, Approve\nReimburse"]
+            M8["module-performance\nKPIs, Goals\nAppraisals"]
+            M9["module-recruitment\nATS, Pipeline\nInterviews"]
+            M10["module-training\nLMS, Courses\nCertifications"]
+            M11["module-chat\nReal-time messaging\nChannels, DMs"]
+            M12["module-calls\nVideo + Audio\nWebRTC"]
+            M13["module-projects\nJira-like boards\nSprints, Tasks"]
+            M14["module-helpdesk\nTickets, SLA\nKnowledge base"]
+            M15["module-chatbot\nAI assistant\nHR queries"]
+            M16["module-reminders\nSmart alerts\nDeadlines"]
+            M17["module-announcements\nNotice board\nBroadcasts"]
+            M18["module-calendar\nHolidays, Events\nLeave calendar"]
+            M19["module-billing\nPlans, Invoices\nPayments"]
+            M20["module-superadmin\nTenant mgmt\nUsage analytics"]
+        end
+    end
+
+    subgraph INFRA["🗄️ Infrastructure"]
+        DB["MySQL 8\nShared Schema\nRow-level isolation"]
+        REDIS["Redis\nCache + Token\nBlacklist"]
+        S3["AWS S3\nFile Storage\nPresigned URLs"]
+        MAIL["Email Service\nSMTP / SES"]
+        WS["WebSocket Server\nSocket.io\nReal-time chat"]
+        WEBRTC["WebRTC\nmediasoup\nVideo/Audio"]
+        ES["Elasticsearch\nProject + Ticket\nSearch"]
+        PAY["Payment Gateway\nRazorpay / Stripe"]
+    end
+
+    WEB --> LB
+    MOB --> LB
+    API_CLIENT --> LB
+    LB --> RATE --> AUTH_GW
+    AUTH_GW --> CORE
+    AUTH_GW --> MODULES
+    CORE --> DB
+    MODULES --> DB
+    MODULES --> REDIS
+    MODULES --> S3
+    MODULES --> MAIL
+    M11 --> WS
+    M12 --> WEBRTC
+    M13 --> ES
+    M14 --> ES
+    M19 --> PAY
+
+    style CLIENTS fill:#1e3a5f,stroke:#3b82f6
+    style GATEWAY fill:#1e3a2f,stroke:#22c55e
+    style BACKEND fill:#1e1e3a,stroke:#8b5cf6
+    style CORE fill:#0f2027,stroke:#6366f1
+    style MODULES fill:#0f2027,stroke:#f59e0b
+    style INFRA fill:#1e2a1e,stroke:#10b981
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 2: Module Connection Flow -->
+<div class="section">
+<div class="section-title">2. How All 30 Modules Connect</div>
+<div class="diagram-box">
+<div class="mermaid">
+flowchart TD
+    REC["🎯 Recruitment ATS\nJob postings → Pipeline\nInterviews → Offer"]
+    HR["👤 HRMS\nEmployee Profile\nDept, Branch, Designation"]
+    ONB["📋 Onboarding\nChecklist tasks\nDocument collection"]
+    LEAVE["🏖️ Leave Management\nTypes, Policies\nApply → Approve → Balance"]
+    SHIFT["🔄 Shift Management\nRoster planning\nShift swaps"]
+    ATT["📍 Attendance\nPunch in/out\nGeo-fence, Biometric"]
+    TIME["⏱️ Timesheet\nDaily/Weekly logs\nProject hours"]
+    OT["⏰ Overtime & Comp-off\nOT calculation\nComp-off requests"]
+    EXP["💳 Expense Management\nClaims → Approve\nReimburse"]
+    PAY["💰 Payroll\nGlobal engine\nTax → Payslip → Bank"]
+    PERF["📈 Performance\nKPIs, Goals\nAppraisal cycles"]
+    TRAIN["🎓 Training & LMS\nCourses → Completion\nCertifications"]
+    SKILLS["🛠️ Skills\nEmployee skills\nCertifications"]
+    ANN["📢 Announcements\nNotice board\nBroadcasts"]
+    CAL["📅 Calendar & Holidays\nPublic holidays\nLeave calendar"]
+    CHAT["💬 Chat\nChannels, DMs\nFile sharing"]
+    CALL["📹 Video/Audio Calls\n1-on-1 & Group\nWebRTC"]
+    REM["🔔 Reminders\nSmart alerts\nDeadlines"]
+    PROJ["📌 Project Mgmt\nBoards, Sprints\nTasks, Epics"]
+    HELP["🎫 Help Desk\nTickets, SLA\nKnowledge base"]
+    BOT["🤖 Chatbot\nAI assistant\nHR queries"]
+    DOC["📁 Documents\nUpload, Versioning\nExpiry tracking"]
+    DRIVE["🗂️ File Drive\nShared storage\nEmployee folders"]
+    REPORT["📊 Reporting\nExcel, CSV\nAll modules"]
+    AUDIT["🔍 Audit\nAll write ops\nWho did what"]
+    NOTIF["🔔 Notifications\nIn-app + Email\nAll modules"]
+    BILL["💳 Billing\nPlans, Invoices\nRazorpay/Stripe"]
+    ADMIN["👑 Super Admin\nTenant mgmt\nUsage analytics"]
+    WIZ["🧙 Onboarding Wizard\nCompany setup\nFirst admin"]
+    SSO["🔐 SSO/OAuth2\nGoogle, Microsoft\nOkta"]
+
+    REC -->|"hire → create employee"| HR
+    HR -->|"new employee triggers"| ONB
+    HR --> LEAVE
+    HR --> SHIFT
+    SHIFT -->|"defines work schedule"| ATT
+    ATT -->|"hours worked"| TIME
+    ATT -->|"late/absent data"| PAY
+    TIME -->|"billable hours"| PAY
+    OT -->|"OT hours"| PAY
+    LEAVE -->|"leave days"| PAY
+    EXP -->|"reimbursements"| PAY
+    PERF -->|"increment %"| PAY
+    HR --> PERF
+    PERF --> TRAIN
+    TRAIN --> SKILLS
+    SKILLS --> HR
+    ANN --> NOTIF
+    CAL --> LEAVE
+    CAL --> ATT
+    CHAT --> CALL
+    CHAT --> NOTIF
+    REM --> NOTIF
+    PROJ --> TIME
+    PROJ --> CHAT
+    HELP --> NOTIF
+    HELP --> BOT
+    BOT --> HELP
+    DOC --> DRIVE
+    HR --> DOC
+    REPORT -.->|"reads all modules"| HR
+    AUDIT -.->|"logs all modules"| HR
+    NOTIF -.->|"serves all modules"| HR
+    BILL --> ADMIN
+    WIZ --> HR
+    SSO --> HR
+
+    style REC fill:#1e3a5f,stroke:#3b82f6
+    style HR fill:#1e3a5f,stroke:#3b82f6
+    style ONB fill:#1e3a5f,stroke:#3b82f6
+    style PAY fill:#3a1e1e,stroke:#ef4444
+    style BILL fill:#3a1e1e,stroke:#ef4444
+    style ADMIN fill:#3a1e1e,stroke:#ef4444
+    style CHAT fill:#1e3a2f,stroke:#22c55e
+    style CALL fill:#1e3a2f,stroke:#22c55e
+    style PROJ fill:#1e3a2f,stroke:#22c55e
+    style HELP fill:#1e3a2f,stroke:#22c55e
+    style BOT fill:#1e3a2f,stroke:#22c55e
+    style REPORT fill:#2a1e3a,stroke:#a855f7
+    style AUDIT fill:#2a1e3a,stroke:#a855f7
+    style NOTIF fill:#2a1e3a,stroke:#a855f7
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 3: Request Lifecycle -->
+<div class="section">
+<div class="section-title">3. Request Lifecycle — Every API Call</div>
+<div class="diagram-box">
+<div class="mermaid">
+sequenceDiagram
+    participant C as 📱 Client
+    participant LB as Load Balancer
+    participant MDC as MdcFilter
+    participant JWT as JwtAuthFilter
+    participant TI as TenantInterceptor
+    participant RL as RateLimiter
+    participant CTL as Controller
+    participant SVC as Service
+    participant AUD as AuditService
+    participant REPO as Repository
+    participant DB as MySQL
+    participant REDIS as Redis
+    participant NOTIF as NotificationService
+
+    C->>LB: HTTP Request
+    LB->>MDC: forward
+    MDC->>MDC: inject traceId into MDC
+    MDC->>JWT: forward
+    JWT->>REDIS: check token blacklist
+    REDIS-->>JWT: not blacklisted
+    JWT->>JWT: validate JWT signature + expiry
+    JWT->>JWT: extract userId, companyId, roles
+    JWT->>TI: forward with SecurityContext set
+    TI->>TI: TenantContext.set(companyId)
+    TI->>RL: forward
+    RL->>RL: check rate limit (100/min/user)
+    RL->>CTL: forward
+    CTL->>SVC: call service method
+    SVC->>AUD: @Auditable intercept
+    AUD->>REPO: proceed
+    REPO->>DB: SELECT/INSERT WHERE company_id = ?
+    DB-->>REPO: result
+    REPO-->>SVC: result
+    AUD->>AUD: async save to audit_logs
+    SVC->>NOTIF: async send notification (if needed)
+    SVC-->>CTL: result
+    CTL-->>C: ApiResponse wrapped JSON
+    MDC->>MDC: log URI + status + duration + traceId
+    MDC->>MDC: MDC.clear()
+    TI->>TI: TenantContext.clear()
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 4: Multi-Tenancy -->
+<div class="section">
+<div class="section-title">4. Multi-Tenancy — Row-Level Isolation</div>
+<div class="diagram-box">
+<div class="mermaid">
+graph LR
+    subgraph COMPANY_A["🏢 Company A (tenant)"]
+        UA["User: alice@companyA.com"]
+        JA["JWT: companyId = AAA-111"]
+    end
+    subgraph COMPANY_B["🏢 Company B (tenant)"]
+        UB["User: bob@companyB.com"]
+        JB["JWT: companyId = BBB-222"]
+    end
+    subgraph COMPANY_C["🏢 Company C (tenant)"]
+        UC["User: carol@companyC.com"]
+        JC["JWT: companyId = CCC-333"]
+    end
+
+    subgraph FILTER["Spring Filter Chain"]
+        F1["JwtAuthFilter\nextracts companyId"]
+        F2["TenantContext\nThreadLocal per request"]
+    end
+
+    subgraph REPO["Repository Layer"]
+        R1["findByIdAndCompanyId(id, companyId)"]
+        R2["findAllByCompanyId(companyId)"]
+    end
+
+    subgraph DB["MySQL — Shared Schema"]
+        ROW_A["employees WHERE company_id = AAA-111"]
+        ROW_B["employees WHERE company_id = BBB-222"]
+        ROW_C["employees WHERE company_id = CCC-333"]
+    end
+
+    JA --> F1
+    JB --> F1
+    JC --> F1
+    F1 --> F2
+    F2 --> REPO
+    R1 -->|"AAA-111 only"| ROW_A
+    R2 -->|"BBB-222 only"| ROW_B
+    R1 -->|"CCC-333 only"| ROW_C
+
+    style COMPANY_A fill:#1e3a5f,stroke:#3b82f6
+    style COMPANY_B fill:#1e3a2f,stroke:#22c55e
+    style COMPANY_C fill:#3a1e3a,stroke:#a855f7
+    style DB fill:#1e2a1e,stroke:#10b981
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 5: Security & RBAC -->
+<div class="section">
+<div class="section-title">5. Security Architecture — JWT + RBAC</div>
+<div class="diagram-box">
+<div class="mermaid">
+graph TD
+    subgraph LOGIN["🔑 Login Flow"]
+        L1["POST /api/v1/auth/login"]
+        L2["Validate email + password\nBCrypt verify"]
+        L3{"Account\nlocked?"}
+        L4["Issue accessToken 24h\n+ refreshToken 7d"]
+        L5["Return 401 Locked"]
+    end
+
+    subgraph REQUEST["🔐 Per-Request Auth"]
+        R1["Authorization: Bearer token"]
+        R2["JwtAuthFilter\nvalidate signature + expiry"]
+        R3{"In Redis\nblacklist?"}
+        R4["Extract userId\ncompanyId, roles"]
+        R5["Set SecurityContext\n+ TenantContext"]
+        R6["Return 401"]
+    end
+
+    subgraph RBAC["👮 RBAC Model"]
+        U["User"]
+        RO["Role\nper tenant"]
+        P1["EMPLOYEE_READ"]
+        P2["EMPLOYEE_WRITE"]
+        P3["PAYROLL_RUN"]
+        P4["REPORT_EXPORT"]
+        P5["AUDIT_VIEW"]
+        P6["LEAVE_APPROVE"]
+        P7["ATTENDANCE_MANAGE"]
+        P8["HELPDESK_ADMIN"]
+    end
+
+    subgraph ENDPOINT["🛡️ Controller Protection"]
+        E1["@PreAuthorize\n('hasAuthority(EMPLOYEE_WRITE)')"]
+        E2["@PreAuthorize\n('hasAnyRole(HR, ADMIN)')"]
+    end
+
+    L1 --> L2 --> L3
+    L3 -->|"No"| L4
+    L3 -->|"Yes"| L5
+    R1 --> R2 --> R3
+    R3 -->|"Yes"| R6
+    R3 -->|"No"| R4 --> R5
+    R5 --> ENDPOINT
+    U -->|"has one"| RO
+    RO -->|"has many"| P1
+    RO -->|"has many"| P2
+    RO -->|"has many"| P3
+    RO -->|"has many"| P4
+    RO -->|"has many"| P5
+    RO -->|"has many"| P6
+    RO -->|"has many"| P7
+    RO -->|"has many"| P8
+
+    style LOGIN fill:#1e3a2f,stroke:#22c55e
+    style REQUEST fill:#1e3a5f,stroke:#3b82f6
+    style RBAC fill:#3a1e1e,stroke:#ef4444
+    style ENDPOINT fill:#2a1e3a,stroke:#a855f7
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 6: Phase Roadmap -->
+<div class="section">
+<div class="section-title">6. Build Phase Roadmap</div>
+<div class="diagram-box">
+<div class="mermaid">
+gantt
+    title WorkSuite Platform — Build Phases
+    dateFormat YYYY-MM-DD
+    axisFormat %b %Y
+
+    section Phase 1 Core Platform
+    Multi-Tenancy + Security     :done, p1a, 2024-01-01, 30d
+    Audit + Logging              :done, p1b, after p1a, 20d
+    Workflow + Notifications     :done, p1c, after p1b, 20d
+    Documents + Config + Reports :done, p1d, after p1c, 20d
+
+    section Phase 2 HR Module
+    Employee + Dept + Branch     :done, p2a, after p1d, 30d
+    Onboarding + Offboarding     :done, p2b, after p2a, 20d
+    Promotion + Transfer + Asset :done, p2c, after p2b, 20d
+
+    section Phase 3 Workforce Ops
+    Leave Management             :active, p3a, 2025-07-01, 30d
+    Shift Management             :p3b, after p3a, 20d
+    Attendance System            :p3c, after p3b, 30d
+    Timesheet                    :p3d, after p3c, 20d
+    Overtime + Comp-off          :p3e, after p3d, 15d
+
+    section Phase 4 Finance
+    Expense Management           :p4a, after p3e, 25d
+    Payroll Global Engine        :p4b, after p4a, 60d
+
+    section Phase 5 People Growth
+    Performance Management       :p5a, after p4b, 30d
+    Training + LMS               :p5b, after p5a, 30d
+    Recruitment ATS              :p5c, after p5b, 30d
+
+    section Phase 6 Collaboration
+    Announcements + Calendar     :p6a, after p5c, 20d
+    Chat Real-time               :p6b, after p6a, 30d
+    Video + Audio Calls          :p6c, after p6b, 30d
+    Reminders                    :p6d, after p6c, 15d
+
+    section Phase 7 Intelligence
+    Project Management Jira-like :p7a, after p6d, 45d
+    Internal Help Desk           :p7b, after p7a, 30d
+    Chatbot AI                   :p7c, after p7b, 30d
+
+    section Phase 8 Platform Layer
+    Subscription + Billing       :p8a, after p7c, 30d
+    Super Admin Panel            :p8b, after p8a, 20d
+    Onboarding Wizard            :p8c, after p8b, 15d
+    White Labeling + SSO         :p8d, after p8c, 20d
+    Mobile App React Native      :p8e, after p8d, 60d
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 7: Infrastructure -->
+<div class="section">
+<div class="section-title">7. Infrastructure Architecture</div>
+<div class="diagram-box">
+<div class="mermaid">
+graph TB
+    subgraph INTERNET["🌐 Internet"]
+        USERS["Users\nWeb + Mobile"]
+    end
+
+    subgraph CDN["☁️ CDN / DNS"]
+        CF["CloudFront / Nginx\nSSL Termination"]
+    end
+
+    subgraph APP_TIER["⚙️ Application Tier"]
+        SB1["Spring Boot Instance 1\n:8080"]
+        SB2["Spring Boot Instance 2\n:8080"]
+        WS_SRV["Socket.io Server\nReal-time Chat"]
+        WEBRTC_SRV["mediasoup Server\nVideo/Audio"]
+    end
+
+    subgraph DATA_TIER["🗄️ Data Tier"]
+        MYSQL_P["MySQL Primary\nRead + Write"]
+        MYSQL_R["MySQL Replica\nRead Only"]
+        REDIS_C["Redis Cluster\nCache + Sessions\nToken Blacklist"]
+        ES_C["Elasticsearch\nProject + Ticket Search"]
+    end
+
+    subgraph STORAGE["📦 Storage"]
+        S3_B["AWS S3\nDocuments\nProfile Photos\nExpense Receipts"]
+    end
+
+    subgraph EXTERNAL["🔌 External Services"]
+        SES["AWS SES\nEmail Delivery"]
+        RAZORPAY["Razorpay\nPayments"]
+        STRIPE["Stripe\nGlobal Payments"]
+        OPENAI["OpenAI API\nChatbot"]
+        BIOMETRIC["Biometric Devices\nAttendance"]
+    end
+
+    subgraph MONITORING["📊 Monitoring"]
+        LOGS["CloudWatch Logs\nCentralized Logging"]
+        METRICS["Metrics Dashboard\nUptime + Latency"]
+    end
+
+    USERS --> CF
+    CF --> SB1
+    CF --> SB2
+    CF --> WS_SRV
+    CF --> WEBRTC_SRV
+    SB1 --> MYSQL_P
+    SB2 --> MYSQL_P
+    MYSQL_P --> MYSQL_R
+    SB1 --> REDIS_C
+    SB2 --> REDIS_C
+    SB1 --> ES_C
+    SB1 --> S3_B
+    SB1 --> SES
+    SB1 --> RAZORPAY
+    SB1 --> STRIPE
+    SB1 --> OPENAI
+    BIOMETRIC --> SB1
+    SB1 --> LOGS
+    SB2 --> LOGS
+    LOGS --> METRICS
+
+    style INTERNET fill:#1e3a5f,stroke:#3b82f6
+    style APP_TIER fill:#1e3a2f,stroke:#22c55e
+    style DATA_TIER fill:#3a1e1e,stroke:#ef4444
+    style STORAGE fill:#2a1e3a,stroke:#a855f7
+    style EXTERNAL fill:#1e2a2a,stroke:#06b6d4
+    style MONITORING fill:#2a2a1e,stroke:#eab308
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 8: Payroll Flow -->
+<div class="section">
+<div class="section-title">8. Payroll Calculation Flow</div>
+<div class="diagram-box">
+<div class="mermaid">
+flowchart LR
+    subgraph INPUTS["📥 Payroll Inputs"]
+        ATT2["Attendance\nPresent days\nAbsent days"]
+        LEAVE2["Leave\nPaid leave taken\nUnpaid leave"]
+        OT2["Overtime\nOT hours\nOT rate"]
+        EXP2["Expenses\nApproved claims"]
+        PERF2["Performance\nIncrement %\nBonus"]
+        COMP["Salary Components\nBasic, HRA, DA\nAllowances"]
+    end
+
+    subgraph ENGINE["⚙️ Payroll Engine"]
+        CALC["PayrollCalculator\ninterface"]
+        UAE["UAECalculator\nGratuity, WPS\nNo income tax"]
+        IND["IndiaCalculator\nPF, ESI, TDS\nProfessional tax"]
+        GLOBAL["GlobalCalculator\nCountry plugin\nTax rules"]
+    end
+
+    subgraph OUTPUTS["📤 Payroll Outputs"]
+        PAYSLIP["Payslip PDF\nPer employee"]
+        BANK["Bank Transfer File\nWPS / NEFT / SWIFT"]
+        REPORT2["Payroll Report\nExcel / CSV"]
+        JOURNAL["Accounting Journal\nDebit / Credit entries"]
+    end
+
+    ATT2 --> CALC
+    LEAVE2 --> CALC
+    OT2 --> CALC
+    EXP2 --> CALC
+    PERF2 --> CALC
+    COMP --> CALC
+    CALC --> UAE
+    CALC --> IND
+    CALC --> GLOBAL
+    UAE --> PAYSLIP
+    IND --> PAYSLIP
+    GLOBAL --> PAYSLIP
+    PAYSLIP --> BANK
+    PAYSLIP --> REPORT2
+    PAYSLIP --> JOURNAL
+
+    style INPUTS fill:#1e3a5f,stroke:#3b82f6
+    style ENGINE fill:#3a1e1e,stroke:#ef4444
+    style OUTPUTS fill:#1e3a2f,stroke:#22c55e
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 9: Chat & Video Architecture -->
+<div class="section">
+<div class="section-title">9. Real-Time Communication — Chat + Video/Audio</div>
+<div class="diagram-box">
+<div class="mermaid">
+graph TB
+    subgraph CLIENTS2["👥 Clients"]
+        WEB2["Web Browser"]
+        MOB2["Mobile App"]
+    end
+
+    subgraph CHAT_ARCH["💬 Chat Architecture"]
+        SOCK["Socket.io Server\nWebSocket connections"]
+        ROOMS["Chat Rooms\nChannels + DMs\nGroup chats"]
+        MSG_DB["MySQL\nchat_messages\nchat_rooms"]
+        MSG_CACHE["Redis\nOnline presence\nUnread counts"]
+        FILE_SHARE["AWS S3\nFile attachments\nImages, Docs"]
+    end
+
+    subgraph VIDEO_ARCH["📹 Video/Audio Architecture"]
+        SFU["mediasoup SFU\nSelective Forwarding Unit"]
+        TURN["TURN Server\nNAT traversal"]
+        SIGNAL["Signaling Server\nOffer/Answer/ICE\nvia WebSocket"]
+        REC_SRV["Recording Service\nCall recordings\nAWS S3"]
+    end
+
+    subgraph NOTIF2["🔔 Notifications"]
+        PUSH["Push Notifications\nFCM / APNs\nMobile"]
+        EMAIL2["Email\nMissed messages\nCall summaries"]
+    end
+
+    WEB2 -->|"WebSocket"| SOCK
+    MOB2 -->|"WebSocket"| SOCK
+    SOCK --> ROOMS
+    ROOMS --> MSG_DB
+    ROOMS --> MSG_CACHE
+    SOCK --> FILE_SHARE
+    WEB2 -->|"WebRTC"| SFU
+    MOB2 -->|"WebRTC"| SFU
+    SFU --> TURN
+    SFU --> SIGNAL
+    SFU --> REC_SRV
+    SOCK --> PUSH
+    SOCK --> EMAIL2
+
+    style CLIENTS2 fill:#1e3a5f,stroke:#3b82f6
+    style CHAT_ARCH fill:#1e3a2f,stroke:#22c55e
+    style VIDEO_ARCH fill:#3a1e1e,stroke:#ef4444
+    style NOTIF2 fill:#2a1e3a,stroke:#a855f7
+</div>
+</div>
+</div>
+
+<!-- DIAGRAM 10: Workflow State Machine -->
+<div class="section">
+<div class="section-title">10. Workflow Approval State Machine</div>
+<div class="diagram-box">
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> DRAFT : Employee submits request
+    DRAFT --> IN_PROGRESS : WorkflowService.start()
+    IN_PROGRESS --> LEVEL_1_PENDING : Notify Level 1 Approver
+    LEVEL_1_PENDING --> LEVEL_1_APPROVED : Approver clicks Approve
+    LEVEL_1_PENDING --> REJECTED : Approver clicks Reject
+    LEVEL_1_APPROVED --> LEVEL_2_PENDING : If multi-level workflow
+    LEVEL_1_APPROVED --> APPROVED : If single-level workflow
+    LEVEL_2_PENDING --> APPROVED : Level 2 Approves
+    LEVEL_2_PENDING --> REJECTED : Level 2 Rejects
+    LEVEL_1_PENDING --> ESCALATED : Overdue (cron job)
+    LEVEL_2_PENDING --> ESCALATED : Overdue (cron job)
+    ESCALATED --> LEVEL_1_PENDING : Re-assigned
+    APPROVED --> [*] : Apply changes to entity
+    REJECTED --> [*] : Notify employee
+
+    note right of APPROVED
+        Triggers:
+        - Employee notification
+        - Entity status update
+        - Audit log entry
+    end note
+
+    note right of REJECTED
+        Triggers:
+        - Employee notification
+        - Reason recorded
+        - Audit log entry
+    end note
+</div>
+</div>
+</div>
+
+<script>
+mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+        primaryColor: '#1e3a5f',
+        primaryTextColor: '#e2e8f0',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#64748b',
+        secondaryColor: '#1e293b',
+        tertiaryColor: '#0f172a',
+        background: '#0f1117',
+        mainBkg: '#1e293b',
+        nodeBorder: '#3b82f6',
+        clusterBkg: '#0f172a',
+        titleColor: '#60a5fa',
+        edgeLabelBackground: '#1e293b',
+        fontSize: '14px'
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+    sequence: { actorMargin: 80, messageMargin: 40 },
+    gantt: { axisFormat: '%b %Y', fontSize: 12 }
+});
+</script>
+</body>
+</html>

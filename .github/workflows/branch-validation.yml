@@ -22,7 +22,7 @@ jobs:
           # development -> main
           [[ "$BRANCH" == "development" && "$TARGET" == "main" ]] && exit 0
 
-          # main -> development
+          # main -> development (back-merge)
           [[ "$BRANCH" == "main" && "$TARGET" == "development" ]] && exit 0
 
           # feature/* -> development
@@ -34,8 +34,20 @@ jobs:
           # hotfix/* -> main
           [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "main" ]] && exit 0
 
-          # hotfix/* -> development
+          # hotfix/* -> development (back-merge)
           [[ "$BRANCH" =~ ^hotfix\/.+$ && "$TARGET" == "development" ]] && exit 0
 
-          echo "Invalid branch flow"
+          # release/* -> main
+          [[ "$BRANCH" =~ ^release\/.+$ && "$TARGET" == "main" ]] && exit 0
+
+          # release/* -> development (back-merge)
+          [[ "$BRANCH" =~ ^release\/.+$ && "$TARGET" == "development" ]] && exit 0
+
+          echo "❌ Invalid branch flow: '$BRANCH' -> '$TARGET'"
+          echo "Allowed flows:"
+          echo "  feature/*  -> development"
+          echo "  bug/*      -> development"
+          echo "  hotfix/*   -> main | development"
+          echo "  release/*  -> main | development"
+          echo "  development -> main"
           exit 1
