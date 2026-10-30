@@ -1,0 +1,307 @@
+# =============================================================
+# COMPANY PLATFORM - COMPLETE DOCKER SERVICES
+# =============================================================
+# HOW TO USE:
+#
+# Start specific service:
+#   docker compose up -d <service-name>
+#
+# Stop specific service:
+#   docker compose stop <service-name>
+#
+# Start multiple services:
+#   docker compose up -d valkey rabbitmq keycloak
+#
+# Stop everything:
+#   docker compose down
+#
+# See running services:
+#   docker compose ps
+#
+# See service logs:
+#   docker compose logs -f <service-name>
+#
+# =============================================================
+# PHASE GUIDE - START ONLY WHAT YOU NEED
+# =============================================================
+#
+# PHASE 1 - HRMS + Auth (Start Here)
+#   docker compose up -d postgres valkey rabbitmq keycloak
+#   PostgreSQL → runs in Docker on port 5433
+#
+# PHASE 2 - Chat Module
+#   docker compose up -d mongodb
+#
+# PHASE 3 - File Uploads
+#   docker compose up -d minio
+#
+# PHASE 4 - Search Feature
+#   docker compose up -d opensearch opensearch-dashboards
+#
+# PHASE 5 - Video Calls
+#   docker compose up -d jitsi
+#
+# =============================================================
+
+services:
+
+  # -----------------------------------------------------------
+  # POSTGRESQL - Primary Relational Database
+  # RAM Usage  : ~200MB
+  # Used By    : HRMS, Payroll, Tickets, Finance, Support
+  # Start When : Phase 1 - Always needed
+  # Command    : docker compose up -d postgres
+  # Port       : 5433 (avoids conflict with local PostgreSQL)
+  # DB Name    : vvesolutions_db
+  # Username   : vveadmin
+  # Password   : vve@admin123
+  # -----------------------------------------------------------
+  postgres:
+    image: postgres:15
+    container_name: company_postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: vvesolutions_db
+      POSTGRES_USER: vveadmin
+      POSTGRES_PASSWORD: vve@admin123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - company_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vveadmin -d vvesolutions_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # VALKEY - Cache + Sessions + Real-time Chat Pub/Sub
+  # RAM Usage  : ~50MB
+  # Used By    : All modules (cache, sessions, chat pub/sub)
+  # Start When : Phase 1 - Always needed
+  # Command    : docker compose up -d valkey
+  # -----------------------------------------------------------
+  valkey:
+    image: valkey/valkey:latest
+    container_name: company_valkey
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkey_data:/data
+    command: valkey-server --save 60 1 --loglevel warning
+    restart: unless-stopped
+    networks:
+      - company_network
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # RABBITMQ - Background Task Queues
+  # RAM Usage  : ~200MB
+  # Used By    : Payroll, Notifications, Support, Tickets
+  # Start When : Phase 1 - HRMS
+  # Command    : docker compose up -d rabbitmq
+  # Dashboard  : http://localhost:15672
+  # Login      : admin / admin123
+  # -----------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: company_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
+    networks:
+      - company_network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # KEYCLOAK - Authentication + SSO + User Management
+  # RAM Usage  : ~512MB
+  # Used By    : All modules (login, roles, JWT tokens)
+  # Start When : Phase 1 - HRMS
+  # Command    : docker compose up -d keycloak
+  # Dashboard  : http://localhost:8080
+  # Login      : admin / admin123
+  # -----------------------------------------------------------
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: company_keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin123
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+    command: start-dev
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    restart: unless-stopped
+    networks:
+      - company_network
+
+  # -----------------------------------------------------------
+  # MONGODB - Chat Messages + Audit Logs + Notifications
+  # RAM Usage  : ~300MB
+  # Used By    : Chat, Audit Logs, Notifications, Chatbot
+  # Start When : Phase 2 - Chat Module
+  # Command    : docker compose up -d mongodb
+  # -----------------------------------------------------------
+  mongodb:
+    image: mongo:6
+    container_name: company_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: company_chat_db
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+    networks:
+      - company_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # MINIO - File Storage (Profile pics, Payslips, Attachments)
+  # RAM Usage  : ~200MB
+  # Used By    : HRMS, Payroll, Chat, Tickets
+  # Start When : Phase 3 - File Upload Module
+  # Command    : docker compose up -d minio
+  # Dashboard  : http://localhost:9001
+  # Login      : admin / admin123456
+  # -----------------------------------------------------------
+  minio:
+    image: elestio/minio:latest
+    container_name: company_minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin123456
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+    networks:
+      - company_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # OPENSEARCH - Full Text Search Engine
+  # RAM Usage  : ~1GB
+  # Used By    : Tickets, HRMS, Support, Chat search
+  # Start When : Phase 4 - Search Feature
+  # Command    : docker compose up -d opensearch
+  # NOTE       : Start alone, heavy on RAM
+  # -----------------------------------------------------------
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: company_opensearch
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    restart: unless-stopped
+    networks:
+      - company_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # -----------------------------------------------------------
+  # OPENSEARCH DASHBOARDS - OpenSearch UI
+  # RAM Usage  : ~300MB
+  # Used By    : You (monitor and manage search indexes)
+  # Start When : Phase 4 - Search Feature (optional)
+  # Command    : docker compose up -d opensearch-dashboards
+  # Dashboard  : http://localhost:5601
+  # -----------------------------------------------------------
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: company_opensearch_dashboards
+    ports:
+      - "5601:5601"
+    environment:
+      - OPENSEARCH_HOSTS=http://opensearch:9200
+      - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true
+    depends_on:
+      - opensearch
+    restart: unless-stopped
+    networks:
+      - company_network
+
+  # -----------------------------------------------------------
+  # JITSI MEET - Video + Audio Calls
+  # RAM Usage  : ~300MB
+  # Used By    : Video/Audio call module
+  # Start When : Phase 5 - Video Call Module
+  # Command    : docker compose up -d jitsi
+  # Access     : http://localhost:8443
+  # -----------------------------------------------------------
+  jitsi:
+    image: jitsi/web:stable-9646  # verified working image
+    container_name: company_jitsi
+    ports:
+      - "8443:80"
+    environment:
+      - PUBLIC_URL=http://localhost:8443
+      - ENABLE_AUTH=0
+      - ENABLE_GUESTS=1
+      - DISABLE_HTTPS=1
+    volumes:
+      - jitsi_data:/config
+    restart: unless-stopped
+    networks:
+      - company_network
+
+# =============================================================
+# VOLUMES - Data saved even when containers are stopped
+# =============================================================
+volumes:
+  postgres_data:
+  valkey_data:
+  rabbitmq_data:
+  mongo_data:
+  keycloak_data:
+  minio_data:
+  opensearch_data:
+  jitsi_data:
+
+# =============================================================
+# NETWORK - All services communicate with each other
+# =============================================================
+networks:
+  company_network:
+    driver: bridge
