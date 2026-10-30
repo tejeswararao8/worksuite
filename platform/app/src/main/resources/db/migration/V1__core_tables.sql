@@ -1,5 +1,5 @@
 -- V1: Core Platform Tables
--- tenants, users, roles, permissions
+-- tenants, roles, permissions, users
 
 CREATE TABLE tenants (
     id           CHAR(36)     NOT NULL PRIMARY KEY,
@@ -10,7 +10,7 @@ CREATE TABLE tenants (
     logo_path    VARCHAR(500),
     status       VARCHAR(50)  NOT NULL DEFAULT 'ACTIVE',
     is_active    BOOLEAN      NOT NULL DEFAULT TRUE,
-    created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE permissions (
@@ -28,11 +28,11 @@ CREATE TABLE roles (
     is_system_role BOOLEAN      NOT NULL DEFAULT FALSE,
     is_active      BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by     VARCHAR(255),
-    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by     VARCHAR(255),
-    updated_at     DATETIME,
+    updated_at     TIMESTAMP,
     version        BIGINT       NOT NULL DEFAULT 0,
-    UNIQUE KEY uq_role_name_company (name, company_id)
+    UNIQUE (name, company_id)
 );
 
 CREATE TABLE role_permissions (
@@ -52,16 +52,16 @@ CREATE TABLE users (
     last_name             VARCHAR(100),
     status                VARCHAR(50)  NOT NULL DEFAULT 'ACTIVE',
     failed_login_attempts INT          NOT NULL DEFAULT 0,
-    locked_until          DATETIME,
+    locked_until          TIMESTAMP,
     must_change_password  BOOLEAN      NOT NULL DEFAULT FALSE,
-    last_login_at         DATETIME,
+    last_login_at         TIMESTAMP,
     is_active             BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by            VARCHAR(255),
-    created_at            DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at            TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by            VARCHAR(255),
-    updated_at            DATETIME,
+    updated_at            TIMESTAMP,
     version               BIGINT       NOT NULL DEFAULT 0,
-    UNIQUE KEY uq_user_email_company (email, company_id),
+    UNIQUE (email, company_id),
     FOREIGN KEY (company_id) REFERENCES tenants(id)
 );
 
@@ -73,7 +73,6 @@ CREATE TABLE user_roles (
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
--- Indexes
-CREATE INDEX idx_users_company     ON users(company_id);
-CREATE INDEX idx_users_email       ON users(email);
-CREATE INDEX idx_roles_company     ON roles(company_id);
+CREATE INDEX idx_users_company ON users(company_id);
+CREATE INDEX idx_users_email   ON users(email);
+CREATE INDEX idx_roles_company ON roles(company_id);

@@ -3,9 +3,9 @@ package com.platform.security.user;
 import com.platform.tenancy.TenantContext;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.Collection;
 import java.util.Set;
@@ -13,58 +13,68 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * Represents the currently authenticated user.
- * Available anywhere via SecurityUtils.getCurrentUser().
+ * Helper to access current authenticated user from Keycloak JWT.
+ * Use UserPrincipal.currentUserId() anywhere in the application.
+ * No UserDetails needed — Keycloak manages users.
  */
 @Getter
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal {
 
-    private final UUID id;
-    private final UUID companyId;
-    private final String email;
-    private final String password;
-    private final boolean active;
-    private final Collection<? extends GrantedAuthority> authorities;
+    private UserPrincipal() {}
 
-    public UserPrincipal(User user) {
-        this.id = user.getId();
-        this.companyId = user.getCompanyId();
-        this.email = user.getEmail();
-        this.password = user.getPasswordHash();
-        this.active = user.getStatus() == User.UserStatus.ACTIVE && !user.isLocked();
-        this.authorities = user.getRoles().stream()
-            .flatMap(role -> role.getPermissions().stream())
-            .map(p -> new SimpleGrantedAuthority(p.getName()))
-            .collect(Collectors.toSet());
-    }
-
-    @Override public String getUsername() { return email; }
-    @Override public boolean isAccountNonExpired() { return true; }
-    @Override public boolean isAccountNonLocked() { return active; }
-    @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return active; }
-
-    public boolean hasPermission(String permission) {
-        return authorities.stream().anyMatch(a -> a.getAuthority().equals(permission));
-    }
-
-    // Static helper — get current user from SecurityContext
+    // ─────────────────────────────────────────────
+    // Get current user ID from Keycloak JWT subject
+    // ─────────────────────────────────────────────
     public static UUID currentUserId() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getPrincipal() == null) return null;
-        return UUID.fromString(auth.getPrincipal().toString());
+        Jwt jwt = extractJwt();
+        if (jwt == null) return null;
+        String subject = jwt.getSubject();
+        return subject != null ? UUID.fromString(subject) : null;
     }
 
+    // ─────────────────────────────────────────────
+    // Get current company ID from TenantContext
+    // (set by JwtAuthFilter from companyId claim)
+    // ─────────────────────────────────────────────
     public static UUID currentCompanyId() {
         String tenantId = TenantContext.getTenantId();
         return tenantId != null ? UUID.fromString(tenantId) : null;
     }
 
-    public static Set<String> currentPermissions() {
+    // ─────────────────────────────────────────────
+    // Get current user email from Keycloak JWT
+    // ─────────────────────────────────────────────
+    public static String currentEmail() {
+        Jwt jwt = extractJwt();
+        return jwt != null ? jwt.getClaimAsString("email") : null;
+    }
+
+    // ─────────────────────────────────────────────
+    // Get current user roles from Keycloak JWT
+    // ─────────────────────────────────────────────
+    public static Set<String> currentRoles() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) return Set.of();
         return auth.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toSet());
+    }
+
+    // ─────────────────────────────────────────────
+    // Check if current user has a specific role
+    // ─────────────────────────────────────────────
+    public static boolean hasRole(String role) {
+        return currentRoles().contains("ROLE_" + role);
+    }
+
+    // ─────────────────────────────────────────────
+    // Extract raw Keycloak JWT from SecurityContext
+    // ─────────────────────────────────────────────
+    private static Jwt extractJwt() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof JwtAuthenticationToken jwtAuth) {
+            return jwtAuth.getToken();
+        }
+        return null;
     }
 }

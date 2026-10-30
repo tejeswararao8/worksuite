@@ -4,10 +4,10 @@
 
 ## What It Does
 
-- Sends in-app notifications (stored in DB, shown in UI)
-- Sends email notifications via SMTP
-- Both are async — never blocks your request
-- Scoped per tenant
+- Saves in-app notifications to PostgreSQL (shown in UI notification bell)
+- Sends email notifications via SMTP (JavaMailSender)
+- Both are `@Async` — never blocks your request
+- All notifications are scoped per tenant
 
 ## Package
 
@@ -15,39 +15,50 @@
 com.platform.notification
 ```
 
-## How to Use in Your Module
+## Files
 
-### Inject NotificationService
+| File | Purpose |
+|---|---|
+| `Notification.java` | JPA entity for in-app notifications |
+| `NotificationRequest.java` | Builder DTO to describe what to send |
+| `NotificationService.java` | Async send, query, markRead methods |
+| `NotificationRepository.java` | JPA repository with tenant-scoped queries |
+
+---
+
+## How to Use — Send a Notification
 
 ```java
 @Service
 @RequiredArgsConstructor
-public class TransferService {
+public class LeaveService {
 
     private final NotificationService notificationService;
 
-    public TransferDto approve(UUID transferId, UUID approverId) {
-        // ... approve transfer logic ...
+    public LeaveDto approve(UUID leaveId, UUID approverId) {
+        // ... approve leave logic ...
 
-        // Notify the employee
+        // Notify the employee — in-app + email
         notificationService.send(NotificationRequest.builder()
-            .companyId(transfer.getCompanyId())
-            .recipientId(transfer.getEmployeeId())
-            .recipientEmail(employee.getEmail())   // optional — triggers email too
-            .title("Transfer Approved")
-            .message("Your transfer to " + newDept + " has been approved.")
+            .companyId(leave.getCompanyId())
+            .recipientId(leave.getEmployeeId())
+            .recipientEmail(employee.getEmail())   // triggers email too
+            .title("Leave Approved")
+            .message("Your leave request from " + leave.getFromDate() + " has been approved.")
             .type(Notification.NotificationType.WORKFLOW_APPROVAL)
-            .referenceId(transferId.toString())
-            .referenceType("TRANSFER")
+            .referenceId(leaveId.toString())
+            .referenceType("LEAVE")
             .sendEmail(true)
             .build());
 
-        return transferDto;
+        return leaveDto;
     }
 }
 ```
 
-### In-App Only (no email)
+---
+
+## In-App Only (no email)
 
 ```java
 notificationService.send(NotificationRequest.builder()
@@ -62,19 +73,23 @@ notificationService.send(NotificationRequest.builder()
 // sendEmail defaults to false — no email sent
 ```
 
-### Email Only
+---
+
+## Email Only
 
 ```java
 notificationService.sendEmail("user@company.com", "Subject", "Body text");
 ```
 
-### Query Notifications (for your notification controller)
+---
+
+## Query Notifications (for notification controller)
 
 ```java
-// Get all notifications for a user (paginated)
+// Get all notifications for a user (paginated, newest first)
 Page<Notification> notifications = notificationService.getForCurrentUser(userId, pageable);
 
-// Count unread
+// Count unread (for notification bell badge)
 long unread = notificationService.countUnread(userId);
 
 // Mark one as read
@@ -84,64 +99,89 @@ notificationService.markRead(notificationId);
 notificationService.markAllRead(userId);
 ```
 
-## NotificationType Values
-
-```java
-Notification.NotificationType.DOCUMENT_EXPIRY
-Notification.NotificationType.WORKFLOW_APPROVAL
-Notification.NotificationType.ONBOARDING_TASK
-Notification.NotificationType.OFFBOARDING_TASK
-Notification.NotificationType.SYSTEM
-Notification.NotificationType.GENERAL
-```
+---
 
 ## NotificationRequest Builder Fields
 
 | Field | Required | Description |
 |---|---|---|
-| `companyId` | Yes | Tenant ID |
-| `recipientId` | Yes | User UUID to receive notification |
-| `title` | Yes | Short title |
+| `companyId` | Yes | Tenant UUID |
+| `recipientId` | Yes | User UUID to receive the notification |
+| `title` | Yes | Short title (shown in notification list) |
 | `message` | Yes | Full message body |
-| `type` | Yes | NotificationType enum |
-| `recipientEmail` | No | If set + sendEmail=true, sends email |
-| `sendEmail` | No | Default false |
-| `referenceId` | No | ID of related entity |
-| `referenceType` | No | Type of related entity (e.g. "TRANSFER") |
+| `type` | Yes | NotificationType enum value |
+| `recipientEmail` | No | If set and `sendEmail=true`, sends email |
+| `sendEmail` | No | Default `false` |
+| `referenceId` | No | UUID of the related entity |
+| `referenceType` | No | Type of related entity e.g. `"LEAVE"`, `"TRANSFER"` |
+
+---
+
+## NotificationType Values
+
+```java
+Notification.NotificationType.DOCUMENT_EXPIRY      // passport/visa expiry reminders
+Notification.NotificationType.WORKFLOW_APPROVAL    // leave/transfer/promotion approvals
+Notification.NotificationType.ONBOARDING_TASK      // new employee onboarding tasks
+Notification.NotificationType.OFFBOARDING_TASK     // employee offboarding tasks
+Notification.NotificationType.SYSTEM               // system-level alerts
+Notification.NotificationType.GENERAL              // general purpose
+```
+
+---
+
+## NotificationChannel Values
+
+```java
+Notification.NotificationChannel.IN_APP   // saved to DB, shown in UI
+Notification.NotificationChannel.EMAIL    // sent via SMTP
+```
+
+---
 
 ## Database Table
 
 ```sql
 CREATE TABLE notifications (
-    id             CHAR(36) NOT NULL PRIMARY KEY,
-    company_id     CHAR(36) NOT NULL,
-    recipient_id   CHAR(36) NOT NULL,
+    id             UUID         NOT NULL PRIMARY KEY,
+    company_id     UUID         NOT NULL,
+    recipient_id   UUID         NOT NULL,
     title          VARCHAR(255) NOT NULL,
-    message        TEXT NOT NULL,
+    message        TEXT         NOT NULL,
     type           VARCHAR(100) NOT NULL,
-    channel        VARCHAR(50) NOT NULL,
-    is_read        BOOLEAN NOT NULL DEFAULT FALSE,
+    channel        VARCHAR(50)  NOT NULL,
+    is_read        BOOLEAN      NOT NULL DEFAULT FALSE,
     reference_id   VARCHAR(255),
     reference_type VARCHAR(100),
-    created_at     DATETIME NOT NULL
+    created_at     TIMESTAMP    NOT NULL,
+    version        BIGINT       NOT NULL DEFAULT 0,
+    is_active      BOOLEAN      NOT NULL DEFAULT TRUE
 );
 ```
+
+---
 
 ## Configuration
 
 ```yaml
 spring:
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ${MAIL_USERNAME:}
-    password: ${MAIL_PASSWORD:}
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
     properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 ```
 
-If `MAIL_USERNAME` is empty, email sending will fail silently (logged as error, does not crash the app).
+If `SMTP_USERNAME` is empty, email sending fails silently — logged as ERROR, does not crash the app.
+
+---
 
 ## Dependencies
 
@@ -149,5 +189,6 @@ If `MAIL_USERNAME` is empty, email sending will fail silently (logged as error, 
 <dependency><groupId>com.platform</groupId><artifactId>core-tenancy</artifactId></dependency>
 <dependency><groupId>com.platform</groupId><artifactId>core-security</artifactId></dependency>
 <dependency><groupId>com.platform</groupId><artifactId>core-config</artifactId></dependency>
+<dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>
 <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-mail</artifactId></dependency>
 ```

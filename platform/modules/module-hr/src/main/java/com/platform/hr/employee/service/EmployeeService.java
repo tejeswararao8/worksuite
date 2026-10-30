@@ -5,13 +5,16 @@ import com.platform.audit.AuditLog;
 import com.platform.audit.AuditService;
 import com.platform.audit.Auditable;
 import com.platform.api.PlatformException;
-import com.platform.document.LocalStorageService;
+import com.platform.config.ConfigService;
+import com.platform.document.MinioStorageService;
 import com.platform.hr.employee.dto.EmployeeDto;
 import com.platform.hr.employee.entity.Employee;
 import com.platform.hr.employee.entity.Employee.EmploymentStatus;
 import com.platform.hr.employee.mapper.EmployeeMapper;
 import com.platform.hr.employee.repository.EmployeeRepository;
 import com.platform.hr.employee.specification.EmployeeSpecification;
+import com.platform.hr.onboarding.service.OnboardingService;
+import com.platform.hr.probation.service.ProbationService;
 import com.platform.security.user.UserPrincipal;
 import com.platform.tenancy.TenantContext;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +36,10 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final AuditService auditService;
-    private final LocalStorageService storageService;
+    private final MinioStorageService storageService;
+    private final OnboardingService onboardingService;
+    private final ProbationService probationService;
+    private final ConfigService configService;
 
     @Auditable(entity = "Employee", action = AuditLog.AuditAction.CREATE)
     public EmployeeDto.Response create(EmployeeDto.CreateRequest request) {
@@ -45,7 +51,16 @@ public class EmployeeService {
         employee.setCompanyId(companyId);
         employee.setEmployeeCode(generateCode(companyId));
         employee.setEmploymentStatus(EmploymentStatus.PROBATION);
-        return employeeMapper.toResponse(employeeRepository.save(employee));
+        Employee saved = employeeRepository.save(employee);
+
+        // Auto-start probation
+        int probationDays = configService.getInt("hr.probation.default_days", 90);
+        probationService.startProbation(saved.getId(), saved.getJoiningDate(), companyId, probationDays);
+
+        // Auto-create onboarding tasks
+        onboardingService.createDefaultTasks(saved.getId(), saved.getJoiningDate(), companyId);
+
+        return employeeMapper.toResponse(saved);
     }
 
     @Transactional(readOnly = true)
@@ -81,7 +96,12 @@ public class EmployeeService {
         UUID companyId = UUID.fromString(TenantContext.getTenantId());
         Employee employee = employeeRepository.findByIdAndCompanyIdAndIsActiveTrue(id, companyId)
             .orElseThrow(() -> PlatformException.notFound("Employee"));
-        String path = storageService.store(file, companyId.toString(), "employees", id.toString());
+        String path;
+        try {
+            path = storageService.store(file, companyId.toString(), "employees", id.toString());
+        } catch (Exception e) {
+            throw new RuntimeException("Photo upload failed: " + e.getMessage(), e);
+        }
         employee.setPhotoUrl(path);
         return employeeMapper.toResponse(employeeRepository.save(employee));
     }

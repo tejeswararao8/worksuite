@@ -60,6 +60,7 @@ public class WorkflowService {
         WorkflowInstance instance = getById(instanceId);
         List<WorkflowStep> steps = stepRepository.findByInstanceIdOrderByStepNumber(instanceId);
 
+        // Find and complete current step
         WorkflowStep currentStep = steps.stream()
             .filter(s -> s.getStepNumber() == instance.getCurrentStep())
             .findFirst()
@@ -71,11 +72,49 @@ public class WorkflowService {
         currentStep.setActedAt(LocalDateTime.now());
         stepRepository.save(currentStep);
 
-        // Check if more steps exist — for now mark as APPROVED
-        instance.setStatus(WorkflowInstance.WorkflowStatus.APPROVED);
-        instanceRepository.save(instance);
+        // Check if more steps exist
+        int nextStepNumber = instance.getCurrentStep() + 1;
+        boolean hasNextStep = steps.stream()
+            .anyMatch(s -> s.getStepNumber() == nextStepNumber);
 
-        log.info("Workflow {} approved by {}", instanceId, approverId);
+        if (hasNextStep) {
+            // Move to next step
+            instance.setCurrentStep(nextStepNumber);
+            instance.setStatus(WorkflowInstance.WorkflowStatus.IN_PROGRESS);
+            instanceRepository.save(instance);
+
+            // Notify next approver
+            WorkflowStep nextStep = steps.stream()
+                .filter(s -> s.getStepNumber() == nextStepNumber)
+                .findFirst().get();
+
+            notificationService.send(NotificationRequest.builder()
+                .companyId(instance.getCompanyId())
+                .title("Approval Required")
+                .message("Your approval is required for " + instance.getEntityType())
+                .type(Notification.NotificationType.WORKFLOW_APPROVAL)
+                .referenceId(instance.getId().toString())
+                .referenceType("WORKFLOW")
+                .build());
+
+            log.info("Workflow {} moved to step {}", instanceId, nextStepNumber);
+        } else {
+            // All steps approved — final approval
+            instance.setStatus(WorkflowInstance.WorkflowStatus.APPROVED);
+            instanceRepository.save(instance);
+
+            notificationService.send(NotificationRequest.builder()
+                .companyId(instance.getCompanyId())
+                .title("Request Approved")
+                .message(instance.getEntityType() + " request has been fully approved.")
+                .type(Notification.NotificationType.WORKFLOW_APPROVAL)
+                .referenceId(instance.getId().toString())
+                .referenceType("WORKFLOW")
+                .build());
+
+            log.info("Workflow {} fully approved", instanceId);
+        }
+
         return instance;
     }
 

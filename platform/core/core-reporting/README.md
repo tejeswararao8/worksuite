@@ -5,10 +5,10 @@
 ## What It Does
 
 - `ReportService` — single entry point: `export(definition, format)`
-- `ReportDefinition` — data container: title, column headers, rows
+- `ReportDefinition` — data container: title, column headers, rows as `List<Map<String, Object>>`
 - `ExcelExporter` — Apache POI, produces `.xlsx`
 - `CsvExporter` — OpenCSV, produces `.csv`
-- `PdfExporter` — iText7, produces `.pdf`
+- `PdfExporter` — Apache PDFBox (Apache 2.0), produces `.pdf` with styled header row and alternating row colors
 
 ## Package
 
@@ -16,9 +16,19 @@
 com.platform.reporting
 ```
 
-## How to Use in Your Module
+## Files
 
-### 1. Build a ReportDefinition from your data
+| File | Purpose |
+|---|---|
+| `ReportDefinition.java` | Data container: title, columns, rows |
+| `ReportService.java` | Entry point — delegates to correct exporter |
+| `ExcelExporter.java` | Apache POI `.xlsx` export |
+| `CsvExporter.java` | OpenCSV `.csv` export |
+| `PdfExporter.java` | Apache PDFBox `.pdf` export |
+
+---
+
+## How to Use — Build and Export
 
 ```java
 @Service
@@ -29,25 +39,25 @@ public class EmployeeReportService {
     private final ReportService reportService;
 
     public byte[] exportEmployees(ReportService.ReportFormat format) throws IOException {
-        List<Employee> employees = employeeRepository
-            .findByCompanyId(UUID.fromString(TenantContext.getTenantId()));
+        UUID companyId = UUID.fromString(TenantContext.getTenantId());
+        List<Employee> employees = employeeRepository.findByCompanyId(companyId);
 
-        // Define columns
+        // Define column headers
         List<String> columns = List.of(
-            "Employee Code", "Full Name", "Email", "Department",
-            "Designation", "Status", "Joining Date"
+            "Employee Code", "Full Name", "Email",
+            "Department", "Designation", "Status", "Joining Date"
         );
 
-        // Map rows
-        List<List<String>> rows = employees.stream()
-            .map(e -> List.of(
-                e.getEmployeeCode(),
-                e.getFirstName() + " " + e.getLastName(),
-                e.getEmail(),
-                e.getDepartment() != null ? e.getDepartment().getName() : "",
-                e.getDesignation() != null ? e.getDesignation().getTitle() : "",
-                e.getStatus().name(),
-                e.getJoiningDate() != null ? e.getJoiningDate().toString() : ""
+        // Map each employee to a row (Map key = column header)
+        List<Map<String, Object>> rows = employees.stream()
+            .map(e -> Map.of(
+                "Employee Code", e.getEmployeeCode(),
+                "Full Name",     e.getFirstName() + " " + e.getLastName(),
+                "Email",         e.getEmail(),
+                "Department",    e.getDepartment() != null ? e.getDepartment().getName() : "",
+                "Designation",   e.getDesignation() != null ? e.getDesignation().getTitle() : "",
+                "Status",        e.getStatus().name(),
+                "Joining Date",  e.getJoiningDate() != null ? e.getJoiningDate().toString() : ""
             ))
             .toList();
 
@@ -62,7 +72,9 @@ public class EmployeeReportService {
 }
 ```
 
-### 2. Return from controller as file download
+---
+
+## Return as File Download from Controller
 
 ```java
 @GetMapping("/export")
@@ -80,40 +92,61 @@ public ResponseEntity<byte[]> export(
 }
 ```
 
+---
+
 ## ReportFormat Values
 
-```java
-ReportService.ReportFormat.EXCEL   // → .xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-ReportService.ReportFormat.CSV     // → .csv,  text/csv
-ReportService.ReportFormat.PDF     // → .pdf,  application/pdf
-```
+| Format | Extension | Content-Type |
+|---|---|---|
+| `EXCEL` | `.xlsx` | `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` |
+| `CSV` | `.csv` | `text/csv` |
+| `PDF` | `.pdf` | `application/pdf` |
+
+---
 
 ## Helper Methods
 
 ```java
 // Get MIME type for Content-Type header
-reportService.contentType(ReportFormat.EXCEL);
+reportService.contentType(ReportService.ReportFormat.EXCEL);
 // → "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
-// Get filename with extension
-reportService.fileName("Employee Report", ReportFormat.EXCEL);
-// → "employee_report.xlsx"
+// Get filename with correct extension
+reportService.fileName("Employee Report", ReportService.ReportFormat.PDF);
+// → "employee_report.pdf"
 ```
+
+---
 
 ## ReportDefinition Fields
 
 | Field | Type | Description |
 |---|---|---|
-| `title` | String | Report title (shown in Excel header, PDF title) |
-| `columns` | List\<String\> | Column header names |
-| `rows` | List\<List\<String\>\> | Data rows — each inner list is one row |
+| `title` | `String` | Report title — shown in PDF header, Excel sheet name |
+| `columns` | `List<String>` | Column header names — order matters |
+| `rows` | `List<Map<String, Object>>` | Data rows — map key must match column header |
+
+---
+
+## PDF Output Style (Apache PDFBox)
+
+- A4 page size
+- Blue header row with white bold text
+- Alternating light grey rows for readability
+- Title displayed above the table
+- Long text auto-truncated with `…`
+- Auto-adds new page when content overflows
+
+---
 
 ## Dependencies
 
 ```xml
 <dependency><groupId>com.platform</groupId><artifactId>core-tenancy</artifactId></dependency>
 <dependency><groupId>com.platform</groupId><artifactId>core-security</artifactId></dependency>
+<dependency><groupId>com.platform</groupId><artifactId>core-notification</artifactId></dependency>
+<dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>
 <dependency><groupId>org.apache.poi</groupId><artifactId>poi-ooxml</artifactId></dependency>
 <dependency><groupId>com.opencsv</groupId><artifactId>opencsv</artifactId></dependency>
-<dependency><groupId>com.itextpdf</groupId><artifactId>itext7-core</artifactId><type>pom</type></dependency>
+<dependency><groupId>org.apache.pdfbox</groupId><artifactId>pdfbox</artifactId></dependency>
 ```
