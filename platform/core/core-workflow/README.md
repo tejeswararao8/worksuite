@@ -1,13 +1,13 @@
 # core-workflow
 
-**Generic approval workflow engine for any entity in any module.**
+**Generic multi-step approval workflow engine for any entity in any module.**
 
 ## What It Does
 
-- `WorkflowDefinition` — defines the approval process for an entity type (e.g. TRANSFER, PROMOTION)
-- `WorkflowInstance` — a running approval process for a specific entity
+- `WorkflowDefinition` — defines the approval process for an entity type (e.g. TRANSFER, PROMOTION, LEAVE)
+- `WorkflowInstance` — a running approval process for a specific entity record
 - `WorkflowStep` — individual approval steps within an instance
-- `WorkflowService` — start, approve, reject workflows; auto-escalate overdue steps hourly
+- `WorkflowService` — start, approve, reject workflows; auto-escalate overdue steps every hour
 
 ## Package
 
@@ -15,9 +15,21 @@
 com.platform.workflow
 ```
 
-## How to Use in Your Module
+## Files
 
-### 1. Start a workflow when an entity needs approval
+| File | Purpose |
+|---|---|
+| `WorkflowDefinition.java` | Entity defining approval steps for an entity type |
+| `WorkflowInstance.java` | Entity representing a running approval process |
+| `WorkflowStep.java` | Entity representing one step in an approval process |
+| `WorkflowService.java` | Start, approve, reject, escalate workflows |
+| `WorkflowDefinitionRepository.java` | JPA repository for definitions |
+| `WorkflowInstanceRepository.java` | JPA repository for instances |
+| `WorkflowStepRepository.java` | JPA repository for steps |
+
+---
+
+## How to Use — Start a Workflow
 
 ```java
 @Service
@@ -27,23 +39,27 @@ public class TransferService {
     private final WorkflowService workflowService;
 
     @Auditable(entity = "Transfer", action = AuditLog.AuditAction.CREATE)
-    public TransferDto create(TransferDto dto) {
-        // ... save transfer with status PENDING ...
+    public TransferDto create(CreateTransferRequest req) {
+        // Save transfer with PENDING status
         Transfer saved = transferRepository.save(transfer);
 
         // Start approval workflow
-        UUID initiatedBy = UserPrincipal.currentUserId();
-        UUID companyId   = UserPrincipal.currentCompanyId();
-
-        workflowService.start("TRANSFER", saved.getId(), initiatedBy, companyId);
         // WorkflowDefinition for "TRANSFER" must exist in workflow_definitions table
+        workflowService.start(
+            "TRANSFER",
+            saved.getId(),
+            UserPrincipal.currentUserId(),
+            UserPrincipal.currentCompanyId()
+        );
 
         return mapper.toDto(saved);
     }
 }
 ```
 
-### 2. Approve a workflow
+---
+
+## Approve a Workflow Step
 
 ```java
 @PutMapping("/workflows/{instanceId}/approve")
@@ -51,105 +67,150 @@ public ResponseEntity<ApiResponse<Void>> approve(
         @PathVariable UUID instanceId,
         @RequestParam String comments) {
 
-    UUID approverId = UserPrincipal.currentUserId();
-    workflowService.approve(instanceId, approverId, comments);
+    workflowService.approve(instanceId, UserPrincipal.currentUserId(), comments);
     return ResponseEntity.ok(ApiResponse.success("Approved", null));
 }
 ```
 
-### 3. Reject a workflow
+---
+
+## Reject a Workflow
 
 ```java
-workflowService.reject(instanceId, approverId, "Reason for rejection");
+workflowService.reject(instanceId, UserPrincipal.currentUserId(), "Reason for rejection");
 ```
 
-### 4. Get workflow status
+---
+
+## Get Workflow Status
 
 ```java
 WorkflowInstance instance = workflowService.getById(instanceId);
 WorkflowInstance.WorkflowStatus status = instance.getStatus();
+int currentStep = instance.getCurrentStep();
 ```
+
+---
 
 ## WorkflowStatus Values
 
+| Status | Meaning |
+|---|---|
+| `PENDING` | Just created, waiting for first approver |
+| `IN_PROGRESS` | At least one step actioned, more steps remain |
+| `APPROVED` | All steps approved — final approval |
+| `REJECTED` | Any step rejected |
+| `ESCALATED` | A step was overdue — hourly cron escalated it |
+| `CANCELLED` | Manually cancelled |
+
+---
+
+## Approval Flow (Multi-Step)
+
 ```
-PENDING      → just created, waiting for first approver
-IN_PROGRESS  → at least one step actioned
-APPROVED     → all steps approved
-REJECTED     → any step rejected
-ESCALATED    → step overdue (hourly cron fires)
-CANCELLED    → manually cancelled
+workflowService.start("TRANSFER", entityId, initiatedBy, companyId)
+    ↓
+WorkflowInstance created (status=PENDING, currentStep=1)
+WorkflowStep created (stepNumber=1, action=PENDING, dueAt=now+escalationDays)
+    ↓
+Approver calls workflowService.approve(instanceId, approverId, comments)
+    ↓
+If more steps exist:
+    currentStep advances → status=IN_PROGRESS
+    Next approver notified via NotificationService
+    ↓
+If last step approved:
+    status=APPROVED
+    Initiator notified
+    ↓
+Any step rejected:
+    status=REJECTED
 ```
 
-## State Machine
+---
 
-```
-[*] → PENDING → IN_PROGRESS → APPROVED → [*]
-                            → REJECTED → [*]
-                            → ESCALATED → IN_PROGRESS (re-assigned)
-```
+## Auto-Escalation
 
-## Escalation
+A scheduled job runs every hour (`@Scheduled(cron = "0 0 * * * *")`):
+- Finds all `WorkflowStep` records with `action=PENDING` and `dueAt < now`
+- Sets step `action=ESCALATED`
+- Sets instance `status=ESCALATED`
+- Sends escalation notification via `NotificationService`
 
-A scheduled job runs every hour:
-```
-@Scheduled(cron = "0 0 * * * *")
-```
-Any `WorkflowStep` with `action = PENDING` and `dueAt < now` gets escalated. The instance status becomes `ESCALATED` and a notification is sent.
+---
 
 ## Setting Up a WorkflowDefinition
 
 Insert into `workflow_definitions` table (or via admin API):
 
 ```sql
-INSERT INTO workflow_definitions (id, company_id, name, entity_type, steps_config, escalation_days, ...)
+INSERT INTO workflow_definitions
+    (id, company_id, name, entity_type, steps_config, escalation_days, created_at, version, is_active)
 VALUES (
-    uuid(),
-    'your-company-id',
+    gen_random_uuid(),
+    'your-company-uuid',
     'Transfer Approval',
     'TRANSFER',
     '[{"level":1,"approverRole":"HR_MANAGER"},{"level":2,"approverRole":"DIRECTOR"}]',
-    3,   -- escalate after 3 days
-    ...
+    3,
+    NOW(),
+    0,
+    TRUE
 );
 ```
+
+`steps_config` is a JSON array. Each object defines one approval level. The `WorkflowService` reads `escalationDays` to set `dueAt` on each step.
+
+---
 
 ## Database Tables
 
 ```sql
 CREATE TABLE workflow_definitions (
-    id              CHAR(36) NOT NULL PRIMARY KEY,
-    company_id      CHAR(36) NOT NULL,
+    id              UUID         NOT NULL PRIMARY KEY,
+    company_id      UUID         NOT NULL,
     name            VARCHAR(255) NOT NULL,
     entity_type     VARCHAR(100) NOT NULL,
-    steps_config    TEXT,          -- JSON array of steps
-    escalation_days INT NOT NULL DEFAULT 3
+    steps_config    TEXT,
+    escalation_days INT          NOT NULL DEFAULT 3,
+    created_at      TIMESTAMP    NOT NULL,
+    version         BIGINT       NOT NULL DEFAULT 0,
+    is_active       BOOLEAN      NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE workflow_instances (
-    id           CHAR(36) NOT NULL PRIMARY KEY,
-    company_id   CHAR(36) NOT NULL,
-    definition_id CHAR(36) NOT NULL,
-    entity_id    CHAR(36) NOT NULL,
-    entity_type  VARCHAR(100) NOT NULL,
-    status       VARCHAR(50) NOT NULL DEFAULT 'PENDING',
-    current_step INT NOT NULL DEFAULT 1,
-    initiated_by CHAR(36) NOT NULL,
-    comments     TEXT
+    id            UUID        NOT NULL PRIMARY KEY,
+    company_id    UUID        NOT NULL,
+    definition_id UUID        NOT NULL REFERENCES workflow_definitions(id),
+    entity_id     UUID        NOT NULL,
+    entity_type   VARCHAR(100) NOT NULL,
+    status        VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+    current_step  INT         NOT NULL DEFAULT 1,
+    initiated_by  UUID        NOT NULL,
+    comments      TEXT,
+    created_at    TIMESTAMP   NOT NULL,
+    version       BIGINT      NOT NULL DEFAULT 0,
+    is_active     BOOLEAN     NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE workflow_steps (
-    id          CHAR(36) NOT NULL PRIMARY KEY,
-    company_id  CHAR(36) NOT NULL,
-    instance_id CHAR(36) NOT NULL,
-    step_number INT NOT NULL,
-    approver_id CHAR(36),
-    action      VARCHAR(50) NOT NULL DEFAULT 'PENDING',
-    comments    TEXT,
-    due_at      DATETIME,
-    acted_at    DATETIME
+    id           UUID        NOT NULL PRIMARY KEY,
+    company_id   UUID        NOT NULL,
+    instance_id  UUID        NOT NULL REFERENCES workflow_instances(id),
+    step_number  INT         NOT NULL,
+    approver_id  UUID,
+    approver_role VARCHAR(100),
+    action       VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+    comments     TEXT,
+    acted_at     TIMESTAMP,
+    due_at       TIMESTAMP,
+    created_at   TIMESTAMP   NOT NULL,
+    version      BIGINT      NOT NULL DEFAULT 0,
+    is_active    BOOLEAN     NOT NULL DEFAULT TRUE
 );
 ```
+
+---
 
 ## Dependencies
 

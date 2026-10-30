@@ -9,9 +9,9 @@ CREATE TABLE workflow_definitions (
     escalation_days INT          NOT NULL DEFAULT 3,
     is_active       BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by      VARCHAR(255),
-    created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by      VARCHAR(255),
-    updated_at      DATETIME,
+    updated_at      TIMESTAMP,
     version         BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -27,9 +27,9 @@ CREATE TABLE workflow_instances (
     comments        TEXT,
     is_active       BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by      VARCHAR(255),
-    created_at      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by      VARCHAR(255),
-    updated_at      DATETIME,
+    updated_at      TIMESTAMP,
     version         BIGINT       NOT NULL DEFAULT 0,
     FOREIGN KEY (definition_id) REFERENCES workflow_definitions(id)
 );
@@ -43,13 +43,13 @@ CREATE TABLE workflow_steps (
     approver_role  VARCHAR(100),
     action         VARCHAR(50)  NOT NULL DEFAULT 'PENDING',
     comments       TEXT,
-    acted_at       DATETIME,
-    due_at         DATETIME,
+    acted_at       TIMESTAMP,
+    due_at         TIMESTAMP,
     is_active      BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by     VARCHAR(255),
-    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by     VARCHAR(255),
-    updated_at     DATETIME,
+    updated_at     TIMESTAMP,
     version        BIGINT       NOT NULL DEFAULT 0,
     FOREIGN KEY (instance_id) REFERENCES workflow_instances(id)
 );

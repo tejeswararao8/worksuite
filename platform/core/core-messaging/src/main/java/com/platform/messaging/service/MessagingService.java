@@ -130,6 +130,18 @@ public class MessagingService {
     // ─────────────────────────────────────────────
     // ONBOARDING EVENT - New employee onboarding
     // ─────────────────────────────────────────────
+    public void sendOffboardingEvent(String tenantId, Map<String, Object> offboardingData) {
+        send(RabbitMQConfig.ONBOARDING_ROUTING_KEY, MessagePayload.builder()
+                .messageId(UUID.randomUUID().toString())
+                .type("OFFBOARDING")
+                .sourceModule("HRMS")
+                .tenantId(tenantId)
+                .data(offboardingData)
+                .priority("HIGH")
+                .createdAt(LocalDateTime.now())
+                .build());
+    }
+
     public void sendOnboardingEvent(String tenantId, Map<String, Object> onboardingData) {
         send(RabbitMQConfig.ONBOARDING_ROUTING_KEY, MessagePayload.builder()
                 .messageId(UUID.randomUUID().toString())

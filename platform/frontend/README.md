@@ -1,70 +1,98 @@
-pm# Getting Started with Create React App
+# Frontend — 3-Layer Architecture
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+```
+frontend/
+├── shared/     ← Written ONCE — used by BOTH web and mobile
+├── web/        ← React.js browser app (Tailwind CSS)
+└── mobile/     ← React Native iOS + Android app (NativeWind)
+```
 
-## Available Scripts
+## shared/ — The Brain (80% of all code)
 
-In the project directory, you can run:
+Everything that is NOT UI rendering lives here:
 
-### `npm start`
+| Folder | Contents |
+|---|---|
+| `api/axios.ts` | Axios instance with JWT interceptors + token refresh |
+| `api/services.ts` | Every API call for every module |
+| `store/` | Redux slices: auth, notification |
+| `hooks/index.ts` | All business logic hooks: useEmployees, useDashboard, useTransfers, etc. |
+| `types/index.ts` | All TypeScript interfaces for every entity |
+| `constants/index.ts` | Enums, query keys, API route constants |
+| `utils/index.ts` | formatDate, getErrorMessage, storageService, downloadBlob |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## web/ — React.js Browser App
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+web/src/
+├── App.tsx              ← Root with all providers + lazy routes
+├── contexts/AuthContext.tsx
+├── layouts/             ← Sidebar, Navbar, AppLayout
+├── components/ui/       ← Button, Input, Table, Modal, Badge, etc.
+└── pages/               ← One folder per page
+    ├── auth/LoginPage.tsx
+    ├── dashboard/DashboardPage.tsx
+    ├── employees/EmployeesPage.tsx
+    ├── employees/EmployeeDetailPage.tsx  ← tabbed detail view
+    ├── departments/DepartmentsPage.tsx   ← with org chart
+    ├── branches/BranchesPage.tsx
+    ├── designations/DesignationsPage.tsx
+    ├── teams/TeamsPage.tsx               ← with member panel
+    ├── transfers/TransfersPage.tsx       ← approve/reject
+    ├── promotions/PromotionsPage.tsx     ← approve/reject
+    ├── probation/ProbationPage.tsx       ← confirm/extend/reject
+    ├── onboarding/OnboardingPage.tsx     ← my tasks + by employee
+    ├── offboarding/OffboardingPage.tsx   ← initiate + tasks
+    ├── assets/AssetsPage.tsx             ← assign/return/retire
+    ├── skills/SkillsPage.tsx             ← skills + certifications
+    ├── reports/ReportsPage.tsx           ← 6 reports, 3 formats
+    ├── notifications/NotificationsPage.tsx
+    ├── audit/AuditPage.tsx               ← with JSON diff expand
+    ├── profile/ProfilePage.tsx
+    ├── users/UsersPage.tsx
+    └── roles/RolesPage.tsx
+```
 
-### `npm test`
+## mobile/ — React Native App
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+mobile/src/
+├── App.tsx
+├── navigation/AppNavigator.tsx   ← Bottom tabs + Stack
+├── components/index.tsx          ← Native UI components
+└── screens/
+    ├── auth/LoginScreen.tsx
+    ├── dashboard/DashboardScreen.tsx
+    ├── employees/EmployeesScreen.tsx
+    ├── employees/EmployeeDetailScreen.tsx
+    ├── notifications/NotificationsScreen.tsx
+    └── profile/ProfileScreen.tsx
+```
 
-### `npm run build`
+## How to Run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Web
+```bash
+cd web
+npm install
+npm start
+# Opens at http://localhost:3000
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Mobile
+```bash
+cd mobile
+npm install
+npx react-native run-android
+# or
+npx react-native run-ios
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Key Design Decisions
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **shared/** imports from nowhere inside frontend — it is the foundation
+- **web/** and **mobile/** import from `shared/` — never from each other
+- All hooks accept an optional `ToastService` — web passes `react-hot-toast`, mobile passes `Alert`
+- Redux store is in `shared/` — both platforms use the same store
+- All TypeScript types are in `shared/types/` — single source of truth
+- All API calls are in `shared/api/services.ts` — no duplication

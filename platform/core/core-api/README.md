@@ -1,6 +1,6 @@
 # core-api
 
-**Defines the contract for every API response and exception in the platform.**
+**Defines the contract for every API response and exception across the entire platform.**
 
 ## What It Does
 
@@ -15,9 +15,18 @@
 com.platform.api
 ```
 
-## Key Classes
+## Files
 
-### ApiResponse\<T\>
+| File | Purpose |
+|---|---|
+| `ApiResponse.java` | Standard response wrapper for all endpoints |
+| `PagedResponse.java` | Pagination wrapper for list endpoints |
+| `PlatformException.java` | Base exception for all business errors |
+| `GlobalExceptionHandler.java` | Catches all exceptions, returns ApiResponse error |
+
+---
+
+## ApiResponse\<T\>
 
 Every controller in every module returns `ApiResponse<T>`. Never return raw objects.
 
@@ -30,30 +39,31 @@ return ResponseEntity.ok(ApiResponse.success("Employee created", employeeDto));
 
 // Success with traceId
 return ResponseEntity.ok(ApiResponse.success("Done", data, traceId));
-
-// Error (used by GlobalExceptionHandler — you don't call this)
-ApiResponse.error("Employee not found");
 ```
 
-Response shape:
+Response JSON shape:
 ```json
 {
   "success": true,
   "message": "Success",
   "data": { ... },
-  "traceId": "abc123",
-  "timestamp": "2024-01-01T10:00:00"
+  "traceId": "a1b2c3d4e5f6g7h8",
+  "timestamp": "2024-01-15T10:23:45"
 }
 ```
 
-### PagedResponse\<T\>
+Fields with `null` value are excluded from JSON (`@JsonInclude(NON_NULL)`).
+
+---
+
+## PagedResponse\<T\>
 
 ```java
 Page<EmployeeDto> page = employeeService.findAll(pageable);
 return ResponseEntity.ok(ApiResponse.success(PagedResponse.of(page)));
 ```
 
-Response shape:
+Response JSON shape:
 ```json
 {
   "success": true,
@@ -69,12 +79,14 @@ Response shape:
 }
 ```
 
-### PlatformException
+---
+
+## PlatformException
 
 The only exception modules should throw. `GlobalExceptionHandler` catches it automatically.
 
 ```java
-// 404
+// 404 Not Found
 throw PlatformException.notFound("Employee");
 // → HTTP 404: {"success":false,"message":"Employee not found"}
 
@@ -90,26 +102,31 @@ throw PlatformException.forbidden("Cannot delete active employee");
 throw PlatformException.badRequest("Invalid date range");
 // → HTTP 400
 
-// Custom status
+// Custom HTTP status
 throw new PlatformException("Custom message", HttpStatus.UNPROCESSABLE_ENTITY);
+// → HTTP 422
 ```
 
-### GlobalExceptionHandler
+---
 
-You never write `@ExceptionHandler` in your module. This handles:
+## GlobalExceptionHandler
 
-| Exception | HTTP Status |
-|---|---|
-| `PlatformException` | Whatever status was set |
-| `MethodArgumentNotValidException` | 400 — with field errors |
-| `ConstraintViolationException` | 400 |
-| Any other `Exception` | 500 |
+You never write `@ExceptionHandler` in your module controllers. This handles everything:
+
+| Exception | HTTP Status | Notes |
+|---|---|---|
+| `PlatformException` | Whatever status was set | Business errors |
+| `MethodArgumentNotValidException` | 400 | `@Valid` bean validation failures |
+| `ConstraintViolationException` | 400 | Constraint violations |
+| Any other `Exception` | 500 | Logged as ERROR |
+
+---
 
 ## Full Controller Example
 
 ```java
 @RestController
-@RequestMapping("/hr/employees")
+@RequestMapping("/api/v1/hr/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -127,18 +144,33 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<EmployeeDto>> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(ApiResponse.success(employeeService.findById(id)));
         // If not found, service throws PlatformException.notFound("Employee")
-        // GlobalExceptionHandler returns 404 automatically
+        // GlobalExceptionHandler returns HTTP 404 automatically
+        return ResponseEntity.ok(ApiResponse.success(employeeService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<EmployeeDto>> create(@Valid @RequestBody EmployeeDto dto) {
+    public ResponseEntity<ApiResponse<EmployeeDto>> create(@Valid @RequestBody CreateEmployeeRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ApiResponse.success("Employee created", employeeService.create(dto)));
+            .body(ApiResponse.success("Employee created", employeeService.create(req)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<EmployeeDto>> update(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateEmployeeRequest req) {
+        return ResponseEntity.ok(ApiResponse.success("Employee updated", employeeService.update(id, req)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> delete(@PathVariable UUID id) {
+        employeeService.delete(id);
+        return ResponseEntity.ok(ApiResponse.success("Employee deleted", null));
     }
 }
 ```
+
+---
 
 ## Dependencies
 
@@ -154,5 +186,9 @@ public class EmployeeController {
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 </dependency>
 ```

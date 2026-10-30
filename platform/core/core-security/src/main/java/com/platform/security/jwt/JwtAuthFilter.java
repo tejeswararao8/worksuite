@@ -7,57 +7,62 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
- * Validates JWT on every request.
- * Sets SecurityContext and injects tenantId as request attribute for TenantInterceptor.
+ * Validates Keycloak JWT on every request.
+ * Extracts userId + companyId from Keycloak token claims.
+ * Sets SecurityContext and injects tenantId for TenantInterceptor.
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final TokenBlacklist tokenBlacklist;
+    private final JwtDecoder jwtDecoder;
+    private final JwtAuthenticationConverter jwtAuthenticationConverter;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         String token = extractToken(request);
 
-        if (token != null && jwtTokenProvider.validateToken(token) && !tokenBlacklist.isBlacklisted(token)) {
+        if (token != null) {
             try {
-                var claims = jwtTokenProvider.parseToken(token);
-                String userId = claims.getSubject();
-                String companyId = claims.get("companyId", String.class);
-                String rolesStr = claims.get("roles", String.class);
+                // Decode and validate Keycloak JWT
+                Jwt jwt = jwtDecoder.decode(token);
 
-                List<SimpleGrantedAuthority> authorities = rolesStr != null
-                    ? Arrays.stream(rolesStr.split(","))
-                        .map(String::trim)
-                        .map(SimpleGrantedAuthority::new)
-                        .toList()
-                    : List.of();
+                // Extract claims from Keycloak token
+                String userId    = jwt.getSubject();                          // Keycloak user UUID
+                String companyId = jwt.getClaimAsString("companyId");         // Custom claim we add in Keycloak
+                String email     = jwt.getClaimAsString("email");
 
-                var auth = new UsernamePasswordAuthenticationToken(userId, null, authorities);
+                // Build Spring Security authentication from JWT
+                Authentication auth = jwtAuthenticationConverter.convert(jwt);
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                // Inject tenantId for TenantInterceptor
-                request.setAttribute(TenantInterceptor.TENANT_ATTRIBUTE, companyId);
+                // Inject for TenantInterceptor and logging
+                if (companyId != null) {
+                    request.setAttribute(TenantInterceptor.TENANT_ATTRIBUTE, companyId);
+                }
                 request.setAttribute("userId", userId);
+                request.setAttribute("email", email);
 
-            } catch (Exception e) {
-                log.debug("JWT processing failed: {}", e.getMessage());
+                log.debug("Authenticated user: {} tenant: {}", userId, companyId);
+
+            } catch (JwtException e) {
+                log.debug("Invalid Keycloak JWT: {}", e.getMessage());
             }
         }
 

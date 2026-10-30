@@ -13,9 +13,9 @@ CREATE TABLE audit_logs (
     description    VARCHAR(500),
     is_active      BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by     VARCHAR(255),
-    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by     VARCHAR(255),
-    updated_at     DATETIME,
+    updated_at     TIMESTAMP,
     version        BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -32,9 +32,9 @@ CREATE TABLE notifications (
     reference_type VARCHAR(100),
     is_active      BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by     VARCHAR(255),
-    created_at     DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by     VARCHAR(255),
-    updated_at     DATETIME,
+    updated_at     TIMESTAMP,
     version        BIGINT       NOT NULL DEFAULT 0
 );
 
@@ -48,11 +48,11 @@ CREATE TABLE platform_configs (
     is_encrypted BOOLEAN      NOT NULL DEFAULT FALSE,
     is_active    BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by   VARCHAR(255),
-    created_at   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by   VARCHAR(255),
-    updated_at   DATETIME,
+    updated_at   TIMESTAMP,
     version      BIGINT       NOT NULL DEFAULT 0,
-    UNIQUE KEY uq_config_key_company (config_key, company_id)
+    UNIQUE (config_key, company_id)
 );
 
 CREATE TABLE documents (
@@ -72,15 +72,15 @@ CREATE TABLE documents (
     expiry_status     VARCHAR(50)  NOT NULL DEFAULT 'VALID',
     is_active         BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by        VARCHAR(255),
-    created_at        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at        TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_by        VARCHAR(255),
-    updated_at        DATETIME,
+    updated_at        TIMESTAMP,
     version           BIGINT       NOT NULL DEFAULT 0
 );
 
-CREATE INDEX idx_audit_company     ON audit_logs(company_id);
-CREATE INDEX idx_audit_entity      ON audit_logs(entity_name, entity_id);
-CREATE INDEX idx_notif_recipient   ON notifications(recipient_id, company_id);
-CREATE INDEX idx_notif_unread      ON notifications(recipient_id, is_read);
-CREATE INDEX idx_doc_entity        ON documents(entity_id, company_id);
-CREATE INDEX idx_doc_expiry        ON documents(expiry_date);
+CREATE INDEX idx_audit_company   ON audit_logs(company_id);
+CREATE INDEX idx_audit_entity    ON audit_logs(entity_name, entity_id);
+CREATE INDEX idx_notif_recipient ON notifications(recipient_id, company_id);
+CREATE INDEX idx_notif_unread    ON notifications(recipient_id, is_read);
+CREATE INDEX idx_doc_entity      ON documents(entity_id, company_id);
+CREATE INDEX idx_doc_expiry      ON documents(expiry_date);

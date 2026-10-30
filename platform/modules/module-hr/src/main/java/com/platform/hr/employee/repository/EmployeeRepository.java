@@ -2,11 +2,14 @@ package com.platform.hr.employee.repository;
 
 import com.platform.hr.employee.entity.Employee;
 import com.platform.hr.employee.entity.Employee.EmploymentStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +18,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, JpaSp
     boolean existsByEmailAndCompanyId(String email, UUID companyId);
     Optional<Employee> findByIdAndCompanyIdAndIsActiveTrue(UUID id, UUID companyId);
     long countByCompanyIdAndEmploymentStatus(UUID companyId, EmploymentStatus status);
+    long countByCompanyIdAndIsActiveTrue(UUID companyId);
+    List<Employee> findByTeamIdAndCompanyIdAndIsActiveTrue(UUID teamId, UUID companyId);
+    List<Employee> findByManagerIdAndCompanyIdAndIsActiveTrue(UUID managerId, UUID companyId);
+    List<Employee> findByDepartmentIdAndCompanyIdAndIsActiveTrue(UUID departmentId, UUID companyId);
+    List<Employee> findByBranchIdAndCompanyIdAndIsActiveTrue(UUID branchId, UUID companyId);
+    Page<Employee> findByCompanyIdAndIsActiveTrue(UUID companyId, Pageable pageable);
 
     @Query("SELECT COALESCE(MAX(CAST(SUBSTRING(e.employeeCode, 4) AS int)), 0) FROM Employee e WHERE e.companyId = :companyId")
     int findMaxEmployeeCodeSequence(UUID companyId);

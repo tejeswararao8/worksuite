@@ -1,12 +1,12 @@
 # core-config
 
-**Per-tenant runtime configuration with Caffeine caching.**
+**Per-tenant runtime configuration stored in PostgreSQL, cached in Valkey.**
 
 ## What It Does
 
-- Stores key/value config per tenant in the database
-- Caches values in Caffeine (10 min TTL) — no DB hit on every read
-- Cache auto-evicts on write
+- Stores key/value configuration per tenant in the `platform_configs` table
+- Caches values in Valkey (Redis-compatible) via Spring Cache — no DB hit on repeated reads
+- Cache auto-evicts on write (`@CacheEvict`)
 - Modules use this instead of hardcoding tenant-specific settings
 
 ## Package
@@ -15,9 +15,17 @@
 com.platform.config
 ```
 
-## How to Use in Your Module
+## Files
 
-### Inject ConfigService
+| File | Purpose |
+|---|---|
+| `PlatformConfig.java` | JPA entity for per-tenant config key/value pairs |
+| `ConfigService.java` | Read/write config with Valkey caching |
+| `PlatformConfigRepository.java` | JPA repository scoped by key + companyId |
+
+---
+
+## How to Use in Your Module
 
 ```java
 @Service
@@ -27,42 +35,58 @@ public class OnboardingService {
     private final ConfigService configService;
 
     public void processOnboarding(UUID employeeId) {
-        // Read config — returns cached value or DB fallback
-        int maxTasks = configService.getInt("onboarding.max_tasks", 20);
-        boolean sendEmail = configService.getBoolean("onboarding.send_welcome_email", true);
+        // String value with default
         String welcomeMsg = configService.get("onboarding.welcome_message", "Welcome aboard!");
 
-        // Use the values
+        // Integer value with default
+        int maxTasks = configService.getInt("onboarding.max_tasks", 20);
+
+        // Boolean value with default
+        boolean sendEmail = configService.getBoolean("onboarding.send_welcome_email", true);
     }
 }
 ```
 
-### Read Methods
+---
+
+## Read Methods
 
 ```java
-// String value
-String value = configService.get("key");                    // null if not set
-String value = configService.get("key", "defaultValue");    // default if not set
+// String — returns null if not set
+String value = configService.get("key");
+
+// String — returns default if not set
+String value = configService.get("key", "defaultValue");
 
 // Integer
-int pageSize = configService.getInt("pagination.size", 20);
+int pageSize = configService.getInt("pagination.default_size", 20);
 
 // Boolean
-boolean enabled = configService.getBoolean("feature.x.enabled", false);
+boolean enabled = configService.getBoolean("feature.chat.enabled", false);
 ```
 
-### Write (admin operations)
+---
+
+## Write Method (admin operations)
 
 ```java
 // Set a config value for the current tenant
-configService.set("onboarding.max_tasks", "30", "ONBOARDING");
-
 // Cache is automatically evicted on write
+configService.set("onboarding.max_tasks", "30", "ONBOARDING");
+configService.set("hr.probation.default_days", "90", "HR");
 ```
 
-### Cache Key
+---
 
-Cache key = `configKey + ':' + tenantId` — so each tenant has its own cached value for the same key.
+## Cache Behaviour
+
+- Cache name: `configs`
+- Cache key: `configKey + ':' + tenantId` — each tenant has its own cached value
+- Cache provider: Valkey (via `spring-boot-starter-data-redis`)
+- TTL: controlled by `core-cache` ValkeyConfig (default 30 minutes)
+- On write: `@CacheEvict` removes the specific key for the current tenant
+
+---
 
 ## Recommended Config Key Naming
 
@@ -70,41 +94,43 @@ Cache key = `configKey + ':' + tenantId` — so each tenant has its own cached v
 {module}.{feature}.{setting}
 
 Examples:
-  hr.probation.default_days        → "90"
-  hr.document.expiry_reminder_days → "30,7"
-  onboarding.send_welcome_email    → "true"
-  pagination.default_size          → "20"
+  hr.probation.default_days          → "90"
+  hr.document.expiry_reminder_days   → "30,7"
+  onboarding.send_welcome_email      → "true"
+  onboarding.max_tasks               → "20"
+  pagination.default_size            → "20"
+  payroll.processing_day             → "25"
+  leave.annual_quota_days            → "21"
 ```
+
+---
 
 ## Database Table
 
 ```sql
 CREATE TABLE platform_configs (
-    id           CHAR(36) NOT NULL PRIMARY KEY,
-    company_id   CHAR(36) NOT NULL,
+    id           UUID         NOT NULL PRIMARY KEY,
+    company_id   UUID         NOT NULL,
     config_key   VARCHAR(255) NOT NULL,
     config_value TEXT,
     category     VARCHAR(100),
-    is_encrypted BOOLEAN NOT NULL DEFAULT FALSE,
-    UNIQUE KEY uq_config_key_company (config_key, company_id)
+    description  VARCHAR(500),
+    is_encrypted BOOLEAN      NOT NULL DEFAULT FALSE,
+    created_at   TIMESTAMP    NOT NULL,
+    version      BIGINT       NOT NULL DEFAULT 0,
+    is_active    BOOLEAN      NOT NULL DEFAULT TRUE,
+    UNIQUE (config_key, company_id)
 );
 ```
 
-## Configuration
-
-```yaml
-spring:
-  cache:
-    type: caffeine
-    caffeine:
-      spec: maximumSize=1000,expireAfterWrite=10m
-```
+---
 
 ## Dependencies
 
 ```xml
 <dependency><groupId>com.platform</groupId><artifactId>core-tenancy</artifactId></dependency>
 <dependency><groupId>com.platform</groupId><artifactId>core-security</artifactId></dependency>
+<dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-data-jpa</artifactId></dependency>
 <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-cache</artifactId></dependency>
 <dependency><groupId>com.github.ben-manes.caffeine</groupId><artifactId>caffeine</artifactId></dependency>
 ```

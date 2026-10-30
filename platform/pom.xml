@@ -29,6 +29,9 @@
         <module>core/core-workflow</module>
         <module>core/core-config</module>
         <module>core/core-reporting</module>
+        <module>core/core-cache</module>
+        <module>core/core-messaging</module>
+        <module>core/core-search</module>
         <module>modules/module-hr</module>
         <module>app</module>
     </modules>
@@ -42,6 +45,8 @@
         <springdoc.version>2.5.0</springdoc.version>
         <poi.version>5.2.5</poi.version>
         <caffeine.version>3.1.8</caffeine.version>
+        <pdfbox.version>3.0.3</pdfbox.version>
+        <opensearch.version>2.10.1</opensearch.version>
     </properties>
 
     <dependencyManagement>
@@ -160,12 +165,58 @@
                 <version>5.9</version>
             </dependency>
 
-            <!-- PDF -->
+            <!-- PDF - Apache PDFBox (Apache 2.0) -->
             <dependency>
-                <groupId>com.itextpdf</groupId>
-                <artifactId>itext7-core</artifactId>
-                <version>8.0.4</version>
-                <type>pom</type>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${pdfbox.version}</version>
+            </dependency>
+
+            <!-- OpenSearch Java Client -->
+            <dependency>
+                <groupId>org.opensearch.client</groupId>
+                <artifactId>opensearch-java</artifactId>
+                <version>${opensearch.version}</version>
+            </dependency>
+
+            <!-- RabbitMQ -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-amqp</artifactId>
+            </dependency>
+
+            <!-- MongoDB -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            </dependency>
+
+            <!-- Valkey / Redis (Spring Data Redis + Lettuce) -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+            </dependency>
+
+            <!-- Internal modules - cache, messaging, search -->
+            <dependency>
+                <groupId>com.platform</groupId>
+                <artifactId>core-cache</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.platform</groupId>
+                <artifactId>core-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.platform</groupId>
+                <artifactId>core-search</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.platform</groupId>
+                <artifactId>module-hr</artifactId>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

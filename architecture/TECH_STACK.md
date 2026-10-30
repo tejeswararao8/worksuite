@@ -74,7 +74,7 @@ Phase 3 → Extract microservices one by one (when scale demands)
 | File Storage | MinIO | AGPL-3.0 | FREE |
 | Push Notifications | Firebase FCM | Google ToS | FREE tier |
 | Search Engine | OpenSearch | Apache 2.0 | FREE |
-| PDF / Reports | JasperReports + Apache POI | LGPL / Apache 2.0 | FREE |
+| PDF / Reports | Apache PDFBox + Apache POI | Apache 2.0 | FREE |
 | DevOps | Docker + Docker Compose | Apache 2.0 | FREE |
 
 ---
@@ -683,9 +683,11 @@ from Elasticsearch 7.10. Fully backed by AWS under Apache 2.0 license.
 ## 13. Reports & PDF → JasperReports + Apache POI
 
 ### Why we chose it
-- JasperReports: industry standard Java PDF generation (payslips, HR reports)
+- JasperReports replaced with Apache PDFBox (Apache 2.0 license — better for commercial use)
+- Apache PDFBox: PDF generation for payslips, HR reports
 - Apache POI: Excel export for HR and finance reports
-- Both free and open source
+- OpenCSV: CSV export
+- All free and open source
 - Native Spring Boot integration
 
 ---
