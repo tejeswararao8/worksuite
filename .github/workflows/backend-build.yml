@@ -6,7 +6,8 @@ on:
       - development
       - main
     paths:
-      - 'hrms-platform/**'
+      - 'platform/**'
+      - '!platform/frontend/**'
 
 jobs:
   backend-build:
@@ -14,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: hrms-platform
+        working-directory: platform
 
     steps:
       - name: Checkout
@@ -27,22 +28,11 @@ jobs:
           java-version: 21
           cache: maven
 
-      - name: Make mvnw executable
-        run: chmod +x mvnw
+      - name: Build all modules
+        run: mvn clean package -DskipTests
 
-      - name: Build
-        run: ./mvnw clean package -DskipTests
-
-      - name: Test
-        run: ./mvnw test
+      - name: Test all modules
+        run: mvn test
         env:
-          DB_HOST: localhost
-          DB_PORT: 5432
-          DB_NAME: hrms_db
-          DB_USERNAME: hrms_user
-          DB_PASSWORD: hrms_pass
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
-          JWT_SECRET: hrms-super-secret-key-must-be-at-least-256-bits-long-for-hs256
-          AWS_REGION: ap-south-1
-          S3_BUCKET_NAME: hrms-documents
+          SPRING_PROFILES_ACTIVE: local
+          JWT_SECRET: platform-super-secret-key-must-be-at-least-256-bits-long-for-hs256
