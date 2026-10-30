@@ -1,0 +1,67 @@
+version: '3.8'
+
+# =============================================================
+# PRODUCTION OVERRIDES
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# =============================================================
+
+services:
+
+  valkey:
+    restart: always
+    command: valkey-server --save 60 1 --requirepass yourStrongPassword123
+
+  rabbitmq:
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: prodadmin
+      RABBITMQ_DEFAULT_PASS: yourStrongPassword123
+
+  keycloak:
+    restart: always
+    command: start
+    environment:
+      KEYCLOAK_ADMIN: prodadmin
+      KEYCLOAK_ADMIN_PASSWORD: yourStrongPassword123
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://your-db-host:5432/keycloak_db
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: yourStrongPassword123
+      KC_HOSTNAME: your-domain.com
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/conf/server.crt
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/conf/server.key
+
+  mongodb:
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: prodadmin
+      MONGO_INITDB_ROOT_PASSWORD: yourStrongPassword123
+      MONGO_INITDB_DATABASE: company_chat_db
+
+  minio:
+    restart: always
+    environment:
+      MINIO_ROOT_USER: prodadmin
+      MINIO_ROOT_PASSWORD: yourStrongPassword123
+
+  opensearch:
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=false
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=yourStrongPassword123
+
+  nginx:
+    image: nginx:latest
+    container_name: company_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    restart: always
+    networks:
+      - company_network
+    depends_on:
+      - keycloak
