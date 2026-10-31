@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/vvesolutions_db
+    url: jdbc:postgresql://localhost:5433/vvesolutions_db?options=-c%20TimeZone%3DAsia/Kolkata
     driver-class-name: org.postgresql.Driver
     username: vveadmin
     password: vve@admin123
