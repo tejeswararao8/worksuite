@@ -174,6 +174,12 @@ export const reportApi = {
   promotions:   (params) => api.get('/hr/reports/promotions',   { params, responseType: 'blob' }),
 };
 
+// ─── Company ──────────────────────────────────────────────────────────────────
+export const companyApi = {
+  getById: (id)       => api.get(`/companies/${id}`),
+  update:  (id, data) => api.put(`/companies/${id}`, data),
+};
+
 // ─── Audit Logs ───────────────────────────────────────────────────────────────
 export const auditApi = {
   getAll:      (params)            => api.get('/audit-logs', { params }),
