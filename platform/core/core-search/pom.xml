@@ -20,11 +20,12 @@
             <groupId>com.platform</groupId>
             <artifactId>core-tenancy</artifactId>
         </dependency>
-        <!-- OpenSearch Java Client (Apache 2.0) -->
+        <!-- OpenSearch Java Client -->
         <dependency>
             <groupId>org.opensearch.client</groupId>
             <artifactId>opensearch-java</artifactId>
         </dependency>
+
         <!-- HTTP client required by OpenSearch Java client -->
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
@@ -34,5 +35,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+
     </dependencies>
 </project>

@@ -1,10 +1,9 @@
 package com.platform.search.config;
 
-import org.apache.http.HttpHost;
-import org.opensearch.client.RestClient;
+import org.apache.hc.core5.http.HttpHost;
 import org.opensearch.client.json.jackson.JacksonJsonpMapper;
 import org.opensearch.client.opensearch.OpenSearchClient;
-import org.opensearch.client.transport.rest_client.RestClientTransport;
+import org.opensearch.client.transport.httpclient5.ApacheHttpClient5TransportBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,20 +20,14 @@ public class OpenSearchConfig {
     @Value("${opensearch.scheme:http}")
     private String scheme;
 
-    // ─────────────────────────────────────────────
-    // OpenSearch Client → connects to OpenSearch
-    // All modules use this to index and search data
-    // ─────────────────────────────────────────────
     @Bean
     public OpenSearchClient openSearchClient() {
-        RestClient restClient = RestClient.builder(
-                new HttpHost(host, port, scheme)
-        ).build();
+        HttpHost httpHost = new HttpHost(scheme, host, port);
 
-        RestClientTransport transport = new RestClientTransport(
-                restClient,
-                new JacksonJsonpMapper()
-        );
+        var transport = ApacheHttpClient5TransportBuilder
+                .builder(httpHost)
+                .setMapper(new JacksonJsonpMapper())
+                .build();
 
         return new OpenSearchClient(transport);
     }
