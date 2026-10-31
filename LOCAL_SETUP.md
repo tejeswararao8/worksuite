@@ -124,11 +124,26 @@ The backend reads `companyId` from the JWT token. You must add it as a mapper.
 
 ### 2.6 — Set companyId Attribute on the User
 
-1. Go to the user → **Attributes** tab
-2. Add attribute:
+> **Note:** In Keycloak 22+, you must first define the attribute in Realm Settings before it appears on the user's Attributes tab.
+
+#### Step A — Define the attribute in Realm Settings
+
+1. Left menu → **Realm settings** → **User profile** tab
+2. Click **Add attribute**
+3. Fill in:
+   - Attribute name: `companyId`
+   - Display name: `Company ID`
+4. Click **Save**
+
+#### Step B — Assign the attribute to the user
+
+1. Left menu → **Users** → click **`testuser`**
+2. Click the **Attributes** tab (now visible after Step A)
+3. Click **Add attribute**
+4. Fill in:
    - Key: `companyId`
    - Value: `00000000-0000-0000-0000-000000000001`
-3. Click **Save**
+5. Click **Save**
 
 ---
 
