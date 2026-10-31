@@ -26,16 +26,17 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (credentials) => {
     const { data } = await authApi.login(credentials);
-    const tokenData = data.data;
 
-    storageService.setAccessToken(tokenData.accessToken);
-    storageService.setRefreshToken(tokenData.refreshToken);
+    storageService.setAccessToken(data.access_token);
+    storageService.setRefreshToken(data.refresh_token);
 
+    // Decode JWT to extract user info
+    const payload = JSON.parse(atob(data.access_token.split('.')[1]));
     const userData = {
-      userId:    tokenData.userId,
-      companyId: tokenData.companyId,
-      email:     tokenData.email,
-      role:      tokenData.role,
+      userId:    payload.sub,
+      companyId: payload.companyId,
+      email:     payload.email,
+      role:      payload.realm_access?.roles?.[0],
     };
     storageService.setUser(userData);
     setUser(userData);

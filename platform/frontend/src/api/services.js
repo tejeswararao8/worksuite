@@ -1,9 +1,36 @@
 import api from './axios';
 
-// ─── Auth ─────────────────────────────────────────────────────────────────────
+// ─── Auth (Keycloak direct) ───────────────────────────────────────────────────
+const KEYCLOAK_TOKEN_URL = `${process.env.REACT_APP_KC_URL}/realms/${process.env.REACT_APP_KC_REALM}/protocol/openid-connect/token`;
+const KC_CLIENT_ID = process.env.REACT_APP_KC_CLIENT_ID;
+const KC_CLIENT_SECRET = process.env.REACT_APP_KC_CLIENT_SECRET;
+
 export const authApi = {
-  login:          (data) => api.post('/auth/login', data),
-  refresh:        (data) => api.post('/auth/refresh', data),
+  login: ({ email, password }) => {
+    const params = new URLSearchParams();
+    params.append('grant_type', 'password');
+    params.append('client_id', KC_CLIENT_ID);
+    params.append('client_secret', KC_CLIENT_SECRET);
+    params.append('username', email);
+    params.append('password', password);
+    return import('axios').then(({ default: axios }) =>
+      axios.post(KEYCLOAK_TOKEN_URL, params, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      })
+    );
+  },
+  refresh: ({ refreshToken }) => {
+    const params = new URLSearchParams();
+    params.append('grant_type', 'refresh_token');
+    params.append('client_id', KC_CLIENT_ID);
+    params.append('client_secret', KC_CLIENT_SECRET);
+    params.append('refresh_token', refreshToken);
+    return import('axios').then(({ default: axios }) =>
+      axios.post(KEYCLOAK_TOKEN_URL, params, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      })
+    );
+  },
   changePassword: (data) => api.post('/auth/change-password', data),
 };
 
