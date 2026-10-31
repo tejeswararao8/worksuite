@@ -73,3 +73,5 @@ platform:
 logging:
   level:
     com.platform: DEBUG
+  file:
+    name: D:/Vinit P/VTTHRMS/worksuite/platform/app/backend.log

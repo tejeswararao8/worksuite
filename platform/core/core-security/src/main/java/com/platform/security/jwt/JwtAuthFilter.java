@@ -1,5 +1,6 @@
 package com.platform.security.jwt;
 
+import com.platform.tenancy.TenantContext;
 import com.platform.tenancy.TenantInterceptor;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -52,8 +53,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 Authentication auth = jwtAuthenticationConverter.convert(jwt);
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                // Inject for TenantInterceptor and logging
+                // Set tenant context directly + request attribute for interceptor
                 if (companyId != null) {
+                    TenantContext.setTenantId(companyId);
                     request.setAttribute(TenantInterceptor.TENANT_ATTRIBUTE, companyId);
                 }
                 request.setAttribute("userId", userId);
@@ -66,7 +68,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
 
-        chain.doFilter(request, response);
+        try {
+            chain.doFilter(request, response);
+        } finally {
+            TenantContext.clear();
+        }
     }
 
     private String extractToken(HttpServletRequest request) {
