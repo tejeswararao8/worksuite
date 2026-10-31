@@ -38,7 +38,7 @@ node -version
 Open a terminal and navigate to the infrastructure folder:
 
 ```bash
-cd "C:\Users\tejeswara.rao\OneDrive - Alansari Exchange - Sole Proprietorship LLC\Desktop\Project\worksuite\infrastructure"
+cd path\to\worksuite\infrastructure
 ```
 
 Start Phase 1 services (PostgreSQL + Valkey + RabbitMQ + Keycloak):
@@ -152,7 +152,7 @@ The backend reads `companyId` from the JWT token. You must add it as a mapper.
 Open a new terminal:
 
 ```bash
-cd "C:\Users\tejeswara.rao\OneDrive - Alansari Exchange - Sole Proprietorship LLC\Desktop\Project\worksuite\platform"
+cd path\to\worksuite\platform
 ```
 
 Build all modules (skipping tests for first run):
@@ -175,7 +175,7 @@ If you see `BUILD FAILURE`, check the error message and refer to the Troubleshoo
 ```bash
 cd app
 
-mvn spring-boot:run -Dspring-boot.run.profiles=docker
+mvn spring-boot:run -Dspring-boot.run.profiles=docker -Dspring-boot.run.jvmArguments="-Duser.timezone=Asia/Kolkata"
 ```
 
 The app starts on port **8081**. Wait for this log line:
@@ -196,7 +196,7 @@ Open in browser:
 Open a new terminal:
 
 ```bash
-cd "C:\Users\tejeswara.rao\OneDrive - Alansari Exchange - Sole Proprietorship LLC\Desktop\Project\worksuite\platform\frontend"
+cd path\to\worksuite\platform\frontend
 ```
 
 Install dependencies (first time only):
@@ -272,7 +272,7 @@ Stop the frontend: `Ctrl+C` in the frontend terminal
 
 Stop Docker services:
 ```bash
-cd "C:\Users\tejeswara.rao\OneDrive - Alansari Exchange - Sole Proprietorship LLC\Desktop\Project\worksuite\infrastructure"
+cd path\to\worksuite\infrastructure
 
 # Stop but keep data
 docker compose stop
@@ -284,6 +284,31 @@ docker compose down -v
 ---
 
 ## Troubleshooting
+
+### Backend fails to start — `invalid value for parameter "TimeZone": "Asia/Calcutta"`
+
+PostgreSQL 15+ does not recognise the old `Asia/Calcutta` timezone name. The JVM default on some Windows machines is still set to that value.
+
+Always start the backend with the timezone JVM argument:
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=docker -Dspring-boot.run.jvmArguments="-Duser.timezone=Asia/Kolkata"
+```
+
+---
+
+### Backend fails to start — `superuser password not specified` (PostgreSQL)
+
+This happens when a stale Docker volume exists from a previous run without a password set. Fix by removing the volume and recreating:
+
+```bash
+docker compose down -v
+docker compose up -d postgres valkey rabbitmq keycloak
+```
+
+> **Warning:** `down -v` deletes all database data. Only do this on a fresh setup.
+
+---
 
 ### Backend fails to start — `Connection refused` to PostgreSQL
 
@@ -332,7 +357,7 @@ docker compose restart valkey
 A module is missing from the build. Run from the platform root:
 
 ```bash
-cd "C:\Users\tejeswara.rao\OneDrive - Alansari Exchange - Sole Proprietorship LLC\Desktop\Project\worksuite\platform"
+cd path\to\worksuite\platform
 mvn clean install -DskipTests
 ```
 

@@ -3,6 +3,8 @@ package com.platform.security;
 import com.platform.security.jwt.JwtAuthFilter;
 import com.platform.tenancy.TenantInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +33,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class SecurityConfig implements WebMvcConfigurer {
 
-    private final JwtAuthFilter jwtAuthFilter;
+    @Lazy
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
     private final TenantInterceptor tenantInterceptor;
 
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
