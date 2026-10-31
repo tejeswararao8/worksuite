@@ -1,5 +1,5 @@
 package com.platform.security.user;
-
+import org.springframework.core.ParameterizedTypeReference;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -136,29 +136,41 @@ public class KeycloakUserService {
     }
 
     // ─────────────────────────────────────────────
-    // ASSIGN ROLES to user in Keycloak
-    // ─────────────────────────────────────────────
+// ASSIGN ROLES to user in Keycloak
+// ─────────────────────────────────────────────
     public void assignRoles(String keycloakUserId, List<String> roleNames, String token) {
+
         String rolesUrl = keycloakUrl + "/admin/realms/" + realm + "/roles";
+
         String userRolesUrl = keycloakUrl + "/admin/realms/" + realm
-            + "/users/" + keycloakUserId + "/role-mappings/realm";
+                + "/users/" + keycloakUserId + "/role-mappings/realm";
 
-        // Fetch role representations
+        // Fetch role representations with proper generic types
         List<Map<String, Object>> roleReps = roleNames.stream()
-            .map(roleName -> {
-                ResponseEntity<Map> resp = restTemplate.exchange(
-                    rolesUrl + "/" + roleName, HttpMethod.GET,
-                    new HttpEntity<>(bearerHeaders(token)), Map.class);
-                return resp.getBody();
-            })
-            .toList();
+                .map(roleName -> {
 
-        restTemplate.exchange(userRolesUrl, HttpMethod.POST,
-            new HttpEntity<>(roleReps, bearerHeaders(token)), Void.class);
+                    ResponseEntity<Map<String, Object>> resp = restTemplate.exchange(
+                            rolesUrl + "/" + roleName,
+                            HttpMethod.GET,
+                            new HttpEntity<>(bearerHeaders(token)),
+                            new ParameterizedTypeReference<Map<String, Object>>() {}
+                    );
+
+                    return resp.getBody();
+                })
+                .filter(java.util.Objects::nonNull)
+                .toList();
+
+        // Assign roles to Keycloak user
+        restTemplate.exchange(
+                userRolesUrl,
+                HttpMethod.POST,
+                new HttpEntity<>(roleReps, bearerHeaders(token)),
+                Void.class
+        );
 
         log.info("Assigned roles {} to user {}", roleNames, keycloakUserId);
     }
-
     // ─────────────────────────────────────────────
     // Get admin token for Keycloak Admin API calls
     // ─────────────────────────────────────────────

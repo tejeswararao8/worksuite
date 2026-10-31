@@ -180,10 +180,10 @@
             </dependency>
 
             <!-- RabbitMQ -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-amqp</artifactId>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-amqp</artifactId>-->
+<!--            </dependency>-->
 
             <!-- MongoDB -->
             <dependency>
@@ -192,10 +192,10 @@
             </dependency>
 
             <!-- Valkey / Redis (Spring Data Redis + Lettuce) -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-redis</artifactId>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--            </dependency>-->
 
             <!-- Internal modules - cache, messaging, search -->
             <dependency>
@@ -218,7 +218,15 @@
                 <artifactId>module-hr</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>8.5.17</version>
+            </dependency>
+
+
         </dependencies>
+
     </dependencyManagement>
 
     <!-- Common dependencies for ALL modules -->
