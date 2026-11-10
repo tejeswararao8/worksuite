@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/hr/teams")
+@RequestMapping("/hr/teams")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "HR - Teams")

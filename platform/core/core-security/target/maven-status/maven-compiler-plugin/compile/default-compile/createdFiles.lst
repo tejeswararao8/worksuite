@@ -1,0 +1,9 @@
+com\platform\security\rbac\Permission$PermissionBuilder.class
+com\platform\security\user\KeycloakUserService$1.class
+com\platform\security\jwt\JwtAuthFilter.class
+com\platform\security\rbac\Role$RoleBuilder.class
+com\platform\security\rbac\Role.class
+com\platform\security\user\UserPrincipal.class
+com\platform\security\user\KeycloakUserService.class
+com\platform\security\rbac\Permission.class
+com\platform\security\SecurityConfig.class

@@ -1,0 +1,9 @@
+com\platform\tenancy\TenantInterceptor.class
+com\platform\tenancy\Tenant.class
+com\platform\tenancy\TenantRepository.class
+com\platform\tenancy\Tenant$TenantBuilder.class
+com\platform\tenancy\TenantContext.class
+com\platform\tenancy\TenantException.class
+com\platform\tenancy\TenantService.class
+com\platform\tenancy\Tenant$TenantStatus.class
+com\platform\tenancy\BaseEntity.class

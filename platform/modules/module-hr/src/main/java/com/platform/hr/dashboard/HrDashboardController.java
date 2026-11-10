@@ -31,7 +31,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/hr/dashboard")
+@RequestMapping("/hr/dashboard")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "HR - Dashboard")

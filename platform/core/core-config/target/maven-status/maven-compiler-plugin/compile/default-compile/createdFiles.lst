@@ -1,0 +1,4 @@
+com\platform\config\PlatformConfigRepository.class
+com\platform\config\ConfigService.class
+com\platform\config\PlatformConfig.class
+com\platform\config\PlatformConfig$PlatformConfigBuilder.class

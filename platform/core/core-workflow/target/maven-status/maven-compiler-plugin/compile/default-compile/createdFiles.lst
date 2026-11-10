@@ -1,0 +1,12 @@
+com\platform\workflow\WorkflowInstance$WorkflowInstanceBuilder.class
+com\platform\workflow\WorkflowStep$WorkflowStepBuilder.class
+com\platform\workflow\WorkflowInstanceRepository.class
+com\platform\workflow\WorkflowService.class
+com\platform\workflow\WorkflowDefinition$WorkflowDefinitionBuilder.class
+com\platform\workflow\WorkflowDefinition.class
+com\platform\workflow\WorkflowDefinitionRepository.class
+com\platform\workflow\WorkflowInstance.class
+com\platform\workflow\WorkflowStep$StepAction.class
+com\platform\workflow\WorkflowStep.class
+com\platform\workflow\WorkflowStepRepository.class
+com\platform\workflow\WorkflowInstance$WorkflowStatus.class

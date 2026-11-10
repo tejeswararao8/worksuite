@@ -1,0 +1,18 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/vve-platform}
+
+keycloak:
+  auth-server-url: ${KEYCLOAK_URL:http://localhost:8080}
+  realm: ${KEYCLOAK_REALM:vve-platform}
+  admin:
+    client-id: admin-cli
+    username: ${KEYCLOAK_ADMIN_USER:admin}
+    password: ${KEYCLOAK_ADMIN_PASS:admin123}
+
+platform:
+  logging:
+    slow-threshold-ms: ${SLOW_THRESHOLD_MS:500}

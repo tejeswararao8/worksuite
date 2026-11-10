@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/hr/onboarding")
+@RequestMapping("/hr/onboarding")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "HR - Onboarding")

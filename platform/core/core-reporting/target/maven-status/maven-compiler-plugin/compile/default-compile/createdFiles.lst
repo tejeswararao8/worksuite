@@ -1,0 +1,7 @@
+com\platform\reporting\ReportService$ReportFormat.class
+com\platform\reporting\ExcelExporter.class
+com\platform\reporting\CsvExporter.class
+com\platform\reporting\ReportDefinition$ReportDefinitionBuilder.class
+com\platform\reporting\ReportService.class
+com\platform\reporting\ReportDefinition.class
+com\platform\reporting\PdfExporter.class

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/hr/employees/{employeeId}/bank-details")
+@RequestMapping("/hr/employees/{employeeId}/bank-details")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "HR - Bank Details")

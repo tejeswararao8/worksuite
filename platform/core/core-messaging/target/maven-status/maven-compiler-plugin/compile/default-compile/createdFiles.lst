@@ -1,0 +1,4 @@
+com\platform\messaging\model\MessagePayload$MessagePayloadBuilder.class
+com\platform\messaging\service\MessagingService.class
+com\platform\messaging\model\MessagePayload.class
+com\platform\messaging\config\RabbitMQConfig.class

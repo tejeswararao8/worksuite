@@ -1,0 +1,7 @@
+com\platform\audit\AuditLog$AuditLogBuilder.class
+com\platform\audit\AuditAspect.class
+com\platform\audit\AuditLog.class
+com\platform\audit\AuditLog$AuditAction.class
+com\platform\audit\AuditLogRepository.class
+com\platform\audit\Auditable.class
+com\platform\audit\AuditService.class

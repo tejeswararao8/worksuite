@@ -1,0 +1,7 @@
+com\platform\document\DocumentRepository.class
+com\platform\document\MinioStorageService.class
+com\platform\document\DocumentExpiryScheduler.class
+com\platform\document\Document$DocumentBuilder.class
+com\platform\document\Document$DocumentType.class
+com\platform\document\Document$ExpiryStatus.class
+com\platform\document\Document.class

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v1/hr/reports")
+@RequestMapping("/hr/reports")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "HR - Reports")

@@ -1,0 +1,6 @@
+com\platform\search\config\OpenSearchConfig.class
+com\platform\search\model\SearchResult$SearchResultBuilder.class
+com\platform\search\model\SearchDocument$SearchDocumentBuilder.class
+com\platform\search\service\SearchService.class
+com\platform\search\model\SearchDocument.class
+com\platform\search\model\SearchResult.class

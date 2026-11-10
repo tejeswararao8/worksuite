@@ -1,0 +1,17 @@
+spring:
+  redis:
+    host: ${VALKEY_HOST:localhost}
+    port: ${VALKEY_PORT:6379}
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 5
+        min-idle: 2
+        max-wait: 1000ms
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 30m
+      cache-null-values: false
