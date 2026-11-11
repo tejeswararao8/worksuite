@@ -8,6 +8,7 @@ import { COLORS } from '../components';
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 import LoginScreen from '../screens/auth/LoginScreen';
+import HomeScreen from '../screens/home/HomeScreen';
 
 // ─── Main Tab Screens ─────────────────────────────────────────────────────────
 import DashboardScreen      from '../screens/dashboard/DashboardScreen';
@@ -103,42 +104,53 @@ export default function AppNavigator() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle:      { backgroundColor: COLORS.white },
-          headerTintColor:  COLORS.primary,
-          headerTitleStyle: { fontWeight: '700', fontSize: 16, color: COLORS.slate800 },
-          headerShadowVisible: false,
-          headerBackTitleVisible: false,
-        }}
-      >
-        {!isAuthenticated ? (
+      {isAuthenticated ? (
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle:      { backgroundColor: COLORS.white },
+            headerTintColor:  COLORS.primary,
+            headerTitleStyle: { fontWeight: '700', fontSize: 16, color: COLORS.slate800 },
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+          }}
+        >
+          <Stack.Screen
+            name="Main"
+            component={MainTabs}
+            options={{ headerShown: false }}
+          />
+          {STACK_SCREENS.map((screen) => (
+            <Stack.Screen
+              key={screen.name}
+              name={screen.name}
+              component={screen.component}
+              options={{ title: screen.title }}
+            />
+          ))}
+        </Stack.Navigator>
+      ) : (
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerStyle:      { backgroundColor: COLORS.white },
+            headerTintColor:  COLORS.primary,
+            headerTitleStyle: { fontWeight: '700', fontSize: 16, color: COLORS.slate800 },
+            headerShadowVisible: false,
+            headerBackTitleVisible: false,
+          }}
+        >
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Login"
             component={LoginScreen}
             options={{ headerShown: false }}
           />
-        ) : (
-          <>
-            {/* Main tabs — no header (tabs have their own) */}
-            <Stack.Screen
-              name="Main"
-              component={MainTabs}
-              options={{ headerShown: false }}
-            />
-
-            {/* All detail / secondary screens */}
-            {STACK_SCREENS.map((screen) => (
-              <Stack.Screen
-                key={screen.name}
-                name={screen.name}
-                component={screen.component}
-                options={{ title: screen.title }}
-              />
-            ))}
-          </>
-        )}
-      </Stack.Navigator>
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 }

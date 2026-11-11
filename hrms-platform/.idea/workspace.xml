@@ -8,29 +8,15 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/app/backend.log" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/app/backend.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/app/backend.log.2026-10-31.0.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/app/target/app-1.0.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/app/target/app-1.0.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/asset/controller/AssetController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/asset/controller/AssetController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/bank/controller/BankDetailController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/bank/controller/BankDetailController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/branch/controller/BranchController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/branch/controller/BranchController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/dashboard/HrDashboardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/dashboard/HrDashboardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/department/controller/DepartmentController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/department/controller/DepartmentController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/designation/controller/DesignationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/designation/controller/DesignationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/emergency/controller/EmergencyContactController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/emergency/controller/EmergencyContactController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/offboarding/controller/OffboardingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/offboarding/controller/OffboardingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/onboarding/controller/OnboardingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/onboarding/controller/OnboardingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/probation/controller/ProbationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/probation/controller/ProbationController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/promotion/controller/PromotionController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/promotion/controller/PromotionController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/reports/HrReportController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/reports/HrReportController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/skills/controller/SkillController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/skills/controller/SkillController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/team/controller/TeamController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/team/controller/TeamController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/transfer/controller/TransferController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/classes/com/platform/hr/transfer/controller/TransferController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../platform/frontend/mobile/src/navigation/AppNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/mobile/src/navigation/AppNavigator.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../platform/frontend/shared/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/shared/constants/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../platform/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../platform/frontend/web/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/web/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/branch/mapper/BranchMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/branch/mapper/BranchMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/department/mapper/DepartmentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/department/mapper/DepartmentMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/designation/mapper/DesignationMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/designation/mapper/DesignationMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/employee/mapper/EmployeeMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/employee/mapper/EmployeeMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/team/mapper/TeamMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/team/mapper/TeamMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/module-hr-1.0.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/module-hr-1.0.0-SNAPSHOT.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,24 +73,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "copilot.chat.legacySessionMetadata.migrated": "true",
-    "git-widget-placeholder": "feature/SetUpBranch",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Vinit P/VTTHRMS/worksuite/hrms-platform",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/SetUpBranch&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Vinit P/VTTHRMS/worksuite/hrms-platform&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
