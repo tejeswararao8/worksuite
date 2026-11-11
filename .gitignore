@@ -1,0 +1,11 @@
+# Java / Maven build files
+**/target/
+*.jar
+
+# Node dependencies and cache
+**/node_modules/
+**/.cache/
+
+# Build output
+**/dist/
+**/build/
