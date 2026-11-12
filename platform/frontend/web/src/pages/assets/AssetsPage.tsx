@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Plus, Pencil, UserPlus, RotateCcw, Archive } from 'lucide-react';
-import { useAssets } from '../../../../shared/hooks';
-import { ASSET_STATUS_COLOR } from '../../../../shared/constants';
-import { formatDate } from '../../../../shared/utils';
-import type { Asset } from '../../../../shared/types';
+import { useAssets } from 'shared/hooks';
+import { ASSET_STATUS_COLOR } from 'shared/constants';
+import { formatDate } from 'shared/utils';
+import type { Asset } from 'shared/types';
 import { Button, Input, Select, Modal, Table, Badge, Pagination, ConfirmDialog, PageHeader, Textarea } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

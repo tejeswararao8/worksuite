@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider as ReduxProvider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { I18nextProvider } from 'react-i18next';
-import { store } from '../../shared/store';
+import { store } from 'shared/store';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AppLayout from './layouts/AppLayout';
 import { Spinner } from './components/ui';

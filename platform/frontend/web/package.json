@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@platform/shared": "*",
+    "@platform/shared": "file:../shared",
     "@reduxjs/toolkit": "^2.3.0",
     "@tanstack/react-query": "^5.103.2",
     "@types/node": "^22.0.0",

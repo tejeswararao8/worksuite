@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Plus, CheckCircle, XCircle } from 'lucide-react';
-import { useTransfers, useReferenceData } from '../../../../shared/hooks';
-import { APPROVAL_STATUS_COLOR } from '../../../../shared/constants';
-import { formatDate } from '../../../../shared/utils';
-import type { Transfer } from '../../../../shared/types';
+import { useTransfers, useReferenceData } from 'shared/hooks';
+import { APPROVAL_STATUS_COLOR } from 'shared/constants';
+import { formatDate } from 'shared/utils';
+import type { Transfer } from 'shared/types';
 import { Button, Input, Select, Modal, Table, Badge, Pagination, PageHeader, Textarea } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

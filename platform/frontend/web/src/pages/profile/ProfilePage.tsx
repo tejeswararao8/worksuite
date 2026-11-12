@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useMutation } from '@tanstack/react-query';
-import { authApi } from '../../../../shared/api/services';
-import { getErrorMessage } from '../../../../shared/utils';
-import type { RootState } from '../../../../shared/store';
+import { authApi } from 'shared/api/services';
+import { getErrorMessage } from 'shared/utils';
+import type { RootState } from 'shared/store';
 import { Button, Input, Tabs, PageHeader } from '../../components/ui';
 
 export default function ProfilePage() {

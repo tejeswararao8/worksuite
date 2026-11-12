@@ -3,10 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, User, Briefcase, Phone, CreditCard, Award, Package, Clock, ArrowLeftRight, TrendingUp, UserCheck, UserX } from 'lucide-react';
-import { employeeApi, onboardingApi, offboardingApi } from '../../../../shared/api/services';
-import { QUERY_KEYS, EMPLOYMENT_STATUS_COLOR } from '../../../../shared/constants';
-import { formatDate, extractData, extractPagedData } from '../../../../shared/utils';
-import type { Employee, EmergencyContact, BankDetail, EmployeeSkill, EmployeeCertification, Asset, Probation, Transfer, Promotion, OnboardingTask, OffboardingTask } from '../../../../shared/types';
+import { employeeApi, onboardingApi, offboardingApi } from 'shared/api/services';
+import { QUERY_KEYS, EMPLOYMENT_STATUS_COLOR } from 'shared/constants';
+import { formatDate, extractData, extractPagedData } from 'shared/utils';
+import type { Employee, EmergencyContact, BankDetail, EmployeeSkill, EmployeeCertification, Asset, Probation, Transfer, Promotion, OnboardingTask, OffboardingTask } from 'shared/types';
 import { Spinner, Badge, Tabs, ProgressBar, PageHeader } from '../../components/ui';
 
 const TABS = [

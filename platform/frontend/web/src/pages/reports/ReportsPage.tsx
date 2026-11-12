@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { FileSpreadsheet, FileText, Download } from 'lucide-react';
-import { reportApi } from '../../../../shared/api/services';
-import { downloadBlob } from '../../../../shared/utils';
+import { reportApi } from 'shared/api/services';
+import { downloadBlob } from 'shared/utils';
 import { Button, PageHeader } from '../../components/ui';
 
 type Format = 'EXCEL' | 'CSV' | 'PDF';

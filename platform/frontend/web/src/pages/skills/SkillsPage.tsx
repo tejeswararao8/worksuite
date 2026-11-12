@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search, X } from 'lucide-react';
-import { employeeApi } from '../../../../shared/api/services';
-import { QUERY_KEYS } from '../../../../shared/constants';
-import { formatDate, extractData } from '../../../../shared/utils';
-import type { EmployeeSkill, EmployeeCertification } from '../../../../shared/types';
+import { employeeApi } from 'shared/api/services';
+import { QUERY_KEYS } from 'shared/constants';
+import { formatDate, extractData } from 'shared/utils';
+import type { EmployeeSkill, EmployeeCertification } from 'shared/types';
 import { Button, Input, Select, Modal, Badge, Spinner, PageHeader, Tabs } from '../../components/ui';
 
 export default function SkillsPage() {

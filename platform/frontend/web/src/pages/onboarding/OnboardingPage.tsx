@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CheckCircle } from 'lucide-react';
-import { onboardingApi } from '../../../../shared/api/services';
-import { QUERY_KEYS, TASK_STATUS_COLOR } from '../../../../shared/constants';
-import { formatDate, extractData } from '../../../../shared/utils';
-import type { OnboardingTask, OnboardingProgress } from '../../../../shared/types';
+import { onboardingApi } from 'shared/api/services';
+import { QUERY_KEYS, TASK_STATUS_COLOR } from 'shared/constants';
+import { formatDate, extractData } from 'shared/utils';
+import type { OnboardingTask, OnboardingProgress } from 'shared/types';
 import { Badge, Spinner, Tabs, ProgressBar, PageHeader, Table, Button } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

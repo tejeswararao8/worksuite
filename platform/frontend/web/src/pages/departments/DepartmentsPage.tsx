@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Plus, Pencil, Trash2, Search, Network } from 'lucide-react';
-import { useDepartments, useReferenceData } from '../../../../shared/hooks';
-import type { Department, CreateDepartmentRequest, OrgNode } from '../../../../shared/types';
+import { useDepartments, useReferenceData } from 'shared/hooks';
+import type { Department, CreateDepartmentRequest, OrgNode } from 'shared/types';
 import { Button, Input, Select, Modal, Table, Pagination, ConfirmDialog, PageHeader } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

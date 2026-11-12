@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Globe, Share2, Link2, Rss, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -20,16 +20,16 @@ const Footer: React.FC = () => {
             </p>
             <div className="flex space-x-4">
               <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-indigo-500 transition-colors">
-                <Facebook size={18} />
+                <Globe size={18} />
               </a>
               <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-indigo-500 transition-colors">
-                <Twitter size={18} />
+                <Share2 size={18} />
               </a>
               <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-indigo-500 transition-colors">
-                <Linkedin size={18} />
+                <Link2 size={18} />
               </a>
               <a href="#" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-indigo-500 transition-colors">
-                <Instagram size={18} />
+                <Rss size={18} />
               </a>
             </div>
           </div>

@@ -4,10 +4,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Plus, Search, Pencil, Trash2, Eye } from 'lucide-react';
-import { useEmployees, useReferenceData } from '../../../../shared/hooks';
-import { EMPLOYMENT_STATUS_COLOR } from '../../../../shared/constants';
-import { formatDate } from '../../../../shared/utils';
-import type { Employee, CreateEmployeeRequest } from '../../../../shared/types';
+import { useEmployees, useReferenceData } from 'shared/hooks';
+import { EMPLOYMENT_STATUS_COLOR } from 'shared/constants';
+import { formatDate } from 'shared/utils';
+import type { Employee, CreateEmployeeRequest } from 'shared/types';
 import { Button, Input, Select, Modal, Table, Badge, Pagination, ConfirmDialog, PageHeader } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

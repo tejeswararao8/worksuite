@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { auditApi } from '../../../../shared/api/services';
-import { QUERY_KEYS } from '../../../../shared/constants';
-import { formatDateTime, extractPagedData } from '../../../../shared/utils';
-import type { AuditLog } from '../../../../shared/types';
+import { auditApi } from 'shared/api/services';
+import { QUERY_KEYS } from 'shared/constants';
+import { formatDateTime, extractPagedData } from 'shared/utils';
+import type { AuditLog } from 'shared/types';
 import { Badge, Pagination, PageHeader, Spinner } from '../../components/ui';
 
 const ACTION_COLOR: Record<string, string> = {

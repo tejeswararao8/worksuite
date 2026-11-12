@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Bell, CheckCheck } from 'lucide-react';
-import { useNotifications } from '../../../../shared/hooks';
-import { NOTIFICATION_TYPE_COLOR } from '../../../../shared/constants';
-import { formatDateTime } from '../../../../shared/utils';
-import type { Notification } from '../../../../shared/types';
+import { useNotifications } from 'shared/hooks';
+import { NOTIFICATION_TYPE_COLOR } from 'shared/constants';
+import { formatDateTime } from 'shared/utils';
+import type { Notification } from 'shared/types';
 import { Button, Badge, Spinner, PageHeader, EmptyState } from '../../components/ui';
 
 const toastService = { success: toast.success, error: toast.error };

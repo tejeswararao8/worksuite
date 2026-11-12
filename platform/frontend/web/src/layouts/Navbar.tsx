@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../../shared/store';
+import type { RootState } from 'shared/store';
 
 const LANGUAGES = [
   { code: 'en', label: 'EN' },

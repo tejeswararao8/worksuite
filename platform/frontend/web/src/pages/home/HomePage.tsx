@@ -5,7 +5,7 @@ import TrustSection from '../../components/home/TrustSection';
 import AnalyticsSection from '../../components/home/AnalyticsSection';
 import TestimonialsSection from '../../components/home/TestimonialsSection';
 import CTASection from '../../components/home/CTASection';
-import Footer from '../../components/home/Footer';
+import Footer from '../../components/common/Footer';
 
 const HomePage: React.FC = () => {
   return (

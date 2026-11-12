@@ -9,12 +9,12 @@ import {
   Building, ScrollText, UsersRound, ChevronLeft, ChevronRight,
   LogOut, UserCircle, FileText,
 } from 'lucide-react';
-import type { RootState } from '../../../shared/store';
+import type { RootState } from 'shared/store';
 import { useAuth } from '../contexts/AuthContext';
 
 interface NavItem {
   to: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
   labelKey: string;
   group?: string;
 }

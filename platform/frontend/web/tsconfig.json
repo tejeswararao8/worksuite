@@ -17,15 +17,16 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@shared/*":     ["../../shared/*"],
-      "@shared":       ["../../shared/index.ts"],
-      "@components/*": ["components/*"],
-      "@layouts/*":    ["layouts/*"],
-      "@pages/*":      ["pages/*"],
-      "@hooks/*":      ["../../shared/hooks/*"],
-      "@types/*":      ["../../shared/types/*"]
+      "shared/*":       ["shared/*"],
+      "@shared/*":      ["shared/*"],
+      "@shared":        ["shared/index.ts"],
+      "@components/*":  ["components/*"],
+      "@layouts/*":     ["layouts/*"],
+      "@pages/*":       ["pages/*"],
+      "@hooks/*":       ["shared/hooks/*"],
+      "@types/*":       ["shared/types/*"]
     }
   },
-  "include": ["src", "../../shared"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

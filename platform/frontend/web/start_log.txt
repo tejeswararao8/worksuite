@@ -1,0 +1,267 @@
+(node:27548) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:27548) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled with warnings.
+
+[eslint] 
+src\components\common\Footer.tsx
+  Line 22:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 25:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 28:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 31:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 40:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 41:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 42:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 43:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 50:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 51:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 52:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 53:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 81:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 82:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+src\components\common\Navbar.tsx
+  Line 4:10:  'COLORS' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\components\home\EmployeeManagementSection.tsx
+  Line 2:10:  'User' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:16:  'Layers' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:24:  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:35:  'Calendar' is defined but never used   @typescript-eslint/no-unused-vars
+
+src\layouts\Sidebar.tsx
+  Line 9:3:  'Building' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\assets\AssetsPage.tsx
+  Line 5:16:    'Pencil' is defined but never used                   @typescript-eslint/no-unused-vars
+  Line 17:138:  'updateMutation' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+src\pages\branches\BranchesPage.tsx
+  Line 8:25:  'Select' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\dashboard\DashboardPage.tsx
+  Line 6:32:  'LineChart' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 6:43:  'Line' is defined but never used           @typescript-eslint/no-unused-vars
+  Line 6:49:  'CartesianGrid' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\employees\EmployeeDetailPage.tsx
+  Line 8:35:   'extractPagedData' is defined but never used                                                                                                                                                     @typescript-eslint/no-unused-vars
+  Line 9:93:   'Asset' is defined but never used                                                                                                                                                                @typescript-eslint/no-unused-vars
+  Line 9:100:  'Probation' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 9:111:  'Transfer' is defined but never used                                                                                                                                                             @typescript-eslint/no-unused-vars
+  Line 9:121:  'Promotion' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 10:45:  'PageHeader' is defined but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 29:11:  't' is assigned a value but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 42:17:  'assetsData' is assigned a value but never used                                                                                                                                                  @typescript-eslint/no-unused-vars
+  Line 71:17:  Redundant alt attribute. Screen-readers already announce `img` tags as an image. You don’t need to use the words `image`, `photo,` or `picture` (or any specified custom words) in the alt prop  jsx-a11y/img-redundant-alt
+
+src\pages\onboarding\OnboardingPage.tsx
+  Line 10:64:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\probation\ProbationPage.tsx
+  Line 10:58:  'ConfirmDialog' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\reports\ReportsPage.tsx
+  Line 7:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+[1m[33mWARNING[39m[22m in [1m[eslint] 
+src\components\common\Footer.tsx
+  Line 22:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 25:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 28:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 31:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 40:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 41:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 42:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 43:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 50:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 51:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 52:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 53:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 81:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 82:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+src\components\common\Navbar.tsx
+  Line 4:10:  'COLORS' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\components\home\EmployeeManagementSection.tsx
+  Line 2:10:  'User' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:16:  'Layers' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:24:  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:35:  'Calendar' is defined but never used   @typescript-eslint/no-unused-vars
+
+src\layouts\Sidebar.tsx
+  Line 9:3:  'Building' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\assets\AssetsPage.tsx
+  Line 5:16:    'Pencil' is defined but never used                   @typescript-eslint/no-unused-vars
+  Line 17:138:  'updateMutation' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+src\pages\branches\BranchesPage.tsx
+  Line 8:25:  'Select' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\dashboard\DashboardPage.tsx
+  Line 6:32:  'LineChart' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 6:43:  'Line' is defined but never used           @typescript-eslint/no-unused-vars
+  Line 6:49:  'CartesianGrid' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\employees\EmployeeDetailPage.tsx
+  Line 8:35:   'extractPagedData' is defined but never used                                                                                                                                                     @typescript-eslint/no-unused-vars
+  Line 9:93:   'Asset' is defined but never used                                                                                                                                                                @typescript-eslint/no-unused-vars
+  Line 9:100:  'Probation' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 9:111:  'Transfer' is defined but never used                                                                                                                                                             @typescript-eslint/no-unused-vars
+  Line 9:121:  'Promotion' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 10:45:  'PageHeader' is defined but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 29:11:  't' is assigned a value but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 42:17:  'assetsData' is assigned a value but never used                                                                                                                                                  @typescript-eslint/no-unused-vars
+  Line 71:17:  Redundant alt attribute. Screen-readers already announce `img` tags as an image. You don’t need to use the words `image`, `photo,` or `picture` (or any specified custom words) in the alt prop  jsx-a11y/img-redundant-alt
+
+src\pages\onboarding\OnboardingPage.tsx
+  Line 10:64:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\probation\ProbationPage.tsx
+  Line 10:58:  'ConfirmDialog' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\reports\ReportsPage.tsx
+  Line 7:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+[39m[22m
+
+webpack compiled with [1m[33m1 warning[39m[22m
+No issues found.
+Compiled with warnings.
+
+[eslint] 
+src\components\common\Footer.tsx
+  Line 22:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 25:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 28:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 31:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 40:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 41:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 42:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 43:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 50:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 51:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 52:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 53:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 81:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 82:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+src\components\common\Navbar.tsx
+  Line 4:10:  'COLORS' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\components\home\EmployeeManagementSection.tsx
+  Line 2:10:  'User' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:16:  'Layers' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:24:  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:35:  'Calendar' is defined but never used   @typescript-eslint/no-unused-vars
+
+src\layouts\Sidebar.tsx
+  Line 9:3:  'Building' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\assets\AssetsPage.tsx
+  Line 5:16:    'Pencil' is defined but never used                   @typescript-eslint/no-unused-vars
+  Line 17:138:  'updateMutation' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+src\pages\branches\BranchesPage.tsx
+  Line 8:25:  'Select' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\dashboard\DashboardPage.tsx
+  Line 6:32:  'LineChart' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 6:43:  'Line' is defined but never used           @typescript-eslint/no-unused-vars
+  Line 6:49:  'CartesianGrid' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\employees\EmployeeDetailPage.tsx
+  Line 8:35:   'extractPagedData' is defined but never used                                                                                                                                                     @typescript-eslint/no-unused-vars
+  Line 9:93:   'Asset' is defined but never used                                                                                                                                                                @typescript-eslint/no-unused-vars
+  Line 9:100:  'Probation' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 9:111:  'Transfer' is defined but never used                                                                                                                                                             @typescript-eslint/no-unused-vars
+  Line 9:121:  'Promotion' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 10:45:  'PageHeader' is defined but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 29:11:  't' is assigned a value but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 42:17:  'assetsData' is assigned a value but never used                                                                                                                                                  @typescript-eslint/no-unused-vars
+  Line 71:17:  Redundant alt attribute. Screen-readers already announce `img` tags as an image. You don’t need to use the words `image`, `photo,` or `picture` (or any specified custom words) in the alt prop  jsx-a11y/img-redundant-alt
+
+src\pages\onboarding\OnboardingPage.tsx
+  Line 10:64:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\probation\ProbationPage.tsx
+  Line 10:58:  'ConfirmDialog' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\reports\ReportsPage.tsx
+  Line 7:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+[1m[33mWARNING[39m[22m in [1m[eslint] 
+src\components\common\Footer.tsx
+  Line 22:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 25:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 28:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 31:15:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 40:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 41:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 42:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 43:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 50:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 51:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 52:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 53:19:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 81:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  Line 82:13:  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+src\components\common\Navbar.tsx
+  Line 4:10:  'COLORS' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\components\home\EmployeeManagementSection.tsx
+  Line 2:10:  'User' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:16:  'Layers' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 2:24:  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 2:35:  'Calendar' is defined but never used   @typescript-eslint/no-unused-vars
+
+src\layouts\Sidebar.tsx
+  Line 9:3:  'Building' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\assets\AssetsPage.tsx
+  Line 5:16:    'Pencil' is defined but never used                   @typescript-eslint/no-unused-vars
+  Line 17:138:  'updateMutation' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+src\pages\branches\BranchesPage.tsx
+  Line 8:25:  'Select' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\dashboard\DashboardPage.tsx
+  Line 6:32:  'LineChart' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 6:43:  'Line' is defined but never used           @typescript-eslint/no-unused-vars
+  Line 6:49:  'CartesianGrid' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\employees\EmployeeDetailPage.tsx
+  Line 8:35:   'extractPagedData' is defined but never used                                                                                                                                                     @typescript-eslint/no-unused-vars
+  Line 9:93:   'Asset' is defined but never used                                                                                                                                                                @typescript-eslint/no-unused-vars
+  Line 9:100:  'Probation' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 9:111:  'Transfer' is defined but never used                                                                                                                                                             @typescript-eslint/no-unused-vars
+  Line 9:121:  'Promotion' is defined but never used                                                                                                                                                            @typescript-eslint/no-unused-vars
+  Line 10:45:  'PageHeader' is defined but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 29:11:  't' is assigned a value but never used                                                                                                                                                           @typescript-eslint/no-unused-vars
+  Line 42:17:  'assetsData' is assigned a value but never used                                                                                                                                                  @typescript-eslint/no-unused-vars
+  Line 71:17:  Redundant alt attribute. Screen-readers already announce `img` tags as an image. You don’t need to use the words `image`, `photo,` or `picture` (or any specified custom words) in the alt prop  jsx-a11y/img-redundant-alt
+
+src\pages\onboarding\OnboardingPage.tsx
+  Line 10:64:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\probation\ProbationPage.tsx
+  Line 10:58:  'ConfirmDialog' is defined but never used  @typescript-eslint/no-unused-vars
+
+src\pages\reports\ReportsPage.tsx
+  Line 7:10:  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+[39m[22m
+
+webpack compiled with [1m[33m1 warning[39m[22m
+No issues found.

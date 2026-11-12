@@ -178,10 +178,10 @@ export const API = {
   },
   DASHBOARD:    { STATS: '/hr/dashboard/stats' },
   NOTIFICATIONS: {
-    BASE:         '/api/v1/hr/notifications',
-    UNREAD_COUNT: '/api/v1/hr/notifications/unread-count',
-    MARK_READ:    (id: string) => `/api/v1/hr/notifications/${id}/read`,
-    MARK_ALL:     '/api/v1/hr/notifications/mark-all-read',
+    BASE:         '/notifications',
+    UNREAD_COUNT: '/notifications/unread-count',
+    MARK_READ:    (id: string) => `/notifications/${id}/read`,
+    MARK_ALL:     '/notifications/mark-all-read',
   },
   REPORTS: {
     EMPLOYEES:  '/hr/reports/employees',

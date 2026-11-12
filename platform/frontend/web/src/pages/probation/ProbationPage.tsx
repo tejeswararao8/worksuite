@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { CheckCircle, Clock, XCircle } from 'lucide-react';
-import { useProbations } from '../../../../shared/hooks';
-import { PROBATION_STATUS_COLOR } from '../../../../shared/constants';
-import { formatDate } from '../../../../shared/utils';
-import type { Probation } from '../../../../shared/types';
+import { useProbations } from 'shared/hooks';
+import { PROBATION_STATUS_COLOR } from 'shared/constants';
+import { formatDate } from 'shared/utils';
+import type { Probation } from 'shared/types';
 import { Button, Input, Modal, Table, Badge, Pagination, ConfirmDialog, PageHeader, ProgressBar, Textarea } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

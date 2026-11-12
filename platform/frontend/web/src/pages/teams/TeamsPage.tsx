@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 import { Plus, Pencil, Trash2, Users, X } from 'lucide-react';
-import { useTeams, useTeamMembers, useReferenceData } from '../../../../shared/hooks';
-import type { Team, CreateTeamRequest } from '../../../../shared/types';
+import { useTeams, useTeamMembers, useReferenceData } from 'shared/hooks';
+import type { Team, CreateTeamRequest } from 'shared/types';
 import { Button, Input, Select, Modal, Table, Pagination, ConfirmDialog, PageHeader, Spinner } from '../../components/ui';
 import type { Column } from '../../components/ui';
 

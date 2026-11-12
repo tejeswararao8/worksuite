@@ -5,7 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend, LineChart, Line, CartesianGrid,
 } from 'recharts';
-import { useDashboard } from '../../../../shared/hooks';
+import { useDashboard } from 'shared/hooks';
 import { StatCard, Spinner, AlertBanner } from '../../components/ui';
 
 const COLORS = ['#6366f1', '#22c55e', '#f59e0b', '#ef4444', '#3b82f6'];

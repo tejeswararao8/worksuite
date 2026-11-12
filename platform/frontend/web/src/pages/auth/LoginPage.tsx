@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button, Input } from '../../components/ui';
-import { getErrorMessage } from '../../../../shared/utils';
-import type { LoginRequest } from '../../../../shared/types';
+import { getErrorMessage } from 'shared/utils';
+import type { LoginRequest } from 'shared/types';
 
 export default function LoginPage() {
   const { t }    = useTranslation();
