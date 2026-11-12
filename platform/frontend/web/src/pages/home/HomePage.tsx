@@ -1,26 +1,47 @@
-import React from 'react';
-import { Navbar } from '../../components/home/Navbar';
-import HeroSection from '../../components/home/HeroSection';
-import TrustSection from '../../components/home/TrustSection';
-import AnalyticsSection from '../../components/home/AnalyticsSection';
-import TestimonialsSection from '../../components/home/TestimonialsSection';
-import CTASection from '../../components/home/CTASection';
-import Footer from '../../components/common/Footer';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import HomeNavbar              from '../../components/common/Navbar';
+import HeroSection             from '../../components/home/HeroSection';
+import TrustSection            from '../../components/home/TrustSection';
+import AudienceSection         from '../../components/home/AudienceSection';
+import FeatureSectionHeader    from '../../components/home/FeatureSectionHeader';
+import EmployeeManagementSection from '../../components/home/EmployeeManagementSection';
+import AttendanceSection       from '../../components/home/AttendanceSection';
+import LeaveManagementSection  from '../../components/home/LeaveManagementSection';
+import PayrollSection          from '../../components/home/PayrollSection';
+import RecruitmentSection      from '../../components/home/RecruitmentSection';
+import PerformanceSection      from '../../components/home/PerformanceSection';
+import MultiTenantSection      from '../../components/home/MultiTenantSection';
+import ServicesSection         from '../../components/home/ServicesSection';
+import AnalyticsSection        from '../../components/home/AnalyticsSection';
+import TestimonialsSection     from '../../components/home/TestimonialsSection';
+import CTASection              from '../../components/home/CTASection';
+import Footer                  from '../../components/common/Footer';
 
 const HomePage: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
+  // Keep document title in sync with language
+  useEffect(() => {
+    document.title = `WorkSuite HRMS — ${t('homepage.heroHeadline1')} ${t('homepage.heroHeadline2')}`;
+  }, [t, i18n.language]);
+
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      <HomeNavbar />
       <main>
         <HeroSection />
         <TrustSection />
-        {/* Placeholder for feature sections */}
-        <div id="features" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold text-gray-900">Core Features</h2>
-            <p className="mt-4 text-gray-600">Explore everything WorkSuite has to offer.</p>
-          </div>
-        </div>
+        <AudienceSection />
+        <FeatureSectionHeader />
+        <EmployeeManagementSection />
+        <AttendanceSection />
+        <LeaveManagementSection />
+        <PayrollSection />
+        <RecruitmentSection />
+        <PerformanceSection />
+        <MultiTenantSection />
+        <ServicesSection />
         <AnalyticsSection />
         <TestimonialsSection />
         <CTASection />
