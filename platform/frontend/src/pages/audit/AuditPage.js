@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { auditApi } from '../../api/services';
-import { Table, Badge, Pagination } from '../../components/ui';
+import { Table, Badge, Pagination, Select } from '../../components/ui';
 import { formatDateTime } from '../../utils/dateUtils';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 
@@ -36,14 +36,14 @@ export default function AuditPage() {
     <div className="space-y-4">
       <div className="flex gap-3 items-center">
         <label className="text-sm font-medium text-slate-700">{t('audit.filterByEntity')}</label>
-        <select
-          className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+        <Select
           value={entityFilter}
           onChange={(e) => { setEntityFilter(e.target.value); setPage(0); }}
+          className="w-48"
         >
           <option value="">All Entities</option>
           {ENTITY_TYPES.map((e) => <option key={e} value={e}>{e}</option>)}
-        </select>
+        </Select>
       </div>
       <Table columns={columns} data={logs} loading={isLoading} />
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />

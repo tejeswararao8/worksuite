@@ -54,10 +54,10 @@ export default function Sidebar() {
               isActive ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-700 hover:text-white'
             }`
           }
-          title={collapsed ? 'My Profile' : undefined}
+          title={collapsed ? t('profile.title') : undefined}
         >
           <UserCircle size={18} className="shrink-0" />
-          {!collapsed && <span>My Profile</span>}
+          {!collapsed && <span>{t('profile.title')}</span>}
         </NavLink>
         <button
           onClick={logout}

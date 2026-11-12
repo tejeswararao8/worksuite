@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useEmployees } from '../../hooks/useEmployees';
 import { useReferenceData } from '../../hooks/useReferenceData';
-import { Button, Input, Select, Modal, Table, Badge, Pagination, ConfirmDialog } from '../../components/ui';
-import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
+import { Button, Input, Select, Modal, Table, Badge, Pagination, ConfirmDialog, SearchBar } from '../../components/ui';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { EMPLOYMENT_STATUS_COLOR } from '../../constants/enums';
 
 export default function EmployeesPage() {
@@ -57,15 +57,12 @@ export default function EmployeesPage() {
       {/* Toolbar */}
       <div className="flex flex-wrap gap-3 items-center justify-between">
         <div className="flex gap-2 flex-wrap">
-          <div className="relative">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              className="pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-56"
-              placeholder={t('employee.searchPlaceholder')}
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
-          </div>
+          <SearchBar
+            value={search}
+            onChange={handleSearch}
+            placeholder={t('employee.searchPlaceholder')}
+            className="w-56"
+          />
           <select
             className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
             value={deptFilter}

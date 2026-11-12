@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import AppLayout from './components/layout/AppLayout';
 import { ROUTES } from './constants/routes';
+import { ErrorBoundary } from './components/ui';
 
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/auth/LoginPage';
@@ -89,7 +90,9 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <LanguageProvider>
-            <AppRoutes />
+            <ErrorBoundary>
+              <AppRoutes />
+            </ErrorBoundary>
             <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
           </LanguageProvider>
         </AuthProvider>

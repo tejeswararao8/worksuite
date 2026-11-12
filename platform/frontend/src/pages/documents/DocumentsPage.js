@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { documentApi } from '../../api/services';
-import { Button, Table, Badge, Modal, Pagination, ConfirmDialog, Input } from '../../components/ui';
+import { Button, Table, Badge, Modal, Pagination, ConfirmDialog, Input, Select, EmptyState } from '../../components/ui';
 import { Plus, Trash2, Download, Search } from 'lucide-react';
 import { toastSuccess, toastError } from '../../utils/errorHandler';
 import { formatDate } from '../../utils/dateUtils';
@@ -110,30 +110,26 @@ export default function DocumentsPage() {
           <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </>
       ) : (
-        <div className="bg-white rounded-xl border border-slate-200 p-10 text-center text-slate-400 text-sm">
-          {t('document.enterEmployeeId')}
-        </div>
+        <EmptyState description={t('document.enterEmployeeId')} />
       )}
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title={t('document.uploadTitle')}>
         <div className="space-y-4">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-slate-700">{t('document.type')}</label>
-            <select
-              className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
-              value={form.documentType}
-              onChange={(e) => setForm({ ...form, documentType: e.target.value })}
-            >
-              {Object.values(DOCUMENT_TYPE).map((type) => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-slate-700">{t('document.expiryDate')}</label>
-            <input type="date" className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              value={form.expiryDate} onChange={(e) => setForm({ ...form, expiryDate: e.target.value })} />
-          </div>
+          <Select
+            label={t('document.type')}
+            value={form.documentType}
+            onChange={(e) => setForm({ ...form, documentType: e.target.value })}
+          >
+            {Object.values(DOCUMENT_TYPE).map((type) => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </Select>
+          <Input
+            label={t('document.expiryDate')}
+            type="date"
+            value={form.expiryDate}
+            onChange={(e) => setForm({ ...form, expiryDate: e.target.value })}
+          />
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-slate-700">{t('document.file')}</label>
             <input type="file" className="text-sm" onChange={(e) => setFile(e.target.files[0])} />

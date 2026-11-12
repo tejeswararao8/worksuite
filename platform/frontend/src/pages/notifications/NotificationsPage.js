@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useNotifications } from '../../hooks/useNotifications';
-import { Button, Badge } from '../../components/ui';
+import { Button, Badge, EmptyState } from '../../components/ui';
 import { formatDateTime } from '../../utils/dateUtils';
 import { CheckCheck } from 'lucide-react';
 import { NOTIFICATION_TYPE_COLOR } from '../../constants/enums';
@@ -20,9 +20,7 @@ export default function NotificationsPage() {
       {isLoading ? (
         <p className="text-slate-400 text-sm">{t('common.loading')}</p>
       ) : notifications.length === 0 ? (
-        <div className="bg-white rounded-xl border border-slate-200 p-10 text-center text-slate-400">
-          {t('common.noNotifications')}
-        </div>
+        <EmptyState description={t('common.noNotifications')} />
       ) : (
         <div className="space-y-2">
           {notifications.map((n) => (

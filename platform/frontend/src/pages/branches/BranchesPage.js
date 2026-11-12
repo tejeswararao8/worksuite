@@ -18,15 +18,16 @@ function FormFields({ register, errors }) {
 }
 
 export default function BranchesPage() {
+  const { t } = useTranslation();
   return (
     <CrudPage
       queryKey={QUERY_KEYS.BRANCHES(0).slice(0, 1)}
       api={branchApi}
       columns={[
-        { key: 'name',    label: 'Name' },
-        { key: 'code',    label: 'Code' },
-        { key: 'city',    label: 'City' },
-        { key: 'country', label: 'Country' },
+        { key: 'name',    label: t('branch.name') },
+        { key: 'code',    label: t('branch.code') },
+        { key: 'city',    label: t('branch.city') },
+        { key: 'country', label: t('branch.country') },
       ]}
       FormFields={FormFields}
       entityI18nKey="branch.entity"

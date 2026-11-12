@@ -16,14 +16,15 @@ function FormFields({ register, errors }) {
 }
 
 export default function DepartmentsPage() {
+  const { t } = useTranslation();
   return (
     <CrudPage
       queryKey={QUERY_KEYS.DEPARTMENTS(0).slice(0, 1)}
       api={departmentApi}
       columns={[
-        { key: 'name',        label: 'Name' },
-        { key: 'code',        label: 'Code' },
-        { key: 'description', label: 'Description' },
+        { key: 'name',        label: t('common.name') },
+        { key: 'code',        label: t('common.code') },
+        { key: 'description', label: t('common.description') },
       ]}
       FormFields={FormFields}
       entityI18nKey="department.entity"
