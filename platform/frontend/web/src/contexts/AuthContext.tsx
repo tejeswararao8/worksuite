@@ -9,18 +9,34 @@ import type { RootState, AppDispatch } from 'shared/store';
 import type { AuthUser, LoginRequest } from 'shared/types';
 
 // ─── Keycloak ROPC (Resource Owner Password Credentials) ─────────────────────
-// Calls Keycloak token endpoint directly — same approach as the src/ app.
-// Client secret is read from the environment variable at build time.
-// Never hardcode secrets in source code.
+// SECURITY STATUS: transitional — local development only.
+//
+// REACT_APP_* variables are embedded in the JavaScript bundle at build time
+// and are fully visible to any browser user. A client_secret in a browser
+// bundle is not a secret.
+//
+// Required migration (Phase 1): Set the Keycloak client access type to
+// "public" in Keycloak Admin Console. Public clients do not require a
+// client_secret. The ROPC flow continues to work with client_id only.
+//
+// Future migration (Phase 2): Replace ROPC with Authorization Code + PKCE.
+//
+// Until the Keycloak client is switched to public, the client_secret is read
+// from the local .env file (gitignored) only — never hardcoded in source.
 const KC_TOKEN_URL = `${process.env.REACT_APP_KC_URL}/realms/${process.env.REACT_APP_KC_REALM}/protocol/openid-connect/token`;
+const KC_CLIENT_SECRET = process.env.REACT_APP_KC_CLIENT_SECRET;
 
 async function keycloakLogin(email: string, password: string) {
   const params = new URLSearchParams();
-  params.append('grant_type',    'password');
-  params.append('client_id',     process.env.REACT_APP_KC_CLIENT_ID     ?? '');
-  params.append('client_secret', process.env.REACT_APP_KC_CLIENT_SECRET ?? '');
-  params.append('username',      email);
-  params.append('password',      password);
+  params.append('grant_type', 'password');
+  params.append('client_id',  process.env.REACT_APP_KC_CLIENT_ID ?? '');
+  // Only append client_secret if the Keycloak client is still "confidential".
+  // Remove this block once the client is switched to "public" access type.
+  if (KC_CLIENT_SECRET) {
+    params.append('client_secret', KC_CLIENT_SECRET);
+  }
+  params.append('username', email);
+  params.append('password', password);
 
   const { data } = await axios.post<{
     access_token:  string;

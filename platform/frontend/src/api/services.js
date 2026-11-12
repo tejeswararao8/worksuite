@@ -1,18 +1,54 @@
 import api from './axios';
 
-// ─── Auth (Keycloak direct) ───────────────────────────────────────────────────
+// ─── Auth (Keycloak ROPC) ─────────────────────────────────────────────────────
+// SECURITY STATUS: transitional — local development only.
+//
+// The client secret is NOT read from any REACT_APP_* variable here.
+// REACT_APP_* variables are embedded in the JavaScript bundle at build time
+// and are fully visible to any browser user. A secret in a browser bundle
+// is not a secret.
+//
+// Current state: the Keycloak client "vve-backend" is configured as
+// "confidential" access type, which requires a client_secret on the token
+// endpoint. This is incompatible with a browser-based SPA.
+//
+// Required migration (Phase 1 of auth hardening — pending Keycloak change):
+//   Set the Keycloak client access type to "public".
+//   Public clients do not use a client_secret. The ROPC flow continues to
+//   work with client_id only. No code change is needed beyond removing the
+//   client_secret parameter from these calls.
+//
+// Future migration (Phase 2 — full security):
+//   Replace ROPC with Authorization Code + PKCE.
+//   Use the Keycloak JS adapter or a BFF proxy so the browser never handles
+//   tokens directly and no client_secret is needed in the frontend at all.
+//
+// Until the Keycloak client is switched to public, the client_secret must be
+// supplied at runtime via the local .env file (gitignored) only.
+// It is read here via an env var so it is never hardcoded in source.
 const KEYCLOAK_TOKEN_URL = `${process.env.REACT_APP_KC_URL}/realms/${process.env.REACT_APP_KC_REALM}/protocol/openid-connect/token`;
-const KC_CLIENT_ID = process.env.REACT_APP_KC_CLIENT_ID;
+const KC_CLIENT_ID     = process.env.REACT_APP_KC_CLIENT_ID;
+// Read from local .env only — never commit a value for this variable.
 const KC_CLIENT_SECRET = process.env.REACT_APP_KC_CLIENT_SECRET;
+
+function buildTokenParams(base) {
+  const params = new URLSearchParams(base);
+  // Only append client_secret if the Keycloak client is still "confidential".
+  // Remove this block once the client is switched to "public" access type.
+  if (KC_CLIENT_SECRET) {
+    params.append('client_secret', KC_CLIENT_SECRET);
+  }
+  return params;
+}
 
 export const authApi = {
   login: ({ email, password }) => {
-    const params = new URLSearchParams();
-    params.append('grant_type', 'password');
-    params.append('client_id', KC_CLIENT_ID);
-    params.append('client_secret', KC_CLIENT_SECRET);
-    params.append('username', email);
-    params.append('password', password);
+    const params = buildTokenParams({
+      grant_type: 'password',
+      client_id:  KC_CLIENT_ID,
+      username:   email,
+      password:   password,
+    });
     return import('axios').then(({ default: axios }) =>
       axios.post(KEYCLOAK_TOKEN_URL, params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -20,11 +56,11 @@ export const authApi = {
     );
   },
   refresh: ({ refreshToken }) => {
-    const params = new URLSearchParams();
-    params.append('grant_type', 'refresh_token');
-    params.append('client_id', KC_CLIENT_ID);
-    params.append('client_secret', KC_CLIENT_SECRET);
-    params.append('refresh_token', refreshToken);
+    const params = buildTokenParams({
+      grant_type:    'refresh_token',
+      client_id:     KC_CLIENT_ID,
+      refresh_token: refreshToken,
+    });
     return import('axios').then(({ default: axios }) =>
       axios.post(KEYCLOAK_TOKEN_URL, params, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

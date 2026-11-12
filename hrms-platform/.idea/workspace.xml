@@ -5,18 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b00bdf81-1c78-43a9-b106-d2d9e0fc47fb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../platform/app/backend.log" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/app/backend.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/frontend/mobile/src/navigation/AppNavigator.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/mobile/src/navigation/AppNavigator.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/frontend/shared/constants/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/shared/constants/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/frontend/web/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/frontend/web/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/branch/mapper/BranchMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/branch/mapper/BranchMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/department/mapper/DepartmentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/department/mapper/DepartmentMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/designation/mapper/DesignationMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/designation/mapper/DesignationMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/employee/mapper/EmployeeMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/employee/mapper/EmployeeMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/team/mapper/TeamMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../platform/modules/module-hr/target/generated-sources/annotations/com/platform/hr/team/mapper/TeamMapperImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
