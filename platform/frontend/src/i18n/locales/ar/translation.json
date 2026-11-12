@@ -2,18 +2,32 @@
   "nav": {
     "dashboard":    "لوحة التحكم",
     "employees":    "الموظفون",
+    "users":        "المستخدمون",
+    "skills":       "المهارات والشهادات",
     "departments":  "الأقسام",
     "branches":     "الفروع",
     "designations": "المسميات الوظيفية",
+    "teams":        "الفرق",
+    "company":      "الشركة",
     "assets":       "الأصول",
     "documents":    "المستندات",
     "transfers":    "التحويلات",
     "promotions":   "الترقيات",
+    "probation":    "فترة التجربة",
     "onboarding":   "الاستقبال",
+    "offboarding":  "إنهاء الخدمة",
     "notifications":"الإشعارات",
     "reports":      "التقارير",
     "roles":        "الأدوار والصلاحيات",
-    "logout":       "تسجيل الخروج"
+    "audit":        "سجلات التدقيق",
+    "logout":       "تسجيل الخروج",
+    "group": {
+      "people":       "الأشخاص",
+      "organization": "المنظمة",
+      "operations":   "العمليات",
+      "lifecycle":    "دورة الحياة",
+      "admin":        "الإدارة"
+    }
   },
   "auth": {
     "title":           "منصة إدارة الموارد البشرية",
@@ -147,5 +161,12 @@
     "downloadSuccess": "تم تنزيل التقرير", "downloadFailed": "فشل التصدير"
   },
   "role": { "entity": "دور", "name": "اسم الدور", "description": "الوصف", "permissions": "الصلاحيات" },
-  "language": { "select": "اللغة", "en": "الإنجليزية", "ar": "العربية", "hi": "الهندية" }
+  "language": { "select": "اللغة", "en": "الإنجليزية", "ar": "العربية", "hi": "الهندية" },
+  "profile": {
+    "title": "ملفي الشخصي",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "passwordChanged": "تم تغيير كلمة المرور بنجاح"
+  }
 }

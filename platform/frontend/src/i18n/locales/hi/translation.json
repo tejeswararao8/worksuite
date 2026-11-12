@@ -2,18 +2,32 @@
   "nav": {
     "dashboard":    "डैशबोर्ड",
     "employees":    "कर्मचारी",
+    "users":        "उपयोगकर्ता",
+    "skills":       "कौशल और प्रमाणपत्र",
     "departments":  "विभाग",
     "branches":     "शाखाएं",
     "designations": "पदनाम",
+    "teams":        "टीम",
+    "company":      "कंपनी",
     "assets":       "संपत्ति",
     "documents":    "दस्तावेज़",
     "transfers":    "स्थानांतरण",
     "promotions":   "पदोन्नति",
+    "probation":    "परिवीक्षा",
     "onboarding":   "ऑनबोर्डिंग",
+    "offboarding":  "ऑफबोर्डिंग",
     "notifications":"सूचनाएं",
     "reports":      "रिपोर्ट",
     "roles":        "भूमिकाएं और अनुमतियां",
-    "logout":       "लॉग आउट"
+    "audit":        "ऑडिट लॉग",
+    "logout":       "लॉग आउट",
+    "group": {
+      "people":       "लोग",
+      "organization": "संगठन",
+      "operations":   "संचालन",
+      "lifecycle":    "जीवनचक्र",
+      "admin":        "प्रशासन"
+    }
   },
   "auth": {
     "title":           "HRMS प्लेटफ़ॉर्म",
@@ -147,5 +161,12 @@
     "downloadSuccess": "रिपोर्ट डाउनलोड हुई", "downloadFailed": "निर्यात विफल"
   },
   "role": { "entity": "भूमिका", "name": "भूमिका नाम", "description": "विवरण", "permissions": "अनुमतियां" },
-  "language": { "select": "भाषा", "en": "अंग्रेज़ी", "ar": "अरबी", "hi": "हिंदी" }
+  "language": { "select": "भाषा", "en": "अंग्रेज़ी", "ar": "अरबी", "hi": "हिंदी" },
+  "profile": {
+    "title": "मेरी प्रोफाइल",
+    "changePassword": "पासवर्ड बदलें",
+    "currentPassword": "वर्तमान पासवर्ड",
+    "newPassword": "नया पासवर्ड",
+    "passwordChanged": "पासवर्ड सफलतापूर्वक बदला गया"
+  }
 }

@@ -20,7 +20,14 @@
     "reports":      "Reports",
     "roles":        "Roles & Permissions",
     "audit":        "Audit Logs",
-    "logout":       "Logout"
+    "logout":       "Logout",
+    "group": {
+      "people":       "People",
+      "organization": "Organization",
+      "operations":   "Operations",
+      "lifecycle":    "Lifecycle",
+      "admin":        "Admin"
+    }
   },
   "auth": {
     "title":           "HRMS Platform",
