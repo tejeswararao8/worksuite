@@ -1859,3 +1859,4 @@ org.springframework.web.servlet.resource.NoResourceFoundException: No static res
 2026-11-12T22:28:03.705+05:30  INFO 15612 --- [platform] [http-nio-8081-exec-7] com.platform.logging.MdcFilter           : GET /api/v1/notifications/unread-count 500 7ms
 2026-11-12T22:48:01.205+05:30  WARN 15612 --- [platform] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m48s896ms154µs100ns).
 2026-11-12T23:06:24.340+05:30  WARN 15612 --- [platform] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m23s46ms893µs800ns).
+2026-11-12T23:26:12.096+05:30 DEBUG 15612 --- [platform] [scheduling-1] com.platform.logging.LoggingAspect       : OK [WorkflowService.escalateOverdue()] 74ms
