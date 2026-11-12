@@ -33,7 +33,7 @@ export default function ProbationPage() {
   const { register: regExt,  handleSubmit: handleExt,  reset: resetExt  } = useForm();
   const { register: regRej,  handleSubmit: handleRej,  reset: resetRej  } = useForm();
 
-  const initiateMutation = useMutation({ mutationFn: probationApi.initiate, onSuccess: () => { invalidate(); toastSuccess(t('probation.entity') + ' initiated'); setInitiateOpen(false); resetInit(); }, onError: toastError });
+  const initiateMutation = useMutation({ mutationFn: probationApi.initiate, onSuccess: () => { invalidate(); toastSuccess(t('common.createSuccess', { entity: t('probation.entity') })); setInitiateOpen(false); resetInit(); }, onError: toastError });
   const confirmMutation  = useMutation({ mutationFn: probationApi.confirm,  onSuccess: () => { invalidate(); toastSuccess(t('probation.confirmSuccess')); setConfirmId(null); }, onError: toastError });
   const extendMutation   = useMutation({ mutationFn: ({ id, data }) => probationApi.extend(id, data),  onSuccess: () => { invalidate(); toastSuccess(t('probation.extendSuccess')); setExtendId(null); resetExt(); }, onError: toastError });
   const rejectMutation   = useMutation({ mutationFn: ({ id, data }) => probationApi.reject(id, data),  onSuccess: () => { invalidate(); toastSuccess(t('probation.rejectSuccess')); setRejectId(null); resetRej(); }, onError: toastError });
@@ -63,9 +63,9 @@ export default function ProbationPage() {
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
 
       {/* Initiate */}
-      <Modal open={initiateOpen} onClose={() => { setInitiateOpen(false); resetInit(); }} title={`Initiate ${t('probation.entity')}`}>
+      <Modal open={initiateOpen} onClose={() => { setInitiateOpen(false); resetInit(); }} title={t('probation.initiate')}>
         <form onSubmit={handleInit((d) => initiateMutation.mutate(d))} className="space-y-4">
-          <Input label="Employee ID" {...regInit('employeeId', { required: t('common.required') })} />
+          <Input label={t('employee.id')} {...regInit('employeeId', { required: t('common.required') })} />
           <Input label={t('probation.startDate')} type="date" {...regInit('startDate', { required: t('common.required') })} />
           <Input label={t('probation.endDate')}   type="date" {...regInit('endDate',   { required: t('common.required') })} />
           <Input label={t('probation.remarks')}   {...regInit('remarks')} />
@@ -90,7 +90,7 @@ export default function ProbationPage() {
         </form>
       </Modal>
 
-      <ConfirmDialog open={!!confirmId} message={`Confirm this probation?`} onConfirm={() => confirmMutation.mutate(confirmId)} onCancel={() => setConfirmId(null)} />
+      <ConfirmDialog open={!!confirmId} message={t('probation.confirmMessage')} onConfirm={() => confirmMutation.mutate(confirmId)} onCancel={() => setConfirmId(null)} />
     </div>
   );
 }

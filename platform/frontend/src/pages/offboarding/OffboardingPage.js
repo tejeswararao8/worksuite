@@ -30,13 +30,13 @@ export default function OffboardingPage() {
 
   const initiateMutation = useMutation({
     mutationFn: ({ employeeId, ...rest }) => offboardingApi.initiate(employeeId, rest),
-    onSuccess: () => { invalidate(); toastSuccess('Offboarding initiated'); setInitiateOpen(false); reset(); },
+    onSuccess: () => { invalidate(); toastSuccess(t('offboarding.initiateSuccess')); setInitiateOpen(false); reset(); },
     onError: toastError,
   });
 
   const completeMutation = useMutation({
     mutationFn: offboardingApi.complete,
-    onSuccess: () => { invalidate(); toastSuccess('Offboarding completed'); },
+    onSuccess: () => { invalidate(); toastSuccess(t('offboarding.completeSuccess')); },
     onError: toastError,
   });
 
@@ -66,7 +66,7 @@ export default function OffboardingPage() {
 
       <Modal open={initiateOpen} onClose={() => { setInitiateOpen(false); reset(); }} title={t('offboarding.initiate')}>
         <form onSubmit={handleSubmit((d) => initiateMutation.mutate(d))} className="space-y-4">
-          <Input label="Employee ID" {...register('employeeId', { required: t('common.required') })} />
+          <Input label={t('employee.id')} {...register('employeeId', { required: t('common.required') })} />
           <Select label={t('offboarding.reason')} {...register('reason', { required: t('common.required') })}>
             <option value="">{t('common.filter')}</option>
             <option value="RESIGNATION">{t('offboarding.resignation')}</option>

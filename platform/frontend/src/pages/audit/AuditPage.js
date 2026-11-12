@@ -41,7 +41,7 @@ export default function AuditPage() {
           onChange={(e) => { setEntityFilter(e.target.value); setPage(0); }}
           className="w-48"
         >
-          <option value="">All Entities</option>
+          <option value="">{t('audit.allEntities')}</option>
           {ENTITY_TYPES.map((e) => <option key={e} value={e}>{e}</option>)}
         </Select>
       </div>

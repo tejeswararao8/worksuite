@@ -79,7 +79,7 @@ export default function UsersPage() {
       <Modal open={modalOpen} onClose={() => { setModalOpen(false); reset(); }} title={`${t('common.add')} ${t('user.entity')}`}>
         <form onSubmit={handleSubmit((d) => createMutation.mutate(d))} className="space-y-4">
           <Input label={t('employee.email')} type="email" error={errors.email?.message} {...register('email', { required: t('common.required') })} />
-          <Input label={t('employee.entity') + ' ID'} error={errors.employeeId?.message} {...register('employeeId', { required: t('common.required') })} />
+          <Input label={t('employee.id')} error={errors.employeeId?.message} {...register('employeeId', { required: t('common.required') })} />
           <Select label={t('user.roleId')} error={errors.roleId?.message} {...register('roleId', { required: t('common.required') })}>
             <option value="">{t('common.filter')}</option>
             {roles.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}

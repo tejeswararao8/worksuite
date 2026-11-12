@@ -49,7 +49,7 @@ export default function ProfilePage() {
             label={t('profile.newPassword')}
             type="password"
             error={errors.newPassword?.message}
-            {...register('newPassword', { required: t('common.required'), minLength: { value: 8, message: 'Min 8 characters' } })}
+            {...register('newPassword', { required: t('common.required'), minLength: { value: 8, message: t('common.minLength', { n: 8 }) } })}
           />
           <Button type="submit" disabled={isSubmitting}>{t('common.save')}</Button>
         </form>

@@ -17,14 +17,15 @@ function FormFields({ register, errors }) {
 }
 
 export default function DesignationsPage() {
+  const { t } = useTranslation();
   return (
     <CrudPage
       queryKey={QUERY_KEYS.DESIGNATIONS(0).slice(0, 1)}
       api={designationApi}
       columns={[
-        { key: 'name',  label: 'Name' },
-        { key: 'code',  label: 'Code' },
-        { key: 'level', label: 'Level' },
+        { key: 'name',  label: t('designation.name') },
+        { key: 'code',  label: t('designation.code') },
+        { key: 'level', label: t('designation.level') },
       ]}
       FormFields={FormFields}
       entityI18nKey="designation.entity"

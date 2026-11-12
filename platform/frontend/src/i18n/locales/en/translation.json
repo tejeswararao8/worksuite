@@ -75,7 +75,15 @@
     "required":    "This field is required",
     "comingSoon":  "Coming soon",
     "needsAttention": "Needs attention",
-    "allDepartments": "All Departments"
+    "allDepartments": "All Departments",
+    "select":     "Select",
+    "approve":    "Approve",
+    "reject":     "Reject",
+    "reason":     "Reason",
+    "remarks":    "Remarks",
+    "load":       "Load",
+    "minLength":  "Minimum {{n}} characters",
+    "moreCount":  "+{{n}} more"
   },
   "dashboard": {
     "title":              "Dashboard",
@@ -96,6 +104,7 @@
   "employee": {
     "entity":           "Employee",
     "id":               "Employee ID",
+    "idPlaceholder":    "Enter employee UUID...",
     "code":             "Code",
     "firstName":        "First Name",
     "lastName":         "Last Name",
@@ -160,10 +169,22 @@
     "mobile":       "Mobile",
     "vehicle":      "Vehicle",
     "furniture":    "Furniture",
+    "desktop":      "Desktop",
+    "monitor":      "Monitor",
+    "sim":          "SIM Card",
+    "accessCard":   "Access Card",
+    "other":        "Other",
     "available":    "Available",
     "assigned":     "Assigned",
     "inRepair":     "In Repair",
-    "retired":      "Retired"
+    "retired":      "Retired",
+    "assign":       "Assign",
+    "return":       "Return",
+    "assignTitle":  "Assign Asset",
+    "assignReturn": "Assign / Return",
+    "assignSuccess":"Asset assigned successfully",
+    "returnSuccess":"Asset returned successfully",
+    "returnConfirm":"Return this asset to inventory?"
   },
   "document": {
     "entity":            "Document",
@@ -186,20 +207,36 @@
     "toDept":        "To Dept",
     "fromBranch":    "From Branch",
     "toBranch":      "To Branch",
-    "effectiveDate": "Effective Date"
+    "effectiveDate": "Effective Date",
+    "type":          "Transfer Type",
+    "typeDepartment":"Department",
+    "typeBranch":    "Branch",
+    "typeManager":   "Manager",
+    "typeTeam":      "Team",
+    "initiate":      "Initiate Transfer",
+    "rejectTitle":   "Reject Transfer",
+    "approveSuccess":"Transfer approved",
+    "rejectSuccess": "Transfer rejected",
+    "approveConfirm":"Approve this transfer request?"
   },
   "promotion": {
     "entity":          "Promotion",
     "fromDesignation": "From Designation",
     "toDesignation":   "To Designation",
-    "effectiveDate":   "Effective Date"
+    "effectiveDate":   "Effective Date",
+    "initiate":        "Initiate Promotion",
+    "rejectTitle":     "Reject Promotion",
+    "approveSuccess":  "Promotion approved",
+    "rejectSuccess":   "Promotion rejected",
+    "approveConfirm":  "Approve this promotion?"
   },
   "onboarding": {
     "entity":      "Onboarding",
     "task":        "Task",
     "assignedTo":  "Assigned To",
     "dueDate":     "Due Date",
-    "infoMessage": "Onboarding checklists are auto-created when a new employee joins. Track task completion here."
+    "infoMessage": "Onboarding checklists are auto-created when a new employee joins. Track task completion here.",
+    "taskCompleted":"Task marked as completed"
   },
   "_reportOld_removed": {},
   "role": {
@@ -261,7 +298,9 @@
     "extendedEndDate": "Extended End Date",
     "confirmSuccess": "Probation confirmed",
     "extendSuccess": "Probation extended",
-    "rejectSuccess": "Probation rejected"
+    "rejectSuccess": "Probation rejected",
+    "initiate": "Initiate Probation",
+    "confirmMessage": "Confirm this probation period?"
   },
   "offboarding": {
     "entity": "Offboarding",
@@ -277,10 +316,14 @@
     "assignedTo": "Assigned To",
     "dueDate": "Due Date",
     "resignation": "Resignation",
-    "termination": "Termination"
+    "termination": "Termination",
+    "initiateSuccess": "Offboarding initiated successfully",
+    "completeSuccess": "Offboarding completed successfully"
   },
   "skills": {
     "entity": "Skill",
+    "skillsTitle": "Skills",
+    "certsTitle": "Certifications",
     "skillName": "Skill Name",
     "skillType": "Type",
     "proficiencyLevel": "Proficiency",
@@ -307,7 +350,8 @@
     "performedBy": "Performed By",
     "performedAt": "Performed At",
     "ipAddress": "IP Address",
-    "filterByEntity": "Filter by Entity Type"
+    "filterByEntity": "Filter by Entity Type",
+    "allEntities": "All Entities"
   },
   "profile": {
     "title": "My Profile",

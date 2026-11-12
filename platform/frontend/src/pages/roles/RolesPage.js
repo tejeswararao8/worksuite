@@ -23,7 +23,7 @@ export default function RolesPage() {
         <div className="flex flex-wrap gap-1">
           {(r.permissions || []).slice(0, 4).map((p) => <Badge key={p} label={p} color="indigo" />)}
           {(r.permissions || []).length > 4 && (
-            <Badge label={`+${r.permissions.length - 4} more`} color="gray" />
+            <Badge label={t('common.moreCount', { n: r.permissions.length - 4 })} color="gray" />
           )}
         </div>
       ),

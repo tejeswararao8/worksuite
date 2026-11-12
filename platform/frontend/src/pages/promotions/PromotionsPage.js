@@ -34,8 +34,8 @@ export default function PromotionsPage() {
   const { register: regRej, handleSubmit: handleRej, reset: resetRej } = useForm();
 
   const initiateMutation = useMutation({ mutationFn: promotionApi.initiate, onSuccess: () => { invalidate(); toastSuccess(t('common.createSuccess', { entity: t('promotion.entity') })); setInitiateOpen(false); reset(); }, onError: toastError });
-  const approveMutation  = useMutation({ mutationFn: promotionApi.approve,  onSuccess: () => { invalidate(); toastSuccess('Promotion approved'); setApproveId(null); }, onError: toastError });
-  const rejectMutation   = useMutation({ mutationFn: ({ id, data }) => promotionApi.reject(id, data), onSuccess: () => { invalidate(); toastSuccess('Promotion rejected'); setRejectId(null); resetRej(); }, onError: toastError });
+  const approveMutation  = useMutation({ mutationFn: promotionApi.approve,  onSuccess: () => { invalidate(); toastSuccess(t('promotion.approveSuccess')); setApproveId(null); }, onError: toastError });
+  const rejectMutation   = useMutation({ mutationFn: ({ id, data }) => promotionApi.reject(id, data), onSuccess: () => { invalidate(); toastSuccess(t('promotion.rejectSuccess')); setRejectId(null); resetRej(); }, onError: toastError });
 
   const columns = [
     { key: 'employeeCode',    label: t('employee.code') },
@@ -46,8 +46,8 @@ export default function PromotionsPage() {
     {
       key: 'actions', label: t('common.actions'), render: (r) => r.status === 'PENDING' ? (
         <div className="flex gap-1">
-          <button onClick={() => setApproveId(r.id)} className="p-1.5 rounded hover:bg-green-50 text-green-500"><CheckCircle size={14} /></button>
-          <button onClick={() => setRejectId(r.id)}  className="p-1.5 rounded hover:bg-red-50 text-red-400"><XCircle size={14} /></button>
+          <button onClick={() => setApproveId(r.id)} className="p-1.5 rounded hover:bg-green-50 text-green-500" title={t('common.approve')}><CheckCircle size={14} /></button>
+          <button onClick={() => setRejectId(r.id)}  className="p-1.5 rounded hover:bg-red-50 text-red-400"   title={t('common.reject')}><XCircle size={14} /></button>
         </div>
       ) : null,
     },
@@ -61,27 +61,38 @@ export default function PromotionsPage() {
       <Table columns={columns} data={promotions} loading={isLoading} />
       <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
 
-      <Modal open={initiateOpen} onClose={() => { setInitiateOpen(false); reset(); }} title={`Initiate ${t('promotion.entity')}`}>
+      <Modal open={initiateOpen} onClose={() => { setInitiateOpen(false); reset(); }} title={t('promotion.initiate')}>
         <form onSubmit={handleSubmit((d) => initiateMutation.mutate(d))} className="space-y-4">
-          <Input label="Employee ID" {...register('employeeId', { required: t('common.required') })} />
+          <Input label={t('employee.id')} {...register('employeeId', { required: t('common.required') })} />
           <Select label={t('promotion.toDesignation')} {...register('toDesignationId', { required: t('common.required') })}>
-            <option value="">Select</option>
+            <option value="">{t('common.select')}</option>
             {designations.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </Select>
           <Input label={t('promotion.effectiveDate')} type="date" {...register('effectiveDate', { required: t('common.required') })} />
-          <Input label="Reason" {...register('reason')} />
-          <div className="flex justify-end gap-3"><Button type="button" variant="secondary" onClick={() => setInitiateOpen(false)}>{t('common.cancel')}</Button><Button type="submit" disabled={isSubmitting}>{t('common.create')}</Button></div>
+          <Input label={t('common.reason')} {...register('reason')} />
+          <div className="flex justify-end gap-3">
+            <Button type="button" variant="secondary" onClick={() => setInitiateOpen(false)}>{t('common.cancel')}</Button>
+            <Button type="submit" disabled={isSubmitting}>{t('common.create')}</Button>
+          </div>
         </form>
       </Modal>
 
-      <Modal open={!!rejectId} onClose={() => { setRejectId(null); resetRej(); }} title="Reject Promotion">
+      <Modal open={!!rejectId} onClose={() => { setRejectId(null); resetRej(); }} title={t('promotion.rejectTitle')}>
         <form onSubmit={handleRej((d) => rejectMutation.mutate({ id: rejectId, data: d }))} className="space-y-4">
-          <Input label="Remarks" {...regRej('remarks', { required: t('common.required') })} />
-          <div className="flex justify-end gap-3"><Button type="button" variant="secondary" onClick={() => setRejectId(null)}>{t('common.cancel')}</Button><Button type="submit" variant="danger">Reject</Button></div>
+          <Input label={t('common.remarks')} {...regRej('remarks', { required: t('common.required') })} />
+          <div className="flex justify-end gap-3">
+            <Button type="button" variant="secondary" onClick={() => setRejectId(null)}>{t('common.cancel')}</Button>
+            <Button type="submit" variant="danger">{t('common.reject')}</Button>
+          </div>
         </form>
       </Modal>
 
-      <ConfirmDialog open={!!approveId} message="Approve this promotion?" onConfirm={() => approveMutation.mutate(approveId)} onCancel={() => setApproveId(null)} />
+      <ConfirmDialog
+        open={!!approveId}
+        message={t('promotion.approveConfirm')}
+        onConfirm={() => approveMutation.mutate(approveId)}
+        onCancel={() => setApproveId(null)}
+      />
     </div>
   );
 }

@@ -22,7 +22,7 @@ export default function OnboardingPage() {
 
   const completeTaskMutation = useMutation({
     mutationFn: onboardingApi.completeTask,
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['onboarding'] }); toastSuccess('Task completed'); },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['onboarding'] }); toastSuccess(t('onboarding.taskCompleted')); },
     onError: toastError,
   });
 

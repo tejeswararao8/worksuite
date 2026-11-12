@@ -18,27 +18,26 @@ function FormFields({ register, errors }) {
       <Input  label={t('asset.code')}         error={errors.assetCode?.message} {...register('assetCode', { required: t('common.required') })} />
       <Input  label={t('asset.serialNumber')} {...register('serialNumber')} />
       <Select label={t('asset.type')}         {...register('assetType')}>
-        <option value="">Select</option>
-        <option value="LAPTOP">Laptop</option>
-        <option value="DESKTOP">Desktop</option>
-        <option value="MOBILE">Mobile</option>
-        <option value="MONITOR">Monitor</option>
-        <option value="SIM">SIM</option>
-        <option value="ACCESS_CARD">Access Card</option>
-        <option value="OTHER">Other</option>
+        <option value="">{t('common.select')}</option>
+        <option value="LAPTOP">{t('asset.laptop')}</option>
+        <option value="DESKTOP">{t('asset.desktop')}</option>
+        <option value="MOBILE">{t('asset.mobile')}</option>
+        <option value="MONITOR">{t('asset.monitor')}</option>
+        <option value="SIM">{t('asset.sim')}</option>
+        <option value="ACCESS_CARD">{t('asset.accessCard')}</option>
+        <option value="OTHER">{t('asset.other')}</option>
       </Select>
       <Select label={t('asset.status')} {...register('status')}>
-        <option value="AVAILABLE">Available</option>
-        <option value="ASSIGNED">Assigned</option>
-        <option value="IN_REPAIR">In Repair</option>
-        <option value="RETIRED">Retired</option>
+        <option value="AVAILABLE">{t('asset.available')}</option>
+        <option value="ASSIGNED">{t('asset.assigned')}</option>
+        <option value="IN_REPAIR">{t('asset.inRepair')}</option>
+        <option value="RETIRED">{t('asset.retired')}</option>
       </Select>
       <Input label={t('asset.purchaseDate')} type="date" {...register('purchaseDate')} />
     </>
   );
 }
 
-// Wrapper that adds assign/return columns on top of CrudPage
 export default function AssetsPage() {
   const { t } = useTranslation();
   const qc = useQueryClient();
@@ -49,13 +48,13 @@ export default function AssetsPage() {
 
   const assignMutation = useMutation({
     mutationFn: ({ id, data }) => assetApi.assign(id, data),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['assets'] }); toastSuccess('Asset assigned'); setAssignId(null); reset(); },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['assets'] }); toastSuccess(t('asset.assignSuccess')); setAssignId(null); reset(); },
     onError: toastError,
   });
 
   const returnMutation = useMutation({
     mutationFn: assetApi.returnAsset,
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['assets'] }); toastSuccess('Asset returned'); setReturnConfirmId(null); },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['assets'] }); toastSuccess(t('asset.returnSuccess')); setReturnConfirmId(null); },
     onError: toastError,
   });
 
@@ -66,13 +65,13 @@ export default function AssetsPage() {
     { key: 'serialNumber', label: t('asset.serialNumber') },
     { key: 'status',       label: t('asset.status'), render: (r) => <Badge label={r.status} color={ASSET_STATUS_COLOR[r.status] || 'gray'} /> },
     {
-      key: 'assetActions', label: 'Assign / Return', render: (r) => (
+      key: 'assetActions', label: t('asset.assignReturn'), render: (r) => (
         <div className="flex gap-1">
           {r.status === 'AVAILABLE' && (
-            <button onClick={() => setAssignId(r.id)} className="p-1.5 rounded hover:bg-indigo-50 text-indigo-500" title="Assign"><UserPlus size={14} /></button>
+            <button onClick={() => setAssignId(r.id)} className="p-1.5 rounded hover:bg-indigo-50 text-indigo-500" title={t('asset.assign')}><UserPlus size={14} /></button>
           )}
           {r.status === 'ASSIGNED' && (
-            <button onClick={() => setReturnConfirmId(r.id)} className="p-1.5 rounded hover:bg-yellow-50 text-yellow-500" title="Return"><RotateCcw size={14} /></button>
+            <button onClick={() => setReturnConfirmId(r.id)} className="p-1.5 rounded hover:bg-yellow-50 text-yellow-500" title={t('asset.return')}><RotateCcw size={14} /></button>
           )}
         </div>
       ),
@@ -89,18 +88,22 @@ export default function AssetsPage() {
         entityI18nKey="asset.entity"
       />
 
-      {/* Assign Modal */}
-      <Modal open={!!assignId} onClose={() => { setAssignId(null); reset(); }} title="Assign Asset">
+      <Modal open={!!assignId} onClose={() => { setAssignId(null); reset(); }} title={t('asset.assignTitle')}>
         <form onSubmit={handleSubmit((d) => assignMutation.mutate({ id: assignId, data: d }))} className="space-y-4">
-          <Input label="Employee ID" {...register('employeeId', { required: t('common.required') })} />
+          <Input label={t('employee.id')} {...register('employeeId', { required: t('common.required') })} />
           <div className="flex justify-end gap-3">
             <Button type="button" variant="secondary" onClick={() => setAssignId(null)}>{t('common.cancel')}</Button>
-            <Button type="submit" disabled={isSubmitting}>Assign</Button>
+            <Button type="submit" disabled={isSubmitting}>{t('asset.assign')}</Button>
           </div>
         </form>
       </Modal>
 
-      <ConfirmDialog open={!!returnConfirmId} message="Return this asset?" onConfirm={() => returnMutation.mutate(returnConfirmId)} onCancel={() => setReturnConfirmId(null)} />
+      <ConfirmDialog
+        open={!!returnConfirmId}
+        message={t('asset.returnConfirm')}
+        onConfirm={() => returnMutation.mutate(returnConfirmId)}
+        onCancel={() => setReturnConfirmId(null)}
+      />
     </>
   );
 }

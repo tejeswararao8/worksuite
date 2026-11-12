@@ -67,11 +67,11 @@ export default function SkillsPage() {
       {/* Employee search */}
       <div className="bg-white rounded-xl border border-slate-200 p-4 flex gap-3 items-end">
         <div className="flex-1">
-          <label className="text-sm font-medium text-slate-700 block mb-1">Employee ID</label>
+          <label className="text-sm font-medium text-slate-700 block mb-1">{t('employee.id')}</label>
           <input className="border border-slate-300 rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            value={empId} onChange={(e) => setEmpId(e.target.value)} placeholder="Enter employee UUID..." />
+            value={empId} onChange={(e) => setEmpId(e.target.value)} placeholder={t('employee.idPlaceholder')} />
         </div>
-        <Button onClick={() => setActiveEmpId(empId)} disabled={!empId}><Search size={16} /> Load</Button>
+        <Button onClick={() => setActiveEmpId(empId)} disabled={!empId}><Search size={16} /> {t('common.load')}</Button>
       </div>
 
       {activeEmpId && (
@@ -79,7 +79,7 @@ export default function SkillsPage() {
           {/* Skills */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-700">{t('skills.entity')}s</h3>
+              <h3 className="text-sm font-semibold text-slate-700">{t('skills.skillsTitle')}</h3>
               <Button size="sm" onClick={() => setSkillModal(true)}><Plus size={14} /> {t('common.add')}</Button>
             </div>
             <Table columns={skillColumns} data={skills} loading={loadingSkills} />
@@ -88,7 +88,7 @@ export default function SkillsPage() {
           {/* Certifications */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-700">{t('skills.certEntity')}s</h3>
+              <h3 className="text-sm font-semibold text-slate-700">{t('skills.certsTitle')}</h3>
               <Button size="sm" onClick={() => setCertModal(true)}><Plus size={14} /> {t('common.add')}</Button>
             </div>
             <Table columns={certColumns} data={certs} loading={loadingCerts} />
