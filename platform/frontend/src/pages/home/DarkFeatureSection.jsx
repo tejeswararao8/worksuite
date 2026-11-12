@@ -1,80 +1,76 @@
+import { useTranslation } from 'react-i18next';
+import { BarChart2, Lock, Globe, Zap } from 'lucide-react';
+
+const BENEFIT_ICONS = [BarChart2, Lock, Globe, Zap];
+
 export default function DarkFeatureSection() {
+  const { t } = useTranslation();
+
   const benefits = [
-    { icon: '📊', title: 'Real-time Analytics', desc: 'Live dashboards with HR metrics, trends, and actionable insights.' },
-    { icon: '🔒', title: 'Enterprise Security', desc: 'Role-based access, audit logs, and SOC 2 compliant data handling.' },
-    { icon: '🌐', title: 'Multi-location Support', desc: 'Manage teams across branches, cities, and time zones seamlessly.' },
-    { icon: '⚡', title: 'Workflow Automation', desc: 'Automate approvals, reminders, and repetitive HR tasks.' },
+    { icon: BENEFIT_ICONS[0], key: 'analytics' },
+    { icon: BENEFIT_ICONS[1], key: 'security' },
+    { icon: BENEFIT_ICONS[2], key: 'multiLocation' },
+    { icon: BENEFIT_ICONS[3], key: 'automation' },
   ];
 
   return (
-    <section id="solutions" className="py-24 bg-[#14213D]">
+    <section id="features" className="py-24 bg-[#14213D]">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text */}
           <div>
             <p className="text-sm font-semibold text-indigo-300 uppercase tracking-widest mb-3">
-              Unified Platform
+              {t('home.platform.eyebrow')}
             </p>
             <h2 className="text-3xl md:text-4xl font-black tracking-tight text-white mb-5">
-              Everything in sync.<br />Everyone empowered.
+              {t('home.platform.heading')}
             </h2>
             <p className="text-base text-slate-300 leading-relaxed mb-10">
-              WorkSuite connects every HR function into one intelligent platform — so your data, your team, and your decisions are always aligned.
+              {t('home.platform.description')}
             </p>
             <div className="grid sm:grid-cols-2 gap-5">
-              {benefits.map((b) => (
-                <div key={b.title} className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-900/60 flex items-center justify-center text-xl flex-shrink-0">
-                    {b.icon}
+              {benefits.map(({ icon: Icon, key }) => (
+                <div key={key} className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-900/60 flex items-center justify-center flex-shrink-0">
+                    <Icon size={18} className="text-indigo-300" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white mb-1">{b.title}</p>
-                    <p className="text-xs text-slate-400 leading-relaxed">{b.desc}</p>
+                    <p className="text-sm font-bold text-white mb-1">{t(`home.platform.${key}.title`)}</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">{t(`home.platform.${key}.desc`)}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Analytics preview */}
+          {/* Analytics preview — illustrative demo data */}
           <div className="relative">
             <div className="absolute -top-8 -right-8 w-48 h-48 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
             <div className="relative rounded-2xl bg-[#1E2D4A] border border-white/10 shadow-2xl overflow-hidden">
-              {/* Top bar */}
               <div className="px-5 py-4 border-b border-white/10">
-                <p className="text-xs text-slate-400 font-medium">HR Analytics</p>
-                <p className="text-sm font-bold text-white">Company Overview</p>
+                <p className="text-xs text-slate-400 font-medium">{t('home.platform.previewLabel')}</p>
+                <p className="text-sm font-bold text-white">{t('home.platform.previewTitle')}</p>
               </div>
-
-              {/* KPI row */}
               <div className="px-5 py-4 grid grid-cols-2 gap-3 border-b border-white/10">
                 {[
-                  { label: 'Headcount Growth', value: '+18.4%', sub: 'vs last year' },
-                  { label: 'Retention Rate', value: '94.2%', sub: 'rolling 12 months' },
-                  { label: 'Avg. Time to Hire', value: '18 days', sub: '-3 days vs target' },
-                  { label: 'eNPS Score', value: '72', sub: 'Excellent' },
+                  { labelKey: 'home.platform.kpi1Label', value: '+18.4%', subKey: 'home.platform.kpi1Sub' },
+                  { labelKey: 'home.platform.kpi2Label', value: '94.2%',  subKey: 'home.platform.kpi2Sub' },
+                  { labelKey: 'home.platform.kpi3Label', value: '18d',    subKey: 'home.platform.kpi3Sub' },
+                  { labelKey: 'home.platform.kpi4Label', value: '72',     subKey: 'home.platform.kpi4Sub' },
                 ].map((k) => (
-                  <div key={k.label} className="bg-white/5 rounded-xl p-3">
-                    <p className="text-[10px] text-slate-400 mb-1">{k.label}</p>
+                  <div key={k.labelKey} className="bg-white/5 rounded-xl p-3">
+                    <p className="text-[10px] text-slate-400 mb-1">{t(k.labelKey)}</p>
                     <p className="text-base font-black text-indigo-300">{k.value}</p>
-                    <p className="text-[9px] text-slate-500 mt-0.5">{k.sub}</p>
+                    <p className="text-[9px] text-slate-500 mt-0.5">{t(k.subKey)}</p>
                   </div>
                 ))}
               </div>
-
-              {/* Trend chart */}
               <div className="px-5 py-4">
-                <p className="text-xs font-semibold text-slate-300 mb-3">Headcount Trend</p>
+                <p className="text-xs font-semibold text-slate-300 mb-1">{t('home.platform.trendLabel')}</p>
+                <p className="text-[9px] text-slate-500 mb-3 italic">{t('home.platform.demoNote')}</p>
                 <div className="flex items-end gap-1.5 h-16">
-                  {[820, 870, 910, 950, 980, 1020, 1080, 1120, 1160, 1200, 1230, 1248].map((v, i) => (
-                    <div
-                      key={i}
-                      className="flex-1 rounded-t-sm"
-                      style={{
-                        height: `${((v - 800) / 500) * 100}%`,
-                        background: i === 11 ? '#818CF8' : 'rgba(129,140,248,0.3)',
-                      }}
-                    />
+                  {[820,870,910,950,980,1020,1080,1120,1160,1200,1230,1248].map((v, i) => (
+                    <div key={i} className="flex-1 rounded-t-sm" style={{ height: `${((v-800)/500)*100}%`, background: i === 11 ? '#818CF8' : 'rgba(129,140,248,0.3)' }} />
                   ))}
                 </div>
                 <div className="flex justify-between mt-1">

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import HomeNavbar from './home/HomeNavbar';
 import HeroSection from './home/HeroSection';
 import JourneySection from './home/JourneySection';
@@ -10,10 +11,14 @@ import RecruitmentPreview from './home/RecruitmentPreview';
 import PerformancePreview from './home/PerformancePreview';
 import DarkFeatureSection from './home/DarkFeatureSection';
 import BenefitsSection from './home/BenefitsSection';
+import ServicesSection from './home/ServicesSection';
+import MultiTenantSection from './home/MultiTenantSection';
 import CtaSection from './home/CtaSection';
 import HomeFooter from './home/HomeFooter';
 
 export default function HomePage() {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-white text-[#172033]">
       <HomeNavbar />
@@ -23,14 +28,14 @@ export default function HomePage() {
       {/* Employee Management */}
       <FeatureSection
         id="employee-management"
-        eyebrow="Employee Management"
-        heading="Every person. One place."
-        description="Maintain rich employee profiles, org charts, and a searchable directory. Everything from personal details to employment history — organized and accessible."
+        eyebrow={t('home.feature.emp.eyebrow')}
+        heading={t('home.feature.emp.heading')}
+        description={t('home.feature.emp.description')}
         bullets={[
-          'Centralized employee profiles with full history',
-          'Org chart and department hierarchy',
-          'Searchable employee directory',
-          'Document storage and management',
+          t('home.feature.emp.b1'),
+          t('home.feature.emp.b2'),
+          t('home.feature.emp.b3'),
+          t('home.feature.emp.b4'),
         ]}
         preview={<EmployeeManagementPreview />}
       />
@@ -38,14 +43,14 @@ export default function HomePage() {
       {/* Attendance */}
       <FeatureSection
         id="attendance"
-        eyebrow="Attendance Management"
-        heading="Time well tracked. Days well spent."
-        description="Real-time attendance monitoring with check-in/check-out, shift scheduling, and detailed analytics to keep your workforce on track."
+        eyebrow={t('home.feature.attendance.eyebrow')}
+        heading={t('home.feature.attendance.heading')}
+        description={t('home.feature.attendance.description')}
         bullets={[
-          'Real-time check-in and check-out tracking',
-          'Shift management and scheduling',
-          'Weekly and monthly attendance reports',
-          'Late arrival and overtime alerts',
+          t('home.feature.attendance.b1'),
+          t('home.feature.attendance.b2'),
+          t('home.feature.attendance.b3'),
+          t('home.feature.attendance.b4'),
         ]}
         preview={<AttendancePreview />}
         reverse
@@ -54,14 +59,14 @@ export default function HomePage() {
       {/* Leave */}
       <FeatureSection
         id="leave"
-        eyebrow="Leave Management"
-        heading="Less paperwork. More peace of mind."
-        description="Simplify leave requests, approvals, and balance tracking. Give employees visibility into their entitlements and managers a clear view of team availability."
+        eyebrow={t('home.feature.leave.eyebrow')}
+        heading={t('home.feature.leave.heading')}
+        description={t('home.feature.leave.description')}
         bullets={[
-          'One-click leave applications',
-          'Configurable leave types and policies',
-          'Manager approval workflows',
-          'Team leave calendar view',
+          t('home.feature.leave.b1'),
+          t('home.feature.leave.b2'),
+          t('home.feature.leave.b3'),
+          t('home.feature.leave.b4'),
         ]}
         preview={<LeavePreview />}
       />
@@ -69,14 +74,14 @@ export default function HomePage() {
       {/* Payroll */}
       <FeatureSection
         id="payroll"
-        eyebrow="Payroll Management"
-        heading="From people data to payday."
-        description="Automate salary calculations, manage deductions, and generate payslips — all from the same platform where your employee data lives."
+        eyebrow={t('home.feature.payroll.eyebrow')}
+        heading={t('home.feature.payroll.heading')}
+        description={t('home.feature.payroll.description')}
         bullets={[
-          'Automated salary and deduction calculations',
-          'Payslip generation and distribution',
-          'Tax and compliance management',
-          'Payroll summary and audit reports',
+          t('home.feature.payroll.b1'),
+          t('home.feature.payroll.b2'),
+          t('home.feature.payroll.b3'),
+          t('home.feature.payroll.b4'),
         ]}
         preview={<PayrollPreview />}
         reverse
@@ -85,14 +90,14 @@ export default function HomePage() {
       {/* Recruitment */}
       <FeatureSection
         id="recruitment"
-        eyebrow="Recruitment"
-        heading="Great teams start with a great hello."
-        description="Manage job postings, track candidates through the pipeline, and coordinate interviews — all in one place so you never lose a great hire."
+        eyebrow={t('home.feature.recruitment.eyebrow')}
+        heading={t('home.feature.recruitment.heading')}
+        description={t('home.feature.recruitment.description')}
         bullets={[
-          'Job posting and applicant tracking',
-          'Visual candidate pipeline',
-          'Interview scheduling and feedback',
-          'Offer letter management',
+          t('home.feature.recruitment.b1'),
+          t('home.feature.recruitment.b2'),
+          t('home.feature.recruitment.b3'),
+          t('home.feature.recruitment.b4'),
         ]}
         preview={<RecruitmentPreview />}
       />
@@ -100,14 +105,14 @@ export default function HomePage() {
       {/* Performance */}
       <FeatureSection
         id="performance"
-        eyebrow="Performance Management"
-        heading="Make growth part of the everyday."
-        description="Set goals, run review cycles, and track employee growth with structured performance management that keeps everyone aligned and motivated."
+        eyebrow={t('home.feature.performance.eyebrow')}
+        heading={t('home.feature.performance.heading')}
+        description={t('home.feature.performance.description')}
         bullets={[
-          'Goal setting and OKR tracking',
-          '360° feedback and peer reviews',
-          'Performance score analytics',
-          'Growth plans and development tracking',
+          t('home.feature.performance.b1'),
+          t('home.feature.performance.b2'),
+          t('home.feature.performance.b3'),
+          t('home.feature.performance.b4'),
         ]}
         preview={<PerformancePreview />}
         reverse
@@ -115,6 +120,8 @@ export default function HomePage() {
 
       <DarkFeatureSection />
       <BenefitsSection />
+      <ServicesSection />
+      <MultiTenantSection />
       <CtaSection />
       <HomeFooter />
     </div>

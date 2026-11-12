@@ -382,5 +382,207 @@
     "assets":             "Assets Report",
     "format":             "Format",
     "generate":           "Generate"
+  },
+  "home": {
+    "nav": {
+      "features":  "Features",
+      "modules":   "Modules",
+      "services":  "Services",
+      "audiences": "Solutions",
+      "about":     "About",
+      "login":     "Login",
+      "getStarted":"Get Started",
+      "openMenu":  "Open menu"
+    },
+    "hero": {
+      "badge":        "Enterprise HR Platform",
+      "headline1":    "One Platform.",
+      "headline2":    "Complete Workforce Management.",
+      "description":  "WorkSuite HRMS simplifies HR operations across your organization — manage employees, departments, assets, documents, transfers, and more in one unified platform.",
+      "ctaPrimary":   "Get Started",
+      "ctaSecondary": "Explore Features",
+      "statsNote":    "Illustrative demo figures",
+      "stat1Value":   "20+ Modules",
+      "stat1Label":   "Built-in HR modules",
+      "stat2Value":   "Multi-tenant",
+      "stat2Label":   "Isolated workspaces",
+      "stat3Value":   "3 Languages",
+      "stat3Label":   "EN · HI · AR with RTL"
+    },
+    "modules": {
+      "eyebrow":     "HRMS Modules",
+      "heading":     "Everything your HR team needs.",
+      "description": "WorkSuite includes these production-ready modules, all accessible from a single platform.",
+      "employees":    { "title": "Employee Management",  "desc": "Centralized profiles, org structure, and employee directory." },
+      "departments":  { "title": "Departments",           "desc": "Organize your workforce into departments with hierarchy." },
+      "branches":     { "title": "Branches",              "desc": "Manage multiple office locations and branches." },
+      "designations": { "title": "Designations",          "desc": "Define job titles and designation levels." },
+      "assets":       { "title": "Asset Management",      "desc": "Track company assets, assignments, and returns." },
+      "documents":    { "title": "Document Management",   "desc": "Store and manage employee documents with expiry tracking." },
+      "transfers":    { "title": "Transfers",              "desc": "Manage inter-department and inter-branch transfers." },
+      "promotions":   { "title": "Promotions",             "desc": "Handle promotion requests with approval workflows." },
+      "onboarding":   { "title": "Onboarding",             "desc": "Structured onboarding checklists for new joiners." },
+      "offboarding":  { "title": "Offboarding",            "desc": "Manage exit processes and last working day workflows." },
+      "skills":       { "title": "Skills & Certifications","desc": "Track employee skills, proficiency, and certifications." },
+      "audit":        { "title": "Audit Logs",             "desc": "Full audit trail of all platform actions and changes." },
+      "reports":      { "title": "Reports & Exports",      "desc": "Export HR data in Excel, CSV, and PDF formats." }
+    },
+    "feature": {
+      "emp": {
+        "eyebrow":     "Employee Management",
+        "heading":     "Every person. One place.",
+        "description": "Maintain rich employee profiles, org charts, and a searchable directory. Everything from personal details to employment history — organized and accessible.",
+        "b1": "Centralized employee profiles with full history",
+        "b2": "Org chart and department hierarchy",
+        "b3": "Searchable employee directory",
+        "b4": "Document storage and management"
+      },
+      "attendance": {
+        "eyebrow":     "Attendance Management",
+        "heading":     "Time well tracked. Days well spent.",
+        "description": "Real-time attendance monitoring with check-in/check-out, shift scheduling, and detailed analytics to keep your workforce on track.",
+        "b1": "Real-time check-in and check-out tracking",
+        "b2": "Shift management and scheduling",
+        "b3": "Weekly and monthly attendance reports",
+        "b4": "Late arrival and overtime alerts"
+      },
+      "leave": {
+        "eyebrow":     "Leave Management",
+        "heading":     "Less paperwork. More peace of mind.",
+        "description": "Simplify leave requests, approvals, and balance tracking. Give employees visibility into their entitlements and managers a clear view of team availability.",
+        "b1": "One-click leave applications",
+        "b2": "Configurable leave types and policies",
+        "b3": "Manager approval workflows",
+        "b4": "Team leave calendar view"
+      },
+      "payroll": {
+        "eyebrow":     "Payroll Management",
+        "heading":     "From people data to payday.",
+        "description": "Automate salary calculations, manage deductions, and generate payslips — all from the same platform where your employee data lives.",
+        "b1": "Automated salary and deduction calculations",
+        "b2": "Payslip generation and distribution",
+        "b3": "Tax and compliance management",
+        "b4": "Payroll summary and audit reports"
+      },
+      "recruitment": {
+        "eyebrow":     "Recruitment",
+        "heading":     "Great teams start with a great hello.",
+        "description": "Manage job postings, track candidates through the pipeline, and coordinate interviews — all in one place so you never lose a great hire.",
+        "b1": "Job posting and applicant tracking",
+        "b2": "Visual candidate pipeline",
+        "b3": "Interview scheduling and feedback",
+        "b4": "Offer letter management"
+      },
+      "performance": {
+        "eyebrow":     "Performance Management",
+        "heading":     "Make growth part of the everyday.",
+        "description": "Set goals, run review cycles, and track employee growth with structured performance management that keeps everyone aligned and motivated.",
+        "b1": "Goal setting and OKR tracking",
+        "b2": "360° feedback and peer reviews",
+        "b3": "Performance score analytics",
+        "b4": "Growth plans and development tracking"
+      }
+    },
+    "platform": {
+      "eyebrow":      "Unified Platform",
+      "heading":      "Everything in sync. Everyone empowered.",
+      "description":  "WorkSuite connects every HR function into one platform — so your data, your team, and your decisions are always aligned.",
+      "analytics":    { "title": "Real-time Analytics",    "desc": "Live dashboards with HR metrics, trends, and actionable insights." },
+      "security":     { "title": "Role-based Access",      "desc": "Granular permissions with role-based access control and audit trails." },
+      "multiLocation":{ "title": "Multi-location Support", "desc": "Manage teams across branches, cities, and time zones seamlessly." },
+      "automation":   { "title": "Workflow Automation",    "desc": "Automate approvals, reminders, and repetitive HR tasks." },
+      "previewLabel": "HR Analytics",
+      "previewTitle": "Company Overview",
+      "kpi1Label":    "Headcount Growth",
+      "kpi1Sub":      "vs last year",
+      "kpi2Label":    "Retention Rate",
+      "kpi2Sub":      "rolling 12 months",
+      "kpi3Label":    "Avg. Time to Hire",
+      "kpi3Sub":      "-3 days vs target",
+      "kpi4Label":    "eNPS Score",
+      "kpi4Sub":      "Excellent",
+      "trendLabel":   "Headcount Trend",
+      "demoNote":     "Illustrative demo data"
+    },
+    "audiences": {
+      "eyebrow":     "Two Audiences. One Platform.",
+      "heading":     "Built for organizations and platform teams.",
+      "description": "WorkSuite serves both the organizations that use it to manage their workforce, and the platform teams responsible for onboarding and supporting those organizations.",
+      "org": {
+        "label":       "For Organizations",
+        "heading":     "Manage your entire workforce in one place.",
+        "description": "HR teams and managers use WorkSuite to handle day-to-day HR operations across the employee lifecycle.",
+        "emp":         "Employee management and profiles",
+        "attendance":  "Attendance and leave tracking",
+        "payroll":     "Payroll and HR operations",
+        "onboarding":  "Recruitment and onboarding",
+        "reports":     "Reports and analytics"
+      },
+      "platform": {
+        "label":         "For Platform Teams",
+        "heading":       "Onboard and support organizations at scale.",
+        "description":   "Platform service teams use WorkSuite to manage customer tenants, subscriptions, and implementation services.",
+        "onboarding":    "Customer onboarding and setup",
+        "tenant":        "Tenant management and configuration",
+        "subscription":  "Subscription and billing management",
+        "implementation":"Implementation and customization services",
+        "support":       "Technical support and issue resolution"
+      }
+    },
+    "services": {
+      "eyebrow":     "Platform Services",
+      "heading":     "We help you get up and running.",
+      "description": "Our platform team provides the services needed to configure, deploy, and support WorkSuite for your organization.",
+      "implementation": { "title": "Implementation",          "desc": "End-to-end setup and configuration of WorkSuite for your organization." },
+      "configuration":  { "title": "Configuration",           "desc": "Customize modules, roles, and workflows to match your HR processes." },
+      "empOnboarding":  { "title": "Employee Onboarding Support","desc": "Guided onboarding setup to get your team productive from day one." },
+      "support":        { "title": "Technical Support",        "desc": "Ongoing technical assistance for platform issues and questions." },
+      "dataMigration":  { "title": "Data Migration",           "desc": "Assistance migrating existing HR data into WorkSuite." },
+      "accessControl":  { "title": "Access Control Setup",     "desc": "Configure roles, permissions, and user access for your organization." }
+    },
+    "multiTenant": {
+      "eyebrow":       "Architecture",
+      "heading":       "Built for multi-tenant SaaS.",
+      "description":   "WorkSuite is designed as a multi-tenant platform where each organization operates in its own isolated workspace with separate data and configuration.",
+      "isolation":     { "title": "Tenant Data Isolation",     "desc": "Each organization's data is fully isolated from other tenants." },
+      "rbac":          { "title": "Role-based Access Control", "desc": "Granular permissions ensure users only access what they need." },
+      "workspaces":    { "title": "Separate Workspaces",       "desc": "Each organization gets its own dedicated workspace and configuration." },
+      "admin":         { "title": "Centralized Administration","desc": "Platform admins manage all tenants from a central administration interface." },
+      "diagramTitle":  "Platform Architecture",
+      "platformLayer": "WorkSuite Platform",
+      "orgLabel":      "Org",
+      "isolatedData":  "Isolated data",
+      "dataLayer":     "Isolated Data Layer",
+      "dataLayerDesc": "Each tenant's data is stored and accessed independently"
+    },
+    "cta": {
+      "badge":       "Get Started Today",
+      "heading":     "Ready to simplify your HR operations?",
+      "description": "Contact us to explore WorkSuite HRMS and see how it can work for your organization.",
+      "primary":     "Sign In to Platform",
+      "secondary":   "Explore Features",
+      "note":        "Reach out to our team to get your organization onboarded."
+    },
+    "footer": {
+      "brandDesc":      "Multi-tenant HRMS platform for modern organizations.",
+      "learnMore":      "Learn More",
+      "colProduct":     "Modules",
+      "colPlatform":    "Platform",
+      "colServices":    "Services",
+      "colLogin":       "Access",
+      "employees":      "Employee Management",
+      "departments":    "Departments",
+      "assets":         "Asset Management",
+      "documents":      "Documents",
+      "reports":        "Reports",
+      "multiTenant":    "Multi-tenant Architecture",
+      "rbac":           "Role-based Access",
+      "audit":          "Audit Logs",
+      "implementation": "Implementation",
+      "configuration":  "Configuration",
+      "techSupport":    "Technical Support",
+      "rights":         "All rights reserved.",
+      "backToTop":      "Back to top"
+    }
   }
 }
