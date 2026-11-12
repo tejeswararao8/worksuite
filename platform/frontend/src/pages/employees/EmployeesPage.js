@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useEmployees } from '../../hooks/useEmployees';
@@ -25,17 +25,18 @@ export default function EmployeesPage() {
 
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm();
 
-  const openCreate = () => { setEditing(null); reset({}); setModalOpen(true); };
-  const openEdit   = (emp) => { setEditing(emp); reset(emp); setModalOpen(true); };
-  const closeModal = () => { setModalOpen(false); setEditing(null); reset({}); };
+  const openCreate = useCallback(() => { setEditing(null); reset({}); setModalOpen(true); }, [reset]);
+  const openEdit   = useCallback((emp) => { setEditing(emp); reset(emp); setModalOpen(true); }, [reset]);
+  const closeModal = useCallback(() => { setModalOpen(false); setEditing(null); reset({}); }, [reset]);
 
-  const onSubmit = (formData) => {
+  const onSubmit = useCallback((formData) => {
     const mutation = editing ? updateMutation : createMutation;
     const payload  = editing ? { id: editing.id, data: formData } : formData;
     mutation.mutate(payload, { onSuccess: closeModal });
-  };
+  }, [editing, updateMutation, createMutation, closeModal]);
 
-  const columns = [
+  // Memoize columns — only rebuilds when translations or stable callbacks change.
+  const columns = useMemo(() => [
     { key: 'employeeCode',     label: t('employee.code') },
     { key: 'name',             label: t('common.name'), render: (r) => `${r.firstName} ${r.lastName}` },
     { key: 'email',            label: t('employee.email') },
@@ -50,7 +51,7 @@ export default function EmployeesPage() {
         </div>
       ),
     },
-  ];
+  ], [t, openEdit]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="space-y-4">

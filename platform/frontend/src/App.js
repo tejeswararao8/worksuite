@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
@@ -5,41 +6,58 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import AppLayout from './components/layout/AppLayout';
 import { ROUTES } from './constants/routes';
-import { ErrorBoundary } from './components/ui';
+import { ErrorBoundary, PageLoader } from './components/ui';
 
-import HomePage from './pages/HomePage';
+// ─── Eagerly loaded — auth-critical, tiny, always needed ─────────────────────
+import HomePage  from './pages/HomePage';
 import LoginPage from './pages/auth/LoginPage';
-import DashboardPage from './pages/dashboard/DashboardPage';
-import EmployeesPage from './pages/employees/EmployeesPage';
-import DepartmentsPage from './pages/departments/DepartmentsPage';
-import BranchesPage from './pages/branches/BranchesPage';
-import DesignationsPage from './pages/designations/DesignationsPage';
-import TeamsPage from './pages/teams/TeamsPage';
-import CompanyPage from './pages/company/CompanyPage';
-import AssetsPage from './pages/assets/AssetsPage';
-import DocumentsPage from './pages/documents/DocumentsPage';
-import TransfersPage from './pages/transfers/TransfersPage';
-import PromotionsPage from './pages/promotions/PromotionsPage';
-import ProbationPage from './pages/probation/ProbationPage';
-import OnboardingPage from './pages/onboarding/OnboardingPage';
-import OffboardingPage from './pages/offboarding/OffboardingPage';
-import SkillsPage from './pages/skills/SkillsPage';
-import UsersPage from './pages/users/UsersPage';
-import NotificationsPage from './pages/notifications/NotificationsPage';
-import ReportsPage from './pages/reports/ReportsPage';
-import RolesPage from './pages/roles/RolesPage';
-import AuditPage from './pages/audit/AuditPage';
-import ProfilePage from './pages/profile/ProfilePage';
 
+// ─── Lazy-loaded dashboard pages ─────────────────────────────────────────────
+const DashboardPage    = lazy(() => import('./pages/dashboard/DashboardPage'));
+const EmployeesPage    = lazy(() => import('./pages/employees/EmployeesPage'));
+const DepartmentsPage  = lazy(() => import('./pages/departments/DepartmentsPage'));
+const BranchesPage     = lazy(() => import('./pages/branches/BranchesPage'));
+const DesignationsPage = lazy(() => import('./pages/designations/DesignationsPage'));
+const TeamsPage        = lazy(() => import('./pages/teams/TeamsPage'));
+const CompanyPage      = lazy(() => import('./pages/company/CompanyPage'));
+const AssetsPage       = lazy(() => import('./pages/assets/AssetsPage'));
+const DocumentsPage    = lazy(() => import('./pages/documents/DocumentsPage'));
+const TransfersPage    = lazy(() => import('./pages/transfers/TransfersPage'));
+const PromotionsPage   = lazy(() => import('./pages/promotions/PromotionsPage'));
+const ProbationPage    = lazy(() => import('./pages/probation/ProbationPage'));
+const OnboardingPage   = lazy(() => import('./pages/onboarding/OnboardingPage'));
+const OffboardingPage  = lazy(() => import('./pages/offboarding/OffboardingPage'));
+const SkillsPage       = lazy(() => import('./pages/skills/SkillsPage'));
+const UsersPage        = lazy(() => import('./pages/users/UsersPage'));
+const NotificationsPage = lazy(() => import('./pages/notifications/NotificationsPage'));
+const ReportsPage      = lazy(() => import('./pages/reports/ReportsPage'));
+const RolesPage        = lazy(() => import('./pages/roles/RolesPage'));
+const AuditPage        = lazy(() => import('./pages/audit/AuditPage'));
+const ProfilePage      = lazy(() => import('./pages/profile/ProfilePage'));
+
+// ─── QueryClient ─────────────────────────────────────────────────────────────
+// Tiered stale-time strategy:
+//   • Default (60 s)  — most paginated lists; fresh enough, avoids hammering.
+//   • Reference data  — handled per-query in useReferenceData (5 min).
+//   • Notifications   — handled per-query in useNotifications (poll 30 s).
+//   • Dashboard       — inherits default; charts are not real-time critical.
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: 1, staleTime: 60000 } },
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 60_000,        // 60 s global default
+      refetchOnWindowFocus: false, // prevents surprise refetches on tab switch
+    },
+  },
 });
 
+// ─── Protected route ─────────────────────────────────────────────────────────
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? children : <Navigate to={ROUTES.LOGIN} replace />;
 }
 
+// ─── Routes ──────────────────────────────────────────────────────────────────
 function AppRoutes() {
   return (
     <Routes>
@@ -50,31 +68,38 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <AppLayout>
-              <Routes>
-                <Route index element={<DashboardPage />} />
-                <Route path="employees" element={<EmployeesPage />} />
-                <Route path="employees/:id" element={<DashboardPage />} />
-                <Route path="departments" element={<DepartmentsPage />} />
-                <Route path="branches" element={<BranchesPage />} />
-                <Route path="designations" element={<DesignationsPage />} />
-                <Route path="teams" element={<TeamsPage />} />
-                <Route path="company" element={<CompanyPage />} />
-                <Route path="assets" element={<AssetsPage />} />
-                <Route path="documents" element={<DocumentsPage />} />
-                <Route path="transfers" element={<TransfersPage />} />
-                <Route path="promotions" element={<PromotionsPage />} />
-                <Route path="probation" element={<ProbationPage />} />
-                <Route path="onboarding" element={<OnboardingPage />} />
-                <Route path="offboarding" element={<OffboardingPage />} />
-                <Route path="skills" element={<SkillsPage />} />
-                <Route path="users" element={<UsersPage />} />
-                <Route path="notifications" element={<NotificationsPage />} />
-                <Route path="reports" element={<ReportsPage />} />
-                <Route path="roles" element={<RolesPage />} />
-                <Route path="audit" element={<AuditPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+              {/* Single Suspense boundary wraps all lazy dashboard pages.
+                  ErrorBoundary catches lazy-import network failures and
+                  renders a retry button — no stack trace exposed. */}
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route index                    element={<DashboardPage />} />
+                    <Route path="employees"         element={<EmployeesPage />} />
+                    <Route path="employees/:id"     element={<DashboardPage />} />
+                    <Route path="departments"       element={<DepartmentsPage />} />
+                    <Route path="branches"          element={<BranchesPage />} />
+                    <Route path="designations"      element={<DesignationsPage />} />
+                    <Route path="teams"             element={<TeamsPage />} />
+                    <Route path="company"           element={<CompanyPage />} />
+                    <Route path="assets"            element={<AssetsPage />} />
+                    <Route path="documents"         element={<DocumentsPage />} />
+                    <Route path="transfers"         element={<TransfersPage />} />
+                    <Route path="promotions"        element={<PromotionsPage />} />
+                    <Route path="probation"         element={<ProbationPage />} />
+                    <Route path="onboarding"        element={<OnboardingPage />} />
+                    <Route path="offboarding"       element={<OffboardingPage />} />
+                    <Route path="skills"            element={<SkillsPage />} />
+                    <Route path="users"             element={<UsersPage />} />
+                    <Route path="notifications"     element={<NotificationsPage />} />
+                    <Route path="reports"           element={<ReportsPage />} />
+                    <Route path="roles"             element={<RolesPage />} />
+                    <Route path="audit"             element={<AuditPage />} />
+                    <Route path="profile"           element={<ProfilePage />} />
+                    <Route path="*"                 element={<Navigate to="/" replace />} />
+                  </Routes>
+                </Suspense>
+              </ErrorBoundary>
             </AppLayout>
           </ProtectedRoute>
         }
@@ -84,6 +109,7 @@ function AppRoutes() {
   );
 }
 
+// ─── App root ─────────────────────────────────────────────────────────────────
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>

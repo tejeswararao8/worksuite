@@ -19,3 +19,4 @@ export { EmptyState }                                from './EmptyState';
 export { PageHeader }                                from './PageHeader';
 export { Breadcrumbs }                               from './Breadcrumbs';
 export { ErrorBoundary }                             from './ErrorBoundary';
+export { PageLoader }                                from './PageLoader';

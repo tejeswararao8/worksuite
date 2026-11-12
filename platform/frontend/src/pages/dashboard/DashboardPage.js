@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDashboard } from '../../hooks/useDashboard';
 import { StatCard, Spinner } from '../../components/ui';
@@ -32,10 +33,11 @@ export default function DashboardPage() {
   const { t } = useTranslation();
   const { summary: s, deptChart, branchChart, trend, docAlerts, assetUtil, isLoading } = useDashboard();
 
-  const chartDept   = deptChart.length   ? deptChart   : MOCK_DEPT;
-  const chartBranch = branchChart.length ? branchChart : MOCK_BRANCH;
-  const chartTrend  = trend.length       ? trend       : MOCK_TREND;
-  const chartAssets = assetUtil.length   ? assetUtil   : MOCK_ASSETS;
+  // Memoize chart data — only recomputes when API data actually changes.
+  const chartDept   = useMemo(() => deptChart.length   ? deptChart   : MOCK_DEPT,   [deptChart]);
+  const chartBranch = useMemo(() => branchChart.length ? branchChart : MOCK_BRANCH, [branchChart]);
+  const chartTrend  = useMemo(() => trend.length       ? trend       : MOCK_TREND,  [trend]);
+  const chartAssets = useMemo(() => assetUtil.length   ? assetUtil   : MOCK_ASSETS, [assetUtil]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-64"><Spinner size="lg" /></div>;

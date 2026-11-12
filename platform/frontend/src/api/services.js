@@ -224,17 +224,24 @@ export const notificationApi = {
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 export const dashboardApi = {
-  getStats: () => api.get('/hr/dashboard/stats'),
+  getSummary:              () => api.get('/hr/dashboard/summary'),
+  headcountByDepartment:   () => api.get('/hr/dashboard/headcount/department'),
+  headcountByBranch:       () => api.get('/hr/dashboard/headcount/branch'),
+  joiningTrend:            () => api.get('/hr/dashboard/joining-trend'),
+  documentExpiryAlerts:    () => api.get('/hr/dashboard/document-expiry-alerts'),
+  assetUtilization:        () => api.get('/hr/dashboard/asset-utilization'),
 };
 
 // ─── Reports ──────────────────────────────────────────────────────────────────
 export const reportApi = {
-  employees:    (params) => api.get('/hr/reports/employees',    { params, responseType: 'blob' }),
-  departments:  (params) => api.get('/hr/reports/departments',  { params, responseType: 'blob' }),
-  branches:     (params) => api.get('/hr/reports/branches',     { params, responseType: 'blob' }),
-  assets:       (params) => api.get('/hr/reports/assets',       { params, responseType: 'blob' }),
-  transfers:    (params) => api.get('/hr/reports/transfers',    { params, responseType: 'blob' }),
-  promotions:   (params) => api.get('/hr/reports/promotions',   { params, responseType: 'blob' }),
+  employees:      (params) => api.get('/hr/reports/employees',      { params, responseType: 'blob' }),
+  departments:    (params) => api.get('/hr/reports/departments',    { params, responseType: 'blob' }),
+  branches:       (params) => api.get('/hr/reports/branches',       { params, responseType: 'blob' }),
+  designations:   (params) => api.get('/hr/reports/designations',   { params, responseType: 'blob' }),
+  assets:         (params) => api.get('/hr/reports/assets',         { params, responseType: 'blob' }),
+  transfers:      (params) => api.get('/hr/reports/transfers',      { params, responseType: 'blob' }),
+  promotions:     (params) => api.get('/hr/reports/promotions',     { params, responseType: 'blob' }),
+  documentExpiry: (params) => api.get('/hr/reports/document-expiry', { params, responseType: 'blob' }),
 };
 
 // ─── Company ──────────────────────────────────────────────────────────────────
