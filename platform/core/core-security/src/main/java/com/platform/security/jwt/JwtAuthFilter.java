@@ -4,6 +4,7 @@ import com.platform.tenancy.TenantContext;
 import com.platform.tenancy.TenantInterceptor;
 import com.platform.tenancy.TenantSecurityException;
 import com.platform.tenancy.TenantSecurityService;
+import com.platform.tenancy.membership.MembershipValidationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,6 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtDecoder jwtDecoder;
     private final JwtAuthenticationConverter jwtAuthenticationConverter;
     private final TenantSecurityService tenantSecurityService;
+    private final MembershipValidationService membershipValidationService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -66,12 +68,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 String email     = jwt.getClaimAsString("email");
 
                 // 4. Validate the tenant against the database.
-                //    This rejects suspended, cancelled, or non-existent tenants.
-                //    Requests without a companyId (e.g. platform admin tokens that
-                //    pre-date the claim) are allowed through without a tenant context;
-                //    they must rely on platform-role @PreAuthorize guards.
+                //    Gate 1: tenant must exist and be ACTIVE.
+                //    Gate 2: user must have an ACTIVE membership in that tenant.
+                //    Platform users (PLATFORM_TENANT_ID) bypass membership checks.
+                //    Requests without a companyId are allowed through without a tenant
+                //    context; downstream @PreAuthorize guards enforce access.
                 if (companyId != null) {
                     tenantSecurityService.validateActiveTenant(companyId);
+                    membershipValidationService.validateActiveMembership(userId, companyId);
                     TenantContext.setTenantId(companyId);
                     request.setAttribute(TenantInterceptor.TENANT_ATTRIBUTE, companyId);
                 }
