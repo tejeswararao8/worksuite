@@ -157,12 +157,16 @@ public class DepartmentService {
         response.setEmployeeCount(departmentRepository.countActiveEmployeesByDepartmentId(dept.getId()));
         response.setTeamCount(departmentRepository.countActiveTeamsByDepartmentId(dept.getId()));
 
+        UUID companyId = dept.getCompanyId();
+
         if (dept.getParentDepartmentId() != null) {
-            departmentRepository.findById(dept.getParentDepartmentId())
+            // Scope parent lookup to same tenant
+            departmentRepository.findByIdAndCompanyIdAndIsActiveTrue(dept.getParentDepartmentId(), companyId)
                 .ifPresent(p -> response.setParentDepartmentName(p.getName()));
         }
         if (dept.getHeadEmployeeId() != null) {
-            employeeRepository.findById(dept.getHeadEmployeeId())
+            // Scope employee lookup to same tenant — prevents cross-tenant name leakage
+            employeeRepository.findByIdAndCompanyIdAndIsActiveTrue(dept.getHeadEmployeeId(), companyId)
                 .ifPresent(e -> response.setHeadEmployeeName(e.getFirstName() + " " + e.getLastName()));
         }
         return response;
@@ -176,7 +180,8 @@ public class DepartmentService {
         node.setEmployeeCount(departmentRepository.countActiveEmployeesByDepartmentId(dept.getId()));
 
         if (dept.getHeadEmployeeId() != null) {
-            employeeRepository.findById(dept.getHeadEmployeeId())
+            // Scope to same tenant — prevents cross-tenant name leakage in org chart
+            employeeRepository.findByIdAndCompanyIdAndIsActiveTrue(dept.getHeadEmployeeId(), companyId)
                 .ifPresent(e -> node.setHeadEmployeeName(e.getFirstName() + " " + e.getLastName()));
         }
 

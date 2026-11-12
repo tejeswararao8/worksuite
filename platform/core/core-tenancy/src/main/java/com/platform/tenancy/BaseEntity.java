@@ -56,8 +56,16 @@ public abstract class BaseEntity {
 
     @PrePersist
     protected void prePersist() {
-        if (companyId == null && TenantContext.hasTenant()) {
-            companyId = UUID.fromString(TenantContext.getTenantId());
+        if (companyId == null) {
+            if (TenantContext.hasTenant()) {
+                companyId = UUID.fromString(TenantContext.getTenantId());
+            } else {
+                // Fail fast — never silently persist a record without a tenant.
+                // This prevents cross-tenant data leakage from missing context.
+                throw new IllegalStateException(
+                    "companyId is null and TenantContext is empty. " +
+                    "All entities must be associated with a tenant.");
+            }
         }
     }
 }

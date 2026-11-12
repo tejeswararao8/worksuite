@@ -1,6 +1,7 @@
 package com.platform.security.user;
 
 import com.platform.tenancy.TenantContext;
+import com.platform.tenancy.TenantSecurityService;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,12 +25,18 @@ public class UserPrincipal {
 
     // ─────────────────────────────────────────────
     // Get current user ID from Keycloak JWT subject
+    // Returns null if not authenticated or subject is not a valid UUID.
     // ─────────────────────────────────────────────
     public static UUID currentUserId() {
         Jwt jwt = extractJwt();
         if (jwt == null) return null;
         String subject = jwt.getSubject();
-        return subject != null ? UUID.fromString(subject) : null;
+        if (subject == null) return null;
+        try {
+            return UUID.fromString(subject);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -61,10 +68,33 @@ public class UserPrincipal {
     }
 
     // ─────────────────────────────────────────────
-    // Check if current user has a specific role
+    // Check if current user has a specific role.
+    // Keycloak realm roles are stored as plain authority strings
+    // (e.g. "HR_MANAGER"), NOT prefixed with "ROLE_".
+    // The JwtAuthenticationConverter in SecurityConfig maps them directly.
     // ─────────────────────────────────────────────
     public static boolean hasRole(String role) {
-        return currentRoles().contains("ROLE_" + role);
+        return currentRoles().contains(role);
+    }
+
+    // ─────────────────────────────────────────────
+    // Check if current user has any of the given roles.
+    // ─────────────────────────────────────────────
+    public static boolean hasAnyRole(String... roles) {
+        Set<String> current = currentRoles();
+        for (String role : roles) {
+            if (current.contains(role)) return true;
+        }
+        return false;
+    }
+
+    // ─────────────────────────────────────────────
+    // Check if current user is a platform-level user
+    // (companyId == PLATFORM_TENANT_ID).
+    // ─────────────────────────────────────────────
+    public static boolean isPlatformUser() {
+        return TenantSecurityService.isPlatformTenant(
+            TenantContext.getTenantId());
     }
 
     // ─────────────────────────────────────────────

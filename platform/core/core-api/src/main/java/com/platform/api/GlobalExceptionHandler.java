@@ -1,6 +1,7 @@
 package com.platform.api;
 
 import jakarta.validation.ConstraintViolationException;
+import com.platform.tenancy.TenantSecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handlePlatformException(PlatformException ex) {
         log.warn("Platform exception: {}", ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(ApiResponse.error(ex.getMessage()));
+    }
+
+    @ExceptionHandler(TenantSecurityException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTenantSecurity(TenantSecurityException ex) {
+        // Log at WARN — do NOT expose internal details (tenant ID, DB state) to the caller.
+        log.warn("Tenant security violation: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(ApiResponse.error("Access denied"));
     }
 
     @ExceptionHandler(Exception.class)

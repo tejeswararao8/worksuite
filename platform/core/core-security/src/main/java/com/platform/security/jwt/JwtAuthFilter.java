@@ -2,6 +2,8 @@ package com.platform.security.jwt;
 
 import com.platform.tenancy.TenantContext;
 import com.platform.tenancy.TenantInterceptor;
+import com.platform.tenancy.TenantSecurityException;
+import com.platform.tenancy.TenantSecurityService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,8 +24,17 @@ import java.io.IOException;
 
 /**
  * Validates Keycloak JWT on every request.
- * Extracts userId + companyId from Keycloak token claims.
- * Sets SecurityContext and injects tenantId for TenantInterceptor.
+ *
+ * <p>Security improvements over the original:
+ * <ul>
+ *   <li>The {@code companyId} JWT claim is validated against the database via
+ *       {@link TenantSecurityService} before being trusted. A forged or stale
+ *       claim for a suspended/missing tenant is rejected with 403.</li>
+ *   <li>TenantContext is always cleared in the {@code finally} block, even on
+ *       exceptions, preventing thread-pool context leakage.</li>
+ *   <li>Requests without a {@code companyId} claim (platform-level tokens) are
+ *       allowed through — downstream {@code @PreAuthorize} guards enforce access.</li>
+ * </ul>
  */
 @Slf4j
 @Component
@@ -32,6 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtDecoder jwtDecoder;
     private final JwtAuthenticationConverter jwtAuthenticationConverter;
+    private final TenantSecurityService tenantSecurityService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -41,36 +53,54 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (token != null) {
             try {
-                // Decode and validate Keycloak JWT
+                // 1. Decode and cryptographically validate the Keycloak JWT.
                 Jwt jwt = jwtDecoder.decode(token);
 
-                // Extract claims from Keycloak token
-                String userId    = jwt.getSubject();                          // Keycloak user UUID
-                String companyId = jwt.getClaimAsString("companyId");         // Custom claim we add in Keycloak
-                String email     = jwt.getClaimAsString("email");
-
-                // Build Spring Security authentication from JWT
+                // 2. Build Spring Security authentication from JWT claims.
                 Authentication auth = jwtAuthenticationConverter.convert(jwt);
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
-                // Set tenant context directly + request attribute for interceptor
+                // 3. Extract the companyId claim.
+                String companyId = jwt.getClaimAsString("companyId");
+                String userId    = jwt.getSubject();
+                String email     = jwt.getClaimAsString("email");
+
+                // 4. Validate the tenant against the database.
+                //    This rejects suspended, cancelled, or non-existent tenants.
+                //    Requests without a companyId (e.g. platform admin tokens that
+                //    pre-date the claim) are allowed through without a tenant context;
+                //    they must rely on platform-role @PreAuthorize guards.
                 if (companyId != null) {
+                    tenantSecurityService.validateActiveTenant(companyId);
                     TenantContext.setTenantId(companyId);
                     request.setAttribute(TenantInterceptor.TENANT_ATTRIBUTE, companyId);
                 }
+
                 request.setAttribute("userId", userId);
                 request.setAttribute("email", email);
 
-                log.debug("Authenticated user: {} tenant: {}", userId, companyId);
+                log.debug("Authenticated user={} tenant={}", userId, companyId);
+
+            } catch (TenantSecurityException e) {
+                // Tenant is suspended, cancelled, or not found.
+                // Clear any partial context and return 403 immediately.
+                log.warn("Tenant security violation: {}", e.getMessage());
+                SecurityContextHolder.clearContext();
+                TenantContext.clear();
+                response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                        "Access denied: tenant account is not accessible");
+                return;
 
             } catch (JwtException e) {
-                log.debug("Invalid Keycloak JWT: {}", e.getMessage());
+                // Invalid or expired JWT — let Spring Security's 401 handling take over.
+                log.debug("Invalid JWT: {}", e.getMessage());
             }
         }
 
         try {
             chain.doFilter(request, response);
         } finally {
+            // Always clear TenantContext to prevent thread-pool leakage.
             TenantContext.clear();
         }
     }

@@ -6,4 +6,5 @@ com\platform\security\rbac\Role.class
 com\platform\security\user\UserPrincipal.class
 com\platform\security\user\KeycloakUserService.class
 com\platform\security\rbac\Permission.class
+com\platform\security\rbac\PlatformRoles.class
 com\platform\security\SecurityConfig.class

@@ -1,7 +1,9 @@
 package com.platform.security;
 
 import com.platform.security.jwt.JwtAuthFilter;
+import com.platform.security.rbac.PlatformRoles;
 import com.platform.tenancy.TenantInterceptor;
+import com.platform.tenancy.TenantSecurityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -57,10 +59,16 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     private static final String[] PUBLIC_URLS = {
         "/api/v1/auth/**",
-        "/api/v1/tenants/register",
         "/actuator/health",
         "/swagger-ui/**",
         "/v3/api-docs/**"
+    };
+
+    // Tenant registration requires platform admin — not public.
+    // Self-registration must never grant platform privileges.
+    private static final String[] PLATFORM_ADMIN_URLS = {
+        "/api/v1/tenants/register",
+        "/api/v1/tenants/**"
     };
 
     // ─────────────────────────────────────────────
@@ -76,6 +84,12 @@ public class SecurityConfig implements WebMvcConfigurer {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PUBLIC_URLS).permitAll()
+                .requestMatchers(PLATFORM_ADMIN_URLS)
+                    .hasAnyAuthority(
+                        PlatformRoles.PLATFORM_SUPER_ADMIN,
+                        PlatformRoles.PLATFORM_ADMIN,
+                        PlatformRoles.SUPER_ADMIN  // legacy
+                    )
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2

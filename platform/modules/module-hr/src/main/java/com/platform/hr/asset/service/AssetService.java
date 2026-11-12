@@ -158,16 +158,21 @@ public class AssetService {
     @Scheduled(cron = "0 0 9 * * *")
     @Transactional
     public void sendWarrantyReminders() {
-        List<UUID> companyIds = assetRepository.findAll().stream()
-            .map(a -> a.getCompanyId()).distinct().toList();
+        // Use a tenant-scoped query to avoid loading all assets across all tenants
+        // into memory. Fetch only the distinct company IDs that have expiring assets.
+        LocalDate today = LocalDate.now();
+        LocalDate threshold = today.plusDays(30);
+
+        List<UUID> companyIds = assetRepository.findDistinctCompanyIdsWithWarrantyExpiring(
+                today, threshold);
 
         for (UUID companyId : companyIds) {
-            LocalDate today = LocalDate.now();
             List<Asset> expiring = assetRepository.findWarrantyExpiring(
-                companyId, today, today.plusDays(30));
+                    companyId, today, threshold);
             for (Asset asset : expiring) {
-                log.info("Warranty expiring for asset: {} on {}", asset.getAssetCode(), asset.getWarrantyExpiry());
-                // Notify IT admin — in production, look up IT admin by role
+                log.info("Warranty expiring for asset: {} company: {} on {}",
+                        asset.getAssetCode(), companyId, asset.getWarrantyExpiry());
+                // Notify IT admin — in production, look up IT admin by role per tenant
             }
         }
     }

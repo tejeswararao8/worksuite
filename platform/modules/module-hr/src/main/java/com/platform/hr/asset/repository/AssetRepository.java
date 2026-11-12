@@ -33,6 +33,12 @@ public interface AssetRepository extends JpaRepository<Asset, UUID> {
            "AND a.warrantyExpiry IS NOT NULL AND a.warrantyExpiry BETWEEN :from AND :to")
     List<Asset> findWarrantyExpiring(UUID companyId, LocalDate from, LocalDate to);
 
+    /** Returns distinct company IDs that have assets with warranty expiring in the given window.
+     *  Used by the scheduler to avoid a full table scan across all tenants. */
+    @Query("SELECT DISTINCT a.companyId FROM Asset a WHERE a.isActive = true " +
+           "AND a.warrantyExpiry IS NOT NULL AND a.warrantyExpiry BETWEEN :from AND :to")
+    List<UUID> findDistinctCompanyIdsWithWarrantyExpiring(LocalDate from, LocalDate to);
+
     @Query("SELECT COALESCE(MAX(CAST(SUBSTRING(a.assetCode, 4) AS int)), 0) FROM Asset a WHERE a.companyId = :companyId")
     int findMaxAssetCodeSequence(UUID companyId);
 }

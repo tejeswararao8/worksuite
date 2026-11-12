@@ -1,5 +1,7 @@
+com\platform\tenancy\TenantSecurityException.class
 com\platform\tenancy\TenantInterceptor.class
 com\platform\tenancy\Tenant.class
+com\platform\tenancy\TenantSecurityService.class
 com\platform\tenancy\TenantRepository.class
 com\platform\tenancy\Tenant$TenantBuilder.class
 com\platform\tenancy\TenantContext.class
