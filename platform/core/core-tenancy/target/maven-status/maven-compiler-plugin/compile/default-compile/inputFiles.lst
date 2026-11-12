@@ -1,4 +1,8 @@
 D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\BaseEntity.java
+D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\membership\MembershipStatus.java
+D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\membership\MembershipValidationService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\membership\UserTenantMembership.java
+D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\membership\UserTenantMembershipRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\Tenant.java
 D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\TenantContext.java
 D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\java\com\platform\tenancy\TenantException.java
