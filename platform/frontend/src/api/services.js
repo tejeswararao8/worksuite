@@ -268,5 +268,15 @@ export const platformApi = {
   suspendTenant:       (id, data) => api.post(`/platform/tenants/${id}/suspend`, data),
   reactivateTenant:    (id, data) => api.post(`/platform/tenants/${id}/reactivate`, data ?? {}),
   getTenantHistory:    (id)     => api.get(`/platform/tenants/${id}/history`),
+  // Platform employees
   getPlatformEmployees:(params) => api.get('/platform/employees', { params }),
+  getPlatformEmployee: (id)     => api.get(`/platform/employees/${id}`),
+  inviteEmployee:      (data)   => api.post('/platform/employees/invite', data),
+  getInvitations:      (params) => api.get('/platform/employees/invitations', { params }),
+  resendInvitation:    (id)     => api.post(`/platform/employees/invitations/${id}/resend`),
+  revokeInvitation:    (id)     => api.post(`/platform/employees/invitations/${id}/revoke`),
+  changeEmployeeRole:  (id, data) => api.put(`/platform/employees/${id}/role`, data),
+  suspendEmployee:     (id)     => api.post(`/platform/employees/${id}/suspend`),
+  reactivateEmployee:  (id)     => api.post(`/platform/employees/${id}/reactivate`),
+  revokeEmployee:      (id)     => api.post(`/platform/employees/${id}/revoke`),
 };

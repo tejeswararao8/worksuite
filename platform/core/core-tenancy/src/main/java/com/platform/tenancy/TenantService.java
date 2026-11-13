@@ -43,7 +43,10 @@ public class TenantService {
     }
 
     @Transactional
+    @Deprecated(since = "3C.2", forRemoval = true)
     public void suspendTenant(UUID id) {
+        // Legacy method — bypasses state machine and audit trail.
+        // Use TenantManagementService.suspend() for all new code.
         Tenant tenant = getById(id);
         tenant.setStatus(Tenant.TenantStatus.SUSPENDED);
         tenantRepository.save(tenant);

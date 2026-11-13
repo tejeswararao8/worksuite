@@ -458,6 +458,51 @@
         "TRIAL":          "Trial",
         "CANCELLED":      "Cancelled"
       }
+    },
+    "employee": {
+      "email":              "Email",
+      "firstName":          "First Name",
+      "lastName":           "Last Name",
+      "role":               "Role",
+      "keycloakId":         "User ID",
+      "joinedAt":           "Joined",
+      "expiresAt":          "Expires",
+      "invite":             "Invite Employee",
+      "inviteTitle":        "Invite Platform Employee",
+      "sendInvite":         "Send Invitation",
+      "inviteSuccess":      "Invitation sent successfully",
+      "changeRole":         "Change Role",
+      "changeRoleTitle":    "Change Role",
+      "changeRoleSuccess":  "Role updated",
+      "suspendSuccess":     "Employee suspended",
+      "reactivateSuccess":  "Employee reactivated",
+      "revokeSuccess":      "Employee access revoked",
+      "resendSuccess":      "Invitation resent",
+      "revokeInvSuccess":   "Invitation revoked",
+      "actionError":        "Action failed. Please try again.",
+      "loadError":          "Failed to load platform employees",
+      "emptyTitle":         "No platform employees",
+      "emptyDescription":   "No platform employees found.",
+      "noInvitations":      "No invitations",
+      "noInvitationsDesc":  "No invitations have been sent yet.",
+      "resend":             "Resend",
+      "revokeInvite":       "Revoke",
+      "tab": {
+        "employees":   "Employees",
+        "invitations": "Invitations"
+      },
+      "roles": {
+        "PLATFORM_SUPER_ADMIN":    "Super Admin",
+        "PLATFORM_ADMIN":          "Admin",
+        "PLATFORM_SUPPORT":        "Support",
+        "PLATFORM_IMPLEMENTATION": "Implementation"
+      },
+      "membershipStatus": {
+        "ACTIVE":    "Active",
+        "SUSPENDED": "Suspended",
+        "REVOKED":   "Revoked",
+        "PENDING":   "Pending"
+      }
     }
   },
   "home": {

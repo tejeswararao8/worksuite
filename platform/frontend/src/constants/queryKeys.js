@@ -65,5 +65,7 @@ export const QUERY_KEYS = {
   PLATFORM_TENANTS:     (page, q, status) => ['platform-tenants', page, q, status],
   PLATFORM_TENANT_BY_ID:(id) => ['platform-tenant', id],
   PLATFORM_TENANT_HISTORY:(id) => ['platform-tenant-history', id],
-  PLATFORM_EMPLOYEES:   (page) => ['platform-employees', page],
+  PLATFORM_EMPLOYEES:   (page, status) => ['platform-employees', page, status],
+  PLATFORM_EMPLOYEE_BY_ID:(id) => ['platform-employee', id],
+  PLATFORM_INVITATIONS: (page, status) => ['platform-invitations', page, status],
 };

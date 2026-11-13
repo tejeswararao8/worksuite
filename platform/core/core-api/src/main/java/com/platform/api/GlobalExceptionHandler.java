@@ -1,6 +1,7 @@
 package com.platform.api;
 
 import jakarta.validation.ConstraintViolationException;
+import com.platform.tenancy.TenantException;
 import com.platform.tenancy.TenantSecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatus()).body(ApiResponse.error(ex.getMessage()));
     }
 
+    @ExceptionHandler(TenantException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTenantException(TenantException ex) {
+        log.warn("Tenant business exception: {}", ex.getMessage());
+        return ResponseEntity.badRequest().body(ApiResponse.error(ex.getMessage()));
+    }
+
     @ExceptionHandler(TenantSecurityException.class)
     public ResponseEntity<ApiResponse<Void>> handleTenantSecurity(TenantSecurityException ex) {
         // Log at WARN — do NOT expose internal details (tenant ID, DB state) to the caller.
@@ -52,6 +59,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGeneral(Exception ex) {
+        // Handle Spring Security access denied exceptions (AuthorizationDeniedException,
+        // AccessDeniedException) without importing spring-security in core-api.
+        String exClass = ex.getClass().getName();
+        if (exClass.contains("AccessDeniedException") || exClass.contains("AuthorizationDeniedException")) {
+            log.warn("Access denied: {}", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error("Access denied"));
+        }
         log.error("Unhandled exception", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiResponse.error("An unexpected error occurred"));
