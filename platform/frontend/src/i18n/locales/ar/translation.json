@@ -351,6 +351,51 @@
       "title":       "قريباً",
       "description": "سيتم تنفيذ هذا القسم في المرحلة التالية."
     },
+    "employee": {
+      "email":              "البريد الإلكتروني",
+      "firstName":          "الاسم الأول",
+      "lastName":           "اسم العائلة",
+      "role":               "الدور",
+      "keycloakId":         "معرف المستخدم",
+      "joinedAt":           "تاريخ الانضمام",
+      "expiresAt":          "تاريخ الانتهاء",
+      "invite":             "دعوة موظف",
+      "inviteTitle":        "دعوة موظف منصة",
+      "sendInvite":         "إرسال الدعوة",
+      "inviteSuccess":      "تم إرسال الدعوة بنجاح",
+      "changeRole":         "تغيير الدور",
+      "changeRoleTitle":    "تغيير الدور",
+      "changeRoleSuccess":  "تم تحديث الدور",
+      "suspendSuccess":     "تم تعليق الموظف",
+      "reactivateSuccess":  "تم إعادة تفعيل الموظف",
+      "revokeSuccess":      "تم سحب صلاحية الموظف",
+      "resendSuccess":      "تمت إعادة إرسال الدعوة",
+      "revokeInvSuccess":   "تم إلغاء الدعوة",
+      "actionError":        "فشل الإجراء. يرجى المحاولة مرة أخرى.",
+      "loadError":          "فشل تحميل موظفي المنصة",
+      "emptyTitle":         "لا يوجد موظفو منصة",
+      "emptyDescription":   "لم يتم العثور على موظفي منصة.",
+      "noInvitations":      "لا توجد دعوات",
+      "noInvitationsDesc":  "لم يتم إرسال أي دعوات حتى الآن.",
+      "resend":             "إعادة إرسال",
+      "revokeInvite":       "إلغاء",
+      "tab": {
+        "employees":   "الموظفون",
+        "invitations": "الدعوات"
+      },
+      "roles": {
+        "PLATFORM_SUPER_ADMIN":    "مسؤول أعلى",
+        "PLATFORM_ADMIN":          "مسؤول",
+        "PLATFORM_SUPPORT":        "دعم",
+        "PLATFORM_IMPLEMENTATION": "تنفيذ"
+      },
+      "membershipStatus": {
+        "ACTIVE":    "نشط",
+        "SUSPENDED": "معلق",
+        "REVOKED":   "ملغى",
+        "PENDING":   "معلق"
+      }
+    },
     "tenant": {
       "name":               "اسم المؤسسة",
       "slug":               "رمز الشركة",

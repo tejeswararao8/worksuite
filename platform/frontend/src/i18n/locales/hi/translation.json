@@ -351,6 +351,51 @@
       "title":       "जल्द आ रहा है",
       "description": "यह अनुभाग अगले चरण में लागू किया जाएगा।"
     },
+    "employee": {
+      "email":              "ईमेल",
+      "firstName":          "पहला नाम",
+      "lastName":           "अंतिम नाम",
+      "role":               "भूमिका",
+      "keycloakId":         "उपयोगकर्ता आईडी",
+      "joinedAt":           "जुड़े",
+      "expiresAt":          "समाप्त होता है",
+      "invite":             "कर्मचारी आमंत्रित करें",
+      "inviteTitle":        "प्लेटफ़ॉर्म कर्मचारी आमंत्रित करें",
+      "sendInvite":         "आमंत्रण भेजें",
+      "inviteSuccess":      "आमंत्रण सफलतापूर्वक भेजा गया",
+      "changeRole":         "भूमिका बदलें",
+      "changeRoleTitle":    "भूमिका बदलें",
+      "changeRoleSuccess":  "भूमिका अपडेट की गई",
+      "suspendSuccess":     "कर्मचारी निलंबित",
+      "reactivateSuccess":  "कर्मचारी पुनः सक्रिय",
+      "revokeSuccess":      "कर्मचारी पहुंच रद्द",
+      "resendSuccess":      "आमंत्रण पुनः भेजा गया",
+      "revokeInvSuccess":   "आमंत्रण रद्द किया गया",
+      "actionError":        "कार्रवाई विफल। कृपया पुनः प्रयास करें।",
+      "loadError":          "प्लेटफ़ॉर्म कर्मचारी लोड करने में विफल",
+      "emptyTitle":         "कोई प्लेटफ़ॉर्म कर्मचारी नहीं",
+      "emptyDescription":   "कोई प्लेटफ़ॉर्म कर्मचारी नहीं मिला।",
+      "noInvitations":      "कोई आमंत्रण नहीं",
+      "noInvitationsDesc":  "अभी तक कोई आमंत्रण नहीं भेजा गया।",
+      "resend":             "पुनः भेजें",
+      "revokeInvite":       "रद्द करें",
+      "tab": {
+        "employees":   "कर्मचारी",
+        "invitations": "आमंत्रण"
+      },
+      "roles": {
+        "PLATFORM_SUPER_ADMIN":    "सुपर एडमिन",
+        "PLATFORM_ADMIN":          "एडमिन",
+        "PLATFORM_SUPPORT":        "सपोर्ट",
+        "PLATFORM_IMPLEMENTATION": "इम्प्लीमेंटेशन"
+      },
+      "membershipStatus": {
+        "ACTIVE":    "सक्रिय",
+        "SUSPENDED": "निलंबित",
+        "REVOKED":   "रद्द",
+        "PENDING":   "लंबित"
+      }
+    },
     "tenant": {
       "name":               "संगठन का नाम",
       "slug":               "कंपनी कोड",

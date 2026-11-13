@@ -1,5 +1,6 @@
 package com.platform.hr.platform.employees;
 
+import com.platform.notification.NotificationService;
 import com.platform.security.rbac.PlatformRoles;
 import com.platform.tenancy.Tenant;
 import com.platform.tenancy.TenantException;
@@ -25,7 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,8 +34,18 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit tests for PlatformEmployeeService.
+ *
+ * <p>These are pure unit tests — no Spring context, no database.
+ * All dependencies are mocked with Mockito.
+ * Security context is set up manually via SecurityContextHolder.
+ *
+ * <p>Contrast with PlatformEmployeeSecurityIT which tests the full
+ * Spring MVC security filter chain.
+ */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("PlatformEmployeeService")
+@DisplayName("PlatformEmployeeService — Unit Tests")
 class PlatformEmployeeServiceTest {
 
     @Mock private UserTenantMembershipRepository membershipRepository;
@@ -43,6 +53,7 @@ class PlatformEmployeeServiceTest {
     @Mock private PlatformInvitationRepository invitationRepository;
     @Mock private TenantRepository tenantRepository;
     @Mock private KeycloakUserService keycloakUserService;
+    @Mock private NotificationService notificationService;
 
     @InjectMocks
     private PlatformEmployeeService service;
@@ -55,6 +66,8 @@ class PlatformEmployeeServiceTest {
     void setupSuperAdminContext() {
         Jwt jwt = mock(Jwt.class);
         lenient().when(jwt.getSubject()).thenReturn(ACTOR_ID);
+        lenient().when(jwt.getClaimAsString("email")).thenReturn("actor@platform.com");
+        lenient().when(jwt.getClaimAsBoolean("email_verified")).thenReturn(true);
 
         Authentication auth = mock(Authentication.class);
         lenient().when(auth.getPrincipal()).thenReturn(jwt);
@@ -79,6 +92,19 @@ class PlatformEmployeeServiceTest {
                 .build();
     }
 
+    private PlatformInvitation pendingInvitation(String email, String role) {
+        return PlatformInvitation.builder()
+                .id(UUID.randomUUID())
+                .email(email)
+                .firstName("Test").lastName("User")
+                .roleName(role)
+                .tokenHash("somehash")
+                .status(PlatformInvitation.InvitationStatus.PENDING)
+                .invitedBy(ACTOR_ID)
+                .expiresAt(LocalDateTime.now().plusDays(7))
+                .build();
+    }
+
     // ── 1. Invite with valid role ─────────────────────────────────────────────
 
     @Test
@@ -99,7 +125,7 @@ class PlatformEmployeeServiceTest {
                 .email("new@platform.com")
                 .firstName("New").lastName("Admin")
                 .roleName(PlatformRoles.PLATFORM_ADMIN)
-                .token("tok")
+                .tokenHash("somehash")
                 .status(PlatformInvitation.InvitationStatus.PENDING)
                 .invitedBy(ACTOR_ID)
                 .expiresAt(LocalDateTime.now().plusDays(7))
@@ -110,6 +136,8 @@ class PlatformEmployeeServiceTest {
 
         assertThat(result.getStatus()).isEqualTo(PlatformInvitation.InvitationStatus.PENDING);
         assertThat(result.getRoleName()).isEqualTo(PlatformRoles.PLATFORM_ADMIN);
+        // Verify email was sent (async via NotificationService)
+        verify(notificationService).sendEmail(eq("new@platform.com"), anyString(), anyString());
     }
 
     // ── 2. Invite with invalid role is rejected ───────────────────────────────
@@ -132,7 +160,6 @@ class PlatformEmployeeServiceTest {
     @Test
     @DisplayName("invite() prevents privilege escalation — PLATFORM_ADMIN cannot grant SUPER_ADMIN")
     void invite_privilegeEscalation_denied() {
-        // Override context to PLATFORM_ADMIN (not SUPER_ADMIN)
         Authentication auth = mock(Authentication.class);
         lenient().when(auth.getAuthorities()).thenAnswer(inv ->
                 List.of(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_ADMIN)));
@@ -169,7 +196,205 @@ class PlatformEmployeeServiceTest {
                 .hasMessageContaining("pending invitation already exists");
     }
 
-    // ── 5. Suspend ACTIVE employee ────────────────────────────────────────────
+    // ── 5. Accept valid invitation creates ACTIVE membership ──────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() creates ACTIVE membership for valid token")
+    void accept_validToken_createsActiveMembership() {
+        String rawToken = "validrawtoken123";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        PlatformInvitation inv = PlatformInvitation.builder()
+                .id(UUID.randomUUID())
+                .email("actor@platform.com")   // matches JWT email in @BeforeEach
+                .firstName("Test").lastName("User")
+                .roleName(PlatformRoles.PLATFORM_ADMIN)
+                .tokenHash(hash)
+                .status(PlatformInvitation.InvitationStatus.PENDING)
+                .invitedBy("someadmin")
+                .expiresAt(LocalDateTime.now().plusDays(7))
+                .build();
+
+        Tenant platformTenant = new Tenant();
+        platformTenant.setId(PLATFORM_ID);
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+        when(membershipRepository.existsByKeycloakUserIdAndTenantId(ACTOR_ID, PLATFORM_ID))
+                .thenReturn(false);
+        when(tenantRepository.findById(PLATFORM_ID)).thenReturn(Optional.of(platformTenant));
+        when(membershipRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(invitationRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        PlatformEmployeeDto result = service.acceptInvitation(rawToken);
+
+        assertThat(result.getMembershipStatus()).isEqualTo(MembershipStatus.ACTIVE);
+        assertThat(result.getRoleName()).isEqualTo(PlatformRoles.PLATFORM_ADMIN);
+        assertThat(inv.getStatus()).isEqualTo(PlatformInvitation.InvitationStatus.ACCEPTED);
+        assertThat(inv.getKeycloakUserId()).isEqualTo(ACTOR_ID);
+    }
+
+    // ── 6. Accept with invalid token is rejected ──────────────────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects unknown token")
+    void accept_unknownToken_throws() {
+        when(invitationRepository.findByTokenHash(anyString())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.acceptInvitation("badtoken"))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("Invalid or unknown invitation token");
+    }
+
+    // ── 7. Accept revoked invitation is rejected ──────────────────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects REVOKED invitation")
+    void accept_revokedInvitation_throws() {
+        String rawToken = "revokedtoken";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        PlatformInvitation inv = pendingInvitation("actor@platform.com", PlatformRoles.PLATFORM_ADMIN);
+        inv.setTokenHash(hash);
+        inv.setStatus(PlatformInvitation.InvitationStatus.REVOKED);
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+
+        assertThatThrownBy(() -> service.acceptInvitation(rawToken))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("revoked");
+    }
+
+    // ── 8. Accept already-accepted invitation is rejected ─────────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects already ACCEPTED invitation (single-use)")
+    void accept_alreadyAccepted_throws() {
+        String rawToken = "usedtoken";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        PlatformInvitation inv = pendingInvitation("actor@platform.com", PlatformRoles.PLATFORM_ADMIN);
+        inv.setTokenHash(hash);
+        inv.setStatus(PlatformInvitation.InvitationStatus.ACCEPTED);
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+
+        assertThatThrownBy(() -> service.acceptInvitation(rawToken))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("already been accepted");
+    }
+
+    // ── 9. Accept expired invitation is rejected ──────────────────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects expired invitation")
+    void accept_expiredInvitation_throws() {
+        String rawToken = "expiredtoken";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        PlatformInvitation inv = pendingInvitation("actor@platform.com", PlatformRoles.PLATFORM_ADMIN);
+        inv.setTokenHash(hash);
+        inv.setExpiresAt(LocalDateTime.now().minusDays(1)); // already expired
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+        when(invitationRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        assertThatThrownBy(() -> service.acceptInvitation(rawToken))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("expired");
+
+        assertThat(inv.getStatus()).isEqualTo(PlatformInvitation.InvitationStatus.EXPIRED);
+    }
+
+    // ── 10. Accept with wrong email is rejected ───────────────────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects when JWT email does not match invitation email")
+    void accept_emailMismatch_throws() {
+        String rawToken = "mismatchtoken";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        // Invitation is for a different email than the JWT actor
+        PlatformInvitation inv = pendingInvitation("other@platform.com", PlatformRoles.PLATFORM_ADMIN);
+        inv.setTokenHash(hash);
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+
+        assertThatThrownBy(() -> service.acceptInvitation(rawToken))
+                .isInstanceOf(TenantSecurityException.class)
+                .hasMessageContaining("does not match the invitation email");
+    }
+
+    // ── 11. Accept with unverified email is rejected ──────────────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects when email_verified is false")
+    void accept_emailNotVerified_throws() {
+        String rawToken = "unverifiedtoken";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        PlatformInvitation inv = pendingInvitation("actor@platform.com", PlatformRoles.PLATFORM_ADMIN);
+        inv.setTokenHash(hash);
+
+        // Override JWT to have email_verified = false
+        Jwt jwt = mock(Jwt.class);
+        lenient().when(jwt.getSubject()).thenReturn(ACTOR_ID);
+        when(jwt.getClaimAsString("email")).thenReturn("actor@platform.com");
+        when(jwt.getClaimAsBoolean("email_verified")).thenReturn(false);
+
+        Authentication auth = mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(jwt);
+        lenient().when(auth.getAuthorities()).thenAnswer(i ->
+                List.of(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_SUPER_ADMIN)));
+        SecurityContext ctx = mock(SecurityContext.class);
+        when(ctx.getAuthentication()).thenReturn(auth);
+        SecurityContextHolder.setContext(ctx);
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+
+        assertThatThrownBy(() -> service.acceptInvitation(rawToken))
+                .isInstanceOf(TenantSecurityException.class)
+                .hasMessageContaining("Email address must be verified");
+    }
+
+    // ── 12. Accept when membership already exists is rejected ─────────────────
+
+    @Test
+    @DisplayName("acceptInvitation() rejects when platform membership already exists")
+    void accept_duplicateMembership_throws() {
+        String rawToken = "duptoken";
+        String hash = PlatformEmployeeService.hashToken(rawToken);
+
+        PlatformInvitation inv = pendingInvitation("actor@platform.com", PlatformRoles.PLATFORM_ADMIN);
+        inv.setTokenHash(hash);
+
+        when(invitationRepository.findByTokenHash(hash)).thenReturn(Optional.of(inv));
+        when(membershipRepository.existsByKeycloakUserIdAndTenantId(ACTOR_ID, PLATFORM_ID))
+                .thenReturn(true);
+
+        assertThatThrownBy(() -> service.acceptInvitation(rawToken))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("membership already exists");
+    }
+
+    // ── 13. Resend rotates token ──────────────────────────────────────────────
+
+    @Test
+    @DisplayName("resendInvitation() rotates the token hash")
+    void resend_rotatesTokenHash() {
+        PlatformInvitation inv = pendingInvitation("x@platform.com", PlatformRoles.PLATFORM_SUPPORT);
+        String originalHash = inv.getTokenHash();
+
+        when(invitationRepository.findById(inv.getId())).thenReturn(Optional.of(inv));
+        when(invitationRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        service.resendInvitation(inv.getId());
+
+        assertThat(inv.getTokenHash()).isNotEqualTo(originalHash);
+        assertThat(inv.getStatus()).isEqualTo(PlatformInvitation.InvitationStatus.PENDING);
+        verify(notificationService).sendEmail(eq("x@platform.com"), anyString(), anyString());
+    }
+
+    // ── 14. Suspend ACTIVE employee ───────────────────────────────────────────
 
     @Test
     @DisplayName("suspendEmployee() suspends an ACTIVE platform employee")
@@ -178,15 +403,12 @@ class PlatformEmployeeServiceTest {
         when(membershipRepository.findById(MEMBERSHIP_ID)).thenReturn(Optional.of(m));
         when(membershipRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        // Ensure there's another super admin so the last-super-admin check doesn't apply
-        // (this employee is PLATFORM_ADMIN, not SUPER_ADMIN, so no check needed)
-
         PlatformEmployeeDto result = service.suspendEmployee(MEMBERSHIP_ID);
 
         assertThat(result.getMembershipStatus()).isEqualTo(MembershipStatus.SUSPENDED);
     }
 
-    // ── 6. Reactivate SUSPENDED employee ─────────────────────────────────────
+    // ── 15. Reactivate SUSPENDED employee ────────────────────────────────────
 
     @Test
     @DisplayName("reactivateEmployee() reactivates a SUSPENDED platform employee")
@@ -200,7 +422,7 @@ class PlatformEmployeeServiceTest {
         assertThat(result.getMembershipStatus()).isEqualTo(MembershipStatus.ACTIVE);
     }
 
-    // ── 7. Cannot suspend already-suspended employee ──────────────────────────
+    // ── 16. Cannot suspend already-suspended employee ─────────────────────────
 
     @Test
     @DisplayName("suspendEmployee() throws if already SUSPENDED")
@@ -213,7 +435,7 @@ class PlatformEmployeeServiceTest {
                 .hasMessageContaining("Only ACTIVE memberships can be suspended");
     }
 
-    // ── 8. Last SUPER_ADMIN cannot be suspended ───────────────────────────────
+    // ── 17. Last SUPER_ADMIN cannot be suspended ──────────────────────────────
 
     @Test
     @DisplayName("suspendEmployee() prevents suspending the last PLATFORM_SUPER_ADMIN")
@@ -226,7 +448,6 @@ class PlatformEmployeeServiceTest {
                 .membershipStatus(MembershipStatus.ACTIVE).build();
 
         when(membershipRepository.findById(MEMBERSHIP_ID)).thenReturn(Optional.of(m));
-        // Only one SUPER_ADMIN — the one being suspended
         when(membershipRepository.findByTenantIdAndMembershipStatus(PLATFORM_ID, MembershipStatus.ACTIVE))
                 .thenReturn(List.of(m));
 
@@ -235,24 +456,23 @@ class PlatformEmployeeServiceTest {
                 .hasMessageContaining("last active PLATFORM_SUPER_ADMIN");
     }
 
-    // ── 9. Role change validates allowlist ────────────────────────────────────
+    // ── 18. Role change validates allowlist ───────────────────────────────────
 
     @Test
     @DisplayName("changeRole() rejects non-platform role")
     void changeRole_invalidRole_throws() {
-        // Role validation happens before DB lookup — no stub needed
         assertThatThrownBy(() -> service.changeRole(MEMBERSHIP_ID, "TENANT_ADMIN"))
                 .isInstanceOf(TenantException.class)
                 .hasMessageContaining("Invalid platform role");
     }
 
-    // ── 10. Non-platform membership is rejected ───────────────────────────────
+    // ── 19. Non-platform membership is rejected ───────────────────────────────
 
     @Test
     @DisplayName("getEmployee() rejects membership from a different tenant")
     void getEmployee_wrongTenant_throws() {
         Tenant other = new Tenant();
-        other.setId(UUID.randomUUID()); // not the platform tenant
+        other.setId(UUID.randomUUID());
         UserTenantMembership m = UserTenantMembership.builder()
                 .id(MEMBERSHIP_ID).keycloakUserId("x").tenant(other)
                 .roleName(PlatformRoles.PLATFORM_ADMIN)
@@ -265,13 +485,14 @@ class PlatformEmployeeServiceTest {
                 .hasMessageContaining("platform tenant");
     }
 
-    // ── 11. Revoke invitation — only PENDING ──────────────────────────────────
+    // ── 20. Revoke invitation — only PENDING ──────────────────────────────────
 
     @Test
     @DisplayName("revokeInvitation() rejects revoking an ACCEPTED invitation")
     void revokeInvitation_accepted_throws() {
         PlatformInvitation inv = PlatformInvitation.builder()
                 .id(UUID.randomUUID())
+                .tokenHash("hash")
                 .status(PlatformInvitation.InvitationStatus.ACCEPTED)
                 .build();
         when(invitationRepository.findById(any())).thenReturn(Optional.of(inv));
@@ -281,7 +502,7 @@ class PlatformEmployeeServiceTest {
                 .hasMessageContaining("Only PENDING invitations can be revoked");
     }
 
-    // ── 12. Revoke employee — last super admin protection ─────────────────────
+    // ── 21. Revoke employee — last super admin protection ─────────────────────
 
     @Test
     @DisplayName("revokeEmployee() prevents revoking the last PLATFORM_SUPER_ADMIN")
@@ -300,5 +521,55 @@ class PlatformEmployeeServiceTest {
         assertThatThrownBy(() -> service.revokeEmployee(MEMBERSHIP_ID))
                 .isInstanceOf(TenantException.class)
                 .hasMessageContaining("last active PLATFORM_SUPER_ADMIN");
+    }
+
+    // ── 22. Last SUPER_ADMIN cannot be demoted ────────────────────────────────
+
+    @Test
+    @DisplayName("changeRole() prevents demoting the last PLATFORM_SUPER_ADMIN")
+    void changeRole_lastSuperAdmin_throws() {
+        String superAdminId = UUID.randomUUID().toString();
+        Tenant t = new Tenant(); t.setId(PLATFORM_ID);
+        UserTenantMembership m = UserTenantMembership.builder()
+                .id(MEMBERSHIP_ID).keycloakUserId(superAdminId).tenant(t)
+                .roleName(PlatformRoles.PLATFORM_SUPER_ADMIN)
+                .membershipStatus(MembershipStatus.ACTIVE).build();
+
+        when(membershipRepository.findById(MEMBERSHIP_ID)).thenReturn(Optional.of(m));
+        when(membershipRepository.findByTenantIdAndMembershipStatus(PLATFORM_ID, MembershipStatus.ACTIVE))
+                .thenReturn(List.of(m));
+
+        assertThatThrownBy(() -> service.changeRole(MEMBERSHIP_ID, PlatformRoles.PLATFORM_ADMIN))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("last active PLATFORM_SUPER_ADMIN");
+    }
+
+    // ── 23. hashToken produces 64-char SHA-256 hex ────────────────────────────
+
+    @Test
+    @DisplayName("hashToken() produces a 64-character SHA-256 hex digest")
+    void hashToken_produces64CharHex() {
+        String hash = PlatformEmployeeService.hashToken("anytoken");
+        assertThat(hash).hasSize(64).matches("[0-9a-f]+");
+    }
+
+    // ── 24. hashToken is deterministic ───────────────────────────────────────
+
+    @Test
+    @DisplayName("hashToken() is deterministic for the same input")
+    void hashToken_isDeterministic() {
+        String h1 = PlatformEmployeeService.hashToken("sametoken");
+        String h2 = PlatformEmployeeService.hashToken("sametoken");
+        assertThat(h1).isEqualTo(h2);
+    }
+
+    // ── 25. hashToken produces different hashes for different tokens ──────────
+
+    @Test
+    @DisplayName("hashToken() produces different hashes for different tokens")
+    void hashToken_differentInputsDifferentHashes() {
+        String h1 = PlatformEmployeeService.hashToken("token1");
+        String h2 = PlatformEmployeeService.hashToken("token2");
+        assertThat(h1).isNotEqualTo(h2);
     }
 }
