@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface PlatformInvitationRepository extends JpaRepository<PlatformInvitation, UUID> {
 
-    Optional<PlatformInvitation> findByToken(String token);
+    Optional<PlatformInvitation> findByTokenHash(String tokenHash);
 
     boolean existsByEmailAndStatus(String email, PlatformInvitation.InvitationStatus status);
 

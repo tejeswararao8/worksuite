@@ -38,8 +38,13 @@ public class PlatformInvitation {
     @Column(name = "role_name", nullable = false, length = 100)
     private String roleName;
 
-    @Column(name = "token", nullable = false, unique = true, length = 64)
-    private String token;
+    /**
+     * SHA-256 hex digest of the raw invitation token.
+     * The raw token is NEVER stored — only this hash is persisted.
+     * Length 64 = SHA-256 hex output.
+     */
+    @Column(name = "token_hash", nullable = false, unique = true, length = 64)
+    private String tokenHash;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)

@@ -68,6 +68,22 @@ public class PlatformEmployeeController {
                 .body(ApiResponse.success("Invitation sent", employeeService.invite(req)));
     }
 
+    // ── Accept invitation ─────────────────────────────────────────────────────
+
+    /**
+     * Accepts a platform invitation.
+     * The authenticated user must have an email matching the invitation.
+     * The role is taken from the invitation record — no role parameter is accepted.
+     * Any platform role is sufficient to call this endpoint (the user is not yet a member).
+     */
+    @PostMapping("/invitations/accept")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponse<PlatformEmployeeDto>> acceptInvitation(
+            @RequestParam String token) {
+        return ResponseEntity.ok(ApiResponse.success(
+                "Invitation accepted", employeeService.acceptInvitation(token)));
+    }
+
     // ── List invitations ──────────────────────────────────────────────────────
 
     @GetMapping("/invitations")
