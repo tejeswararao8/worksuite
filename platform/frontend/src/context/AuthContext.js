@@ -1,8 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { initiateLogin, logout as keycloakLogout, refreshTokens, getAccessToken } from '../api/keycloakAuth';
 import { AUTH_LOGOUT_EVENT } from '../api/axios';
-import { ROUTES } from '../constants/routes';
 
 const AuthContext = createContext(null);
 
@@ -14,7 +12,6 @@ const AuthContext = createContext(null);
  * logout()          → clears session and redirects to Keycloak logout
  */
 export function AuthProvider({ children }) {
-  const navigate = useNavigate();
 
   // Restore user from sessionStorage on page reload (tokens stored by keycloakAuth.js)
   const [user, setUser] = useState(() => {

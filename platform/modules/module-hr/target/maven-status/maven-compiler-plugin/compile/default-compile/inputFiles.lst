@@ -49,6 +49,9 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\onboarding\entity\OnboardingChecklist.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\onboarding\repository\OnboardingRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\onboarding\service\OnboardingService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\dashboard\PlatformDashboardController.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\dashboard\PlatformDashboardDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\dashboard\PlatformDashboardService.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\probation\controller\ProbationController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\probation\dto\ProbationDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\probation\entity\Probation.java

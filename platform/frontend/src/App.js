@@ -13,7 +13,7 @@ import { ErrorBoundary, PageLoader } from './components/ui';
 // ─── Eagerly loaded ───────────────────────────────────────────────────────────
 import HomePage     from './pages/HomePage';
 import LoginPage    from './pages/auth/LoginPage';
-import AuthCallback from './pages/auth/AuthCallback';
+import AuthCallback from './pages/auth/AuthCallback.jsx';
 
 // ─── Lazy: tenant HRMS pages ──────────────────────────────────────────────────
 const DashboardPage     = lazy(() => import('./pages/dashboard/DashboardPage'));

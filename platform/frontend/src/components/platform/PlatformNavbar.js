@@ -1,4 +1,4 @@
-import { Menu, ChevronDown, LogOut, UserCircle, Shield } from 'lucide-react';
+import { Menu, ChevronDown, LogOut, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useRef, useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
@@ -60,7 +60,6 @@ function ProfileMenu({ user, logout }) {
 }
 
 export default function PlatformNavbar({ title, onMobileMenuToggle }) {
-  const { t } = useTranslation();
   const { user, logout } = useAuth();
 
   return (

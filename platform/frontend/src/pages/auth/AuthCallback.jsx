@@ -3,14 +3,20 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { handleCallback } from '../../api/keycloakAuth';
 import { useAuth } from '../../context/AuthContext';
 import { ROUTES } from '../../constants/routes';
+import { PLATFORM_ROUTES } from '../../constants/platformRoutes';
+
+const PLATFORM_ROLES = [
+  'PLATFORM_SUPER_ADMIN',
+  'PLATFORM_ADMIN',
+  'PLATFORM_SUPPORT',
+  'PLATFORM_IMPLEMENTATION',
+];
 
 /**
  * Handles the Keycloak Authorization Code + PKCE callback.
  *
- * Keycloak redirects to /auth/callback?code=...&state=...
- * This component exchanges the code for tokens and redirects to the dashboard.
- *
- * Mount this component at the /auth/callback route in App.js.
+ * After token exchange, redirects platform users to /platform/dashboard
+ * and tenant users to /dashboard.
  */
 export default function AuthCallback() {
   const [searchParams] = useSearchParams();
@@ -25,7 +31,8 @@ export default function AuthCallback() {
     handleCallback(searchParams)
       .then((result) => {
         onTokensReceived(result);
-        navigate(ROUTES.DASHBOARD, { replace: true });
+        const isPlatform = result.userInfo?.roles?.some((r) => PLATFORM_ROLES.includes(r));
+        navigate(isPlatform ? PLATFORM_ROUTES.DASHBOARD : ROUTES.DASHBOARD, { replace: true });
       })
       .catch((err) => {
         console.error('Auth callback failed:', err.message);

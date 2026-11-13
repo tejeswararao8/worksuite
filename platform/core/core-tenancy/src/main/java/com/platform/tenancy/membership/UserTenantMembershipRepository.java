@@ -33,4 +33,6 @@ public interface UserTenantMembershipRepository extends JpaRepository<UserTenant
     List<UserTenantMembership> findByTenantIdAndMembershipStatus(UUID tenantId, MembershipStatus status);
 
     boolean existsByKeycloakUserIdAndTenantId(String keycloakUserId, UUID tenantId);
+
+    long countByTenantIdAndMembershipStatus(UUID tenantId, MembershipStatus status);
 }

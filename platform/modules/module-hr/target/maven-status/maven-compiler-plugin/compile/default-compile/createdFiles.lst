@@ -29,6 +29,7 @@ com\platform\hr\team\dto\TeamDto$MemberResponse.class
 com\platform\hr\team\entity\Team$TeamBuilder.class
 com\platform\hr\bank\controller\BankDetailController.class
 com\platform\hr\employee\specification\EmployeeSpecification.class
+com\platform\hr\platform\dashboard\PlatformDashboardDto.class
 com\platform\hr\department\dto\DepartmentDto$Summary.class
 com\platform\hr\skills\service\SkillService.class
 com\platform\hr\probation\dto\ProbationDto$Response.class
@@ -45,6 +46,7 @@ com\platform\hr\asset\service\AssetService.class
 com\platform\hr\department\repository\DepartmentRepository.class
 com\platform\hr\asset\dto\AssetDto$ReturnRequest.class
 com\platform\hr\emergency\dto\EmergencyContactDto$UpdateRequest.class
+com\platform\hr\platform\dashboard\PlatformDashboardDto$PlatformDashboardDtoBuilder.class
 com\platform\hr\asset\entity\Asset$AssetType.class
 com\platform\hr\designation\mapper\DesignationMapperImpl.class
 com\platform\hr\emergency\dto\EmergencyContactDto$Response.class
@@ -75,7 +77,9 @@ com\platform\hr\emergency\entity\EmergencyContact$EmergencyContactBuilder.class
 com\platform\hr\probation\dto\ProbationDto$RejectRequest.class
 com\platform\hr\bank\dto\BankDetailDto$CreateRequest.class
 com\platform\hr\offboarding\dto\OffboardingDto$Response.class
+com\platform\hr\platform\dashboard\PlatformDashboardService.class
 com\platform\hr\skills\entity\EmployeeSkill$Proficiency.class
+com\platform\hr\platform\dashboard\PlatformDashboardController.class
 com\platform\hr\onboarding\entity\OnboardingChecklist$TaskStatus.class
 com\platform\hr\dashboard\HrDashboardController$DashboardStats.class
 com\platform\hr\employee\entity\Employee$EmploymentStatus.class

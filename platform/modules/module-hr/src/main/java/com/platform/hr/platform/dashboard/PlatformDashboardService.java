@@ -22,28 +22,24 @@ public class PlatformDashboardService {
     public PlatformDashboardDto getSummary() {
         UUID platformTenantId = TenantSecurityService.PLATFORM_TENANT_ID;
 
-        long totalTenants = tenantRepository.count() - 1; // exclude platform pseudo-tenant
-        long activeTenants = tenantRepository.findAll().stream()
-                .filter(t -> !t.getId().equals(platformTenantId))
-                .filter(t -> t.getStatus() == Tenant.TenantStatus.ACTIVE && Boolean.TRUE.equals(t.getIsActive()))
-                .count();
-        long suspendedTenants = tenantRepository.findAll().stream()
-                .filter(t -> !t.getId().equals(platformTenantId))
-                .filter(t -> t.getStatus() == Tenant.TenantStatus.SUSPENDED)
-                .count();
+        long totalTenants     = tenantRepository.countExcluding(platformTenantId);
+        long activeTenants    = tenantRepository.countByStatusExcluding(platformTenantId, Tenant.TenantStatus.ACTIVE);
+        long suspendedTenants = tenantRepository.countByStatusExcluding(platformTenantId, Tenant.TenantStatus.SUSPENDED);
 
-        // Platform employees = ACTIVE memberships in the platform pseudo-tenant
+        // Platform employees = ACTIVE memberships in the platform pseudo-tenant.
         long platformEmployees = membershipRepository
-                .findByTenantIdAndMembershipStatus(platformTenantId, MembershipStatus.ACTIVE)
-                .size();
+                .countByTenantIdAndMembershipStatus(platformTenantId, MembershipStatus.ACTIVE);
 
+        // pendingApprovals: requires PENDING_REVIEW TenantStatus — added in Phase 3C.2.
+        // openSupportTickets: requires support ticket module — added in Phase 3C.6.
+        // Both are returned as 0 and are clearly labelled as unavailable in the UI.
         return PlatformDashboardDto.builder()
                 .totalTenants(totalTenants)
                 .activeTenants(activeTenants)
-                .pendingApprovals(0L)   // PENDING_REVIEW status added in 3C.2
+                .pendingApprovals(0L)
                 .suspendedTenants(suspendedTenants)
                 .totalPlatformEmployees(platformEmployees)
-                .openSupportTickets(0L) // support tickets added in 3C.6
+                .openSupportTickets(0L)
                 .build();
     }
 }

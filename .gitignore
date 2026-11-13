@@ -36,6 +36,17 @@ token.json
 token_response.json
 *_token.json
 *_token_response.json
+kc_t*.json
+assign_result.json
+client_result.json
+create_role.json
+realm_result.json
+role_info.json
+role_result.json
+user_result.json
+users.json
+setup_roles.js
+dummy_data.sql
 
 # ─── Log files ───────────────────────────────────────────────────────────────
 *.log

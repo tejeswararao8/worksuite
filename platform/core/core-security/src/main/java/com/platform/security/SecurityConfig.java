@@ -89,6 +89,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                     .hasAnyAuthority(
                         PlatformRoles.PLATFORM_SUPER_ADMIN,
                         PlatformRoles.PLATFORM_ADMIN,
+                        PlatformRoles.PLATFORM_SUPPORT,
+                        PlatformRoles.PLATFORM_IMPLEMENTATION,
                         PlatformRoles.SUPER_ADMIN  // legacy
                     )
                 .anyRequest().authenticated()
