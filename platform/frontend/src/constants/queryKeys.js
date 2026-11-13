@@ -59,4 +59,10 @@ export const QUERY_KEYS = {
   // Audit
   AUDIT_LOGS:           (page) => ['audit-logs', page],
   AUDIT_BY_ENTITY:      (entity, page) => ['audit-entity', entity, page],
+
+  // Platform Admin
+  PLATFORM_DASHBOARD:   ['platform-dashboard'],
+  PLATFORM_TENANTS:     (page, q, status) => ['platform-tenants', page, q, status],
+  PLATFORM_TENANT_BY_ID:(id) => ['platform-tenant', id],
+  PLATFORM_EMPLOYEES:   (page) => ['platform-employees', page],
 };

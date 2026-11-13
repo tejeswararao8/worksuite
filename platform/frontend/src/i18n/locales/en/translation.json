@@ -384,6 +384,40 @@
     "format":             "Format",
     "generate":           "Generate"
   },
+  "platform": {
+    "nav": {
+      "dashboard":     "Platform Dashboard",
+      "tenants":       "Tenants",
+      "approvals":     "Approvals",
+      "employees":     "Platform Employees",
+      "assignments":   "Customer Assignments",
+      "services":      "Services",
+      "subscriptions": "Subscriptions",
+      "modules":       "Modules",
+      "support":       "Support Tickets",
+      "audit":         "Platform Audit"
+    },
+    "dashboard": {
+      "totalTenants":         "Total Tenants",
+      "activeTenants":        "Active Tenants",
+      "pendingApprovals":     "Pending Approvals",
+      "suspendedTenants":     "Suspended Tenants",
+      "platformEmployees":    "Platform Employees",
+      "openTickets":          "Open Tickets",
+      "recentRegistrations":  "Recent Registrations",
+      "approvalQueue":        "Approval Queue",
+      "subscriptionOverview": "Subscription Overview",
+      "recentActivity":       "Recent Activity",
+      "onboardingProgress":   "Onboarding Progress",
+      "supportSummary":       "Support Summary",
+      "comingSoon":           "Coming in a future phase",
+      "loadError":            "Failed to load platform dashboard data"
+    },
+    "stub": {
+      "title":       "Coming Soon",
+      "description": "This section will be implemented in the next phase."
+    }
+  },
   "home": {
     "nav": {
       "features":  "Features",

@@ -1,0 +1,1 @@
+[{"id":"181872b4-0418-4687-8550-23d296a144b1","username":"admin","firstName":"Admin","lastName":"User","email":"admin@company.com","emailVerified":false,"enabled":true,"createdTimestamp":1794580498362,"totp":false,"disableableCredentialTypes":[],"requiredActions":[],"notBefore":0,"access":{"manage":true}}]

@@ -15,9 +15,9 @@
 
 -- ─── 1. Create user_tenant_memberships table ──────────────────────────────────
 CREATE TABLE IF NOT EXISTS user_tenant_memberships (
-    id                CHAR(36)     NOT NULL PRIMARY KEY,
+    id                UUID         NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
     keycloak_user_id  VARCHAR(36)  NOT NULL,
-    tenant_id         CHAR(36)     NOT NULL,
+    tenant_id         UUID         NOT NULL,
     role_name         VARCHAR(100) NOT NULL,
     membership_status VARCHAR(20)  NOT NULL DEFAULT 'PENDING',
     joined_at         TIMESTAMP,
@@ -38,40 +38,8 @@ CREATE INDEX IF NOT EXISTS idx_utm_status         ON user_tenant_memberships(mem
 CREATE INDEX IF NOT EXISTS idx_utm_user_status    ON user_tenant_memberships(keycloak_user_id, membership_status);
 
 -- ─── 3. Backfill ACTIVE memberships from existing users ──────────────────────
--- Only backfills users that have a keycloak_user_id (populated by V6 or manually).
--- Role defaults to EMPLOYEE for safety — admins must manually elevate roles.
--- The platform admin user (company_id = platform pseudo-tenant) gets PLATFORM_SUPER_ADMIN.
--- gen_random_uuid() requires pgcrypto on PostgreSQL < 13; on 13+ it is built-in.
-
-INSERT INTO user_tenant_memberships (
-    id, keycloak_user_id, tenant_id, role_name, membership_status, joined_at, created_at, updated_at
-)
-SELECT
-    gen_random_uuid()::text,
-    u.keycloak_user_id,
-    u.company_id,
-    CASE
-        WHEN u.company_id = '00000000-0000-0000-0000-000000000001' THEN 'PLATFORM_SUPER_ADMIN'
-        ELSE COALESCE(
-            (SELECT r.name FROM user_roles ur
-             JOIN roles r ON r.id = ur.role_id
-             WHERE ur.user_id = u.id
-             LIMIT 1),
-            'EMPLOYEE'
-        )
-    END AS role_name,
-    'ACTIVE',
-    u.created_at,
-    NOW(),
-    NOW()
-FROM users u
-WHERE u.keycloak_user_id IS NOT NULL
-  AND u.is_active = TRUE
-  AND NOT EXISTS (
-      SELECT 1 FROM user_tenant_memberships m
-      WHERE m.keycloak_user_id = u.keycloak_user_id
-        AND m.tenant_id = u.company_id
-  );
+-- Skipped: no 'users' table exists in this schema (users are managed via employees/Keycloak).
+-- Memberships will be created on first login via the application layer.
 
 -- ─── MANUAL DATA RECONCILIATION REQUIRED ─────────────────────────────────────
 -- Users in the `users` table with keycloak_user_id IS NULL were NOT backfilled.

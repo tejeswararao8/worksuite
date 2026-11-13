@@ -68,7 +68,8 @@ public class SecurityConfig implements WebMvcConfigurer {
     // Self-registration must never grant platform privileges.
     private static final String[] PLATFORM_ADMIN_URLS = {
         "/api/v1/tenants/register",
-        "/api/v1/tenants/**"
+        "/api/v1/tenants/**",
+        "/api/v1/platform/**"
     };
 
     // ─────────────────────────────────────────────

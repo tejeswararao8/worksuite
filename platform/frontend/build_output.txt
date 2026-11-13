@@ -1,0 +1,71 @@
+
+> hrms-frontend@0.1.0 build
+> react-scripts build
+
+Creating an optimized production build...
+Compiled with warnings.
+
+[eslint] 
+src\components\platform\PlatformNavbar.js
+  Line 1:37:   'UserCircle' is defined but never used  no-unused-vars
+  Line 63:11:  't' is assigned a value but never used  no-unused-vars
+
+src\context\AuthContext.js
+  Line 5:10:  'ROUTES' is defined but never used             no-unused-vars
+  Line 17:9:  'navigate' is assigned a value but never used  no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  202.91 kB (+4.14 kB)  build\static\js\main.9514f171.js
+  120.84 kB             build\static\js\354.0b36c144.chunk.js
+  7.15 kB (+246 B)      build\static\css\main.37916a4b.css
+  6.76 kB               build\static\js\18.3c302c17.chunk.js
+  3.27 kB (-1 B)        build\static\js\70.3b9350a5.chunk.js
+  3.21 kB (-1 B)        build\static\js\580.33f8c55a.chunk.js
+  2.68 kB (-1 B)        build\static\js\551.b3846f82.chunk.js
+  2.63 kB (-1 B)        build\static\js\251.98c47894.chunk.js
+  2.53 kB               build\static\js\153.f469df32.chunk.js
+  2.5 kB (-1 B)         build\static\js\471.b210a6df.chunk.js
+  2.43 kB (-1 B)        build\static\js\918.4f7e2ddb.chunk.js
+  2.41 kB (-1 B)        build\static\js\893.b619af8c.chunk.js
+  2.4 kB (-2 B)         build\static\js\985.50db9454.chunk.js
+  2.39 kB (-2 B)        build\static\js\677.343e1373.chunk.js
+  2.38 kB (-2 B)        build\static\js\327.114dcd36.chunk.js
+  2.03 kB (-2 B)        build\static\js\400.c049ea1b.chunk.js
+  1.95 kB (-1 B)        build\static\js\167.11df3e8c.chunk.js
+  1.87 kB (-1 B)        build\static\js\831.c89f0442.chunk.js
+  1.58 kB (+2 B)        build\static\js\615.5df002e7.chunk.js
+  1.48 kB (+2 B)        build\static\js\296.cea28c8b.chunk.js
+  1.38 kB (+1 B)        build\static\js\815.b9cb930d.chunk.js
+  1.28 kB               build\static\js\273.2545e89b.chunk.js
+  1.1 kB                build\static\js\231.38875e01.chunk.js
+  1.1 kB (-2 B)         build\static\js\999.1e4e8450.chunk.js
+  869 B (+1 B)          build\static\js\59.38621fcd.chunk.js
+  581 B                 build\static\js\803.0213e8bc.chunk.js
+  346 B                 build\static\js\547.c1821d94.chunk.js
+  345 B                 build\static\js\650.9868baa5.chunk.js
+  344 B                 build\static\js\566.5b629b6f.chunk.js
+  344 B                 build\static\js\431.76d31c8f.chunk.js
+  343 B                 build\static\js\865.da78dad1.chunk.js
+  342 B                 build\static\js\282.b0bdb18d.chunk.js
+  341 B                 build\static\js\139.5cfb78c9.chunk.js
+  339 B                 build\static\js\646.fa708676.chunk.js
+  338 B                 build\static\js\940.ccee620b.chunk.js
+  317 B                 build\static\js\821.de2d08de.chunk.js
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+

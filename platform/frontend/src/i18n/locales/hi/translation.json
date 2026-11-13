@@ -317,6 +317,40 @@
     "newPassword": "नया पासवर्ड",
     "passwordChanged": "पासवर्ड सफलतापूर्वक बदला गया"
   },
+  "platform": {
+    "nav": {
+      "dashboard":     "प्लेटफ़ॉर्म डैशबोर्ड",
+      "tenants":       "टेनेंट",
+      "approvals":     "अनुमोदन",
+      "employees":     "प्लेटफ़ॉर्म कर्मचारी",
+      "assignments":   "ग्राहक असाइनमेंट",
+      "services":      "सेवाएं",
+      "subscriptions": "सदस्यताएं",
+      "modules":       "मॉड्यूल",
+      "support":       "सपोर्ट टिकट",
+      "audit":         "प्लेटफ़ॉर्म ऑडिट"
+    },
+    "dashboard": {
+      "totalTenants":         "कुल टेनेंट",
+      "activeTenants":        "सक्रिय टेनेंट",
+      "pendingApprovals":     "लंबित अनुमोदन",
+      "suspendedTenants":     "निलंबित टेनेंट",
+      "platformEmployees":    "प्लेटफ़ॉर्म कर्मचारी",
+      "openTickets":          "खुले टिकट",
+      "recentRegistrations":  "हाल के पंजीकरण",
+      "approvalQueue":        "अनुमोदन कतार",
+      "subscriptionOverview": "सदस्यता अवलोकन",
+      "recentActivity":       "हाल की गतिविधि",
+      "onboardingProgress":   "ऑनबोर्डिंग प्रगति",
+      "supportSummary":       "सपोर्ट सारांश",
+      "comingSoon":           "अगले चरण में आएगा",
+      "loadError":            "प्लेटफ़ॉर्म डैशबोर्ड डेटा लोड करने में विफल"
+    },
+    "stub": {
+      "title":       "जल्द आ रहा है",
+      "description": "यह अनुभाग अगले चरण में लागू किया जाएगा।"
+    }
+  },
   "home": {
     "nav": {
       "features":  "विशेषताएं",

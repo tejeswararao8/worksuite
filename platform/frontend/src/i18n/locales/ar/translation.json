@@ -317,6 +317,40 @@
     "newPassword": "كلمة المرور الجديدة",
     "passwordChanged": "تم تغيير كلمة المرور بنجاح"
   },
+  "platform": {
+    "nav": {
+      "dashboard":     "لوحة تحكم المنصة",
+      "tenants":       "المستأجرون",
+      "approvals":     "الموافقات",
+      "employees":     "موظفو المنصة",
+      "assignments":   "تكليفات العملاء",
+      "services":      "الخدمات",
+      "subscriptions": "الاشتراكات",
+      "modules":       "الوحدات",
+      "support":       "تذاكر الدعم",
+      "audit":         "تدقيق المنصة"
+    },
+    "dashboard": {
+      "totalTenants":         "إجمالي المستأجرين",
+      "activeTenants":        "المستأجرون النشطون",
+      "pendingApprovals":     "الموافقات المعلقة",
+      "suspendedTenants":     "المستأجرون الموقوفون",
+      "platformEmployees":    "موظفو المنصة",
+      "openTickets":          "التذاكر المفتوحة",
+      "recentRegistrations":  "التسجيلات الحديثة",
+      "approvalQueue":        "طابور الموافقة",
+      "subscriptionOverview": "نظرة عامة على الاشتراكات",
+      "recentActivity":       "النشاط الأخير",
+      "onboardingProgress":   "تقدم التأهيل",
+      "supportSummary":       "ملخص الدعم",
+      "comingSoon":           "سيأتي في مرحلة قادمة",
+      "loadError":            "فشل تحميل بيانات لوحة تحكم المنصة"
+    },
+    "stub": {
+      "title":       "قريباً",
+      "description": "سيتم تنفيذ هذا القسم في المرحلة التالية."
+    }
+  },
   "home": {
     "nav": {
       "features":  "المميزات",

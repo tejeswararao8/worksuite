@@ -256,3 +256,13 @@ export const auditApi = {
   getByEntity: (entityName, params) => api.get(`/audit-logs/entity/${entityName}`, { params }),
   getByRecord: (entityId, params)   => api.get(`/audit-logs/record/${entityId}`, { params }),
 };
+
+// ─── Platform Admin ───────────────────────────────────────────────────────────
+export const platformApi = {
+  getDashboardSummary: () => api.get('/platform/dashboard/summary'),
+  getTenants:          (params) => api.get('/platform/tenants', { params }),
+  getTenantById:       (id)     => api.get(`/platform/tenants/${id}`),
+  activateTenant:      (id)     => api.post(`/platform/tenants/${id}/activate`),
+  suspendTenant:       (id, data) => api.post(`/platform/tenants/${id}/suspend`, data),
+  getPlatformEmployees:(params) => api.get('/platform/employees', { params }),
+};
