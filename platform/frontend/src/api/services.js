@@ -262,7 +262,11 @@ export const platformApi = {
   getDashboardSummary: () => api.get('/platform/dashboard/summary'),
   getTenants:          (params) => api.get('/platform/tenants', { params }),
   getTenantById:       (id)     => api.get(`/platform/tenants/${id}`),
-  activateTenant:      (id)     => api.post(`/platform/tenants/${id}/activate`),
+  registerTenant:      (data)   => api.post('/platform/tenants/register', data),
+  approveTenant:       (id, data) => api.post(`/platform/tenants/${id}/approve`, data ?? {}),
+  rejectTenant:        (id, data) => api.post(`/platform/tenants/${id}/reject`, data),
   suspendTenant:       (id, data) => api.post(`/platform/tenants/${id}/suspend`, data),
+  reactivateTenant:    (id, data) => api.post(`/platform/tenants/${id}/reactivate`, data ?? {}),
+  getTenantHistory:    (id)     => api.get(`/platform/tenants/${id}/history`),
   getPlatformEmployees:(params) => api.get('/platform/employees', { params }),
 };

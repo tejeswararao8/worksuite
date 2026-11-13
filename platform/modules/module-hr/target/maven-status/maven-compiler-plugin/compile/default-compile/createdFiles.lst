@@ -7,9 +7,11 @@ com\platform\hr\dashboard\HrDashboardController$DashboardStats$DashboardStatsBui
 com\platform\hr\team\dto\TeamDto$Response.class
 com\platform\hr\offboarding\entity\OffboardingChecklist$OffboardingChecklistBuilder.class
 com\platform\hr\transfer\dto\TransferDto$RejectRequest.class
+com\platform\hr\platform\tenants\TenantRegistrationRequest.class
 com\platform\hr\emergency\dto\EmergencyContactDto$CreateRequest.class
 com\platform\hr\branch\entity\Branch.class
 com\platform\hr\onboarding\controller\OnboardingController.class
+com\platform\hr\platform\tenants\TenantManagementService.class
 com\platform\hr\employee\dto\EmployeeDto$Response.class
 com\platform\hr\transfer\service\TransferService.class
 com\platform\hr\asset\dto\AssetDto$Response.class
@@ -53,8 +55,11 @@ com\platform\hr\emergency\dto\EmergencyContactDto$Response.class
 com\platform\hr\skills\dto\SkillDto$CreateCertificationRequest.class
 com\platform\hr\transfer\entity\Transfer.class
 com\platform\hr\team\mapper\TeamMapper.class
+com\platform\hr\platform\tenants\TenantDto$TenantDtoBuilder.class
 com\platform\hr\reports\HrReportController.class
 com\platform\hr\team\dto\TeamDto$UpdateRequest.class
+com\platform\hr\platform\tenants\TenantLifecycleEventDto$TenantLifecycleEventDtoBuilder.class
+com\platform\hr\platform\tenants\TenantManagementController.class
 com\platform\hr\transfer\entity\Transfer$TransferType.class
 com\platform\hr\branch\mapper\BranchMapperImpl.class
 com\platform\hr\team\service\TeamService.class
@@ -101,7 +106,9 @@ com\platform\hr\department\service\DepartmentService.class
 com\platform\hr\probation\dto\ProbationDto.class
 com\platform\hr\bank\entity\BankDetail$BankDetailBuilder.class
 com\platform\hr\department\dto\DepartmentDto$CreateRequest.class
+com\platform\hr\platform\tenants\TenantLifecycleEventDto.class
 com\platform\hr\offboarding\entity\OffboardingChecklist.class
+com\platform\hr\platform\tenants\TenantDto.class
 com\platform\hr\onboarding\dto\OnboardingDto$CompleteTaskRequest.class
 com\platform\hr\skills\dto\SkillDto$UpdateCertificationRequest.class
 com\platform\hr\designation\dto\DesignationDto$UpdateRequest.class
@@ -157,6 +164,7 @@ com\platform\hr\asset\dto\AssetDto.class
 com\platform\hr\skills\entity\EmployeeCertification.class
 com\platform\hr\team\mapper\TeamMapperImpl.class
 com\platform\hr\emergency\service\EmergencyContactService.class
+com\platform\hr\platform\tenants\TenantActionRequest.class
 com\platform\hr\designation\dto\DesignationDto$Response.class
 com\platform\hr\promotion\repository\PromotionRepository.class
 com\platform\hr\department\entity\Department$DepartmentBuilder.class

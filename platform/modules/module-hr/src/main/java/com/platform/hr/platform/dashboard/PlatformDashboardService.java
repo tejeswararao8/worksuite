@@ -25,6 +25,7 @@ public class PlatformDashboardService {
         long totalTenants     = tenantRepository.countExcluding(platformTenantId);
         long activeTenants    = tenantRepository.countByStatusExcluding(platformTenantId, Tenant.TenantStatus.ACTIVE);
         long suspendedTenants = tenantRepository.countByStatusExcluding(platformTenantId, Tenant.TenantStatus.SUSPENDED);
+        long pendingApprovals = tenantRepository.countByStatusExcluding(platformTenantId, Tenant.TenantStatus.PENDING_REVIEW);
 
         // Platform employees = ACTIVE memberships in the platform pseudo-tenant.
         long platformEmployees = membershipRepository
@@ -36,7 +37,7 @@ public class PlatformDashboardService {
         return PlatformDashboardDto.builder()
                 .totalTenants(totalTenants)
                 .activeTenants(activeTenants)
-                .pendingApprovals(0L)
+                .pendingApprovals(pendingApprovals)
                 .suspendedTenants(suspendedTenants)
                 .totalPlatformEmployees(platformEmployees)
                 .openSupportTickets(0L)

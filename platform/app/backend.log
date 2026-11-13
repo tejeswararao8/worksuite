@@ -63221,3 +63221,11 @@ org.springframework.web.servlet.resource.NoResourceFoundException: No static res
 
 2026-11-13T23:32:14.184+05:30  INFO 21572 --- [platform] [http-nio-8081-exec-7] com.platform.logging.MdcFilter           : GET /api/v1/notifications 500 7ms
 2026-11-13T23:32:14.185+05:30  INFO 21572 --- [platform] [http-nio-8081-exec-8] com.platform.logging.MdcFilter           : GET /api/v1/notifications/unread-count 500 7ms
+2026-11-13T23:51:24.562+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-10] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.562+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-7] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.562+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-4] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.562+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-6] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.562+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-8] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.562+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-2] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.571+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-9] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z
+2026-11-13T23:51:24.572+05:30 DEBUG 21572 --- [platform] [http-nio-8081-exec-6] c.platform.security.jwt.JwtAuthFilter    : Invalid JWT: An error occurred while attempting to decode the Jwt: Jwt expired at 2026-11-13T17:43:31Z

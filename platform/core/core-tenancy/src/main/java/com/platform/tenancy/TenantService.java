@@ -26,7 +26,7 @@ public class TenantService {
                 .slug(slug)
                 .email(email)
                 .phone(phone)
-                .status(Tenant.TenantStatus.ACTIVE)
+                .status(Tenant.TenantStatus.PENDING_REVIEW)
                 .isActive(true)
                 .build()
         );

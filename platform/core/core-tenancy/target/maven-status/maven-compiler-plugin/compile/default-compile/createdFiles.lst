@@ -1,3 +1,4 @@
+com\platform\tenancy\TenantLifecycleEvent.class
 com\platform\tenancy\TenantInterceptor.class
 com\platform\tenancy\membership\UserTenantMembership.class
 com\platform\tenancy\TenantSecurityService.class
@@ -7,6 +8,7 @@ com\platform\tenancy\TenantException.class
 com\platform\tenancy\TenantService.class
 com\platform\tenancy\Tenant$TenantStatus.class
 com\platform\tenancy\TenantSecurityException.class
+com\platform\tenancy\TenantLifecycleEvent$TenantLifecycleEventBuilder.class
 com\platform\tenancy\membership\MembershipValidationService$1.class
 com\platform\tenancy\membership\UserTenantMembershipRepository.class
 com\platform\tenancy\membership\UserTenantMembership$UserTenantMembershipBuilder.class
@@ -15,3 +17,4 @@ com\platform\tenancy\membership\MembershipValidationService.class
 com\platform\tenancy\membership\MembershipStatus.class
 com\platform\tenancy\TenantContext.class
 com\platform\tenancy\BaseEntity.class
+com\platform\tenancy\TenantLifecycleEventRepository.class

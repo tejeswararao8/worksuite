@@ -84,7 +84,8 @@
     "remarks":    "ملاحظات",
     "load":       "تحميل",
     "minLength":  "الحد الأدنى {{n}} أحرف",
-    "moreCount":  "+{{n}} أخرى"
+    "moreCount":  "+{{n}} أخرى",
+    "confirm":    "تأكيد"
   },
   "dashboard": {
     "title":              "لوحة التحكم",
@@ -349,6 +350,47 @@
     "stub": {
       "title":       "قريباً",
       "description": "سيتم تنفيذ هذا القسم في المرحلة التالية."
+    },
+    "tenant": {
+      "name":               "اسم المؤسسة",
+      "slug":               "رمز الشركة",
+      "email":              "البريد الإلكتروني",
+      "phone":              "الهاتف",
+      "details":            "تفاصيل المستأجر",
+      "history":            "سجل دورة الحياة",
+      "noHistory":          "لا يوجد سجل حتى الآن",
+      "reviewNotes":        "ملاحظات المراجعة",
+      "allStatuses":        "الكل",
+      "searchPlaceholder":  "البحث بالاسم أو الرمز…",
+      "loadError":          "فشل تحميل المستأجرين",
+      "emptyTitle":         "لا يوجد مستأجرون",
+      "emptyDescription":   "لا يوجد مستأجرون يطابقون الفلاتير الحالية.",
+      "noApprovals":        "لا توجد موافقات معلقة",
+      "noApprovalsDesc":    "تمت مراجعة جميع طلبات المستأجرين.",
+      "approvalsSubtitle":  "مراجعة طلبات تسجيل المستأجرين المعلقة",
+      "pendingCount":       "{{count}} طلب بانتظار المراجعة",
+      "reasonPlaceholder":  "أدخل السبب…",
+      "approve":            "موافقة",
+      "reject":             "رفض",
+      "suspend":            "تعليق",
+      "reactivate":         "إعادة تفعيل",
+      "approveTitle":       "موافقة على المستأجر",
+      "rejectTitle":        "رفض المستأجر",
+      "suspendTitle":       "تعليق المستأجر",
+      "reactivateTitle":    "إعادة تفعيل المستأجر",
+      "approveSuccess":     "تمت الموافقة على المستأجر بنجاح",
+      "rejectSuccess":      "تم رفض المستأجر",
+      "suspendSuccess":     "تم تعليق المستأجر",
+      "reactivateSuccess":  "تمت إعادة تفعيل المستأجر",
+      "actionError":        "فشل الإجراء. يرجى المحاولة مرة أخرى.",
+      "status": {
+        "PENDING_REVIEW": "قيد المراجعة",
+        "ACTIVE":         "نشط",
+        "SUSPENDED":      "معلق",
+        "REJECTED":       "مرفوض",
+        "TRIAL":          "تجريبي",
+        "CANCELLED":      "ملغي"
+      }
     }
   },
   "home": {

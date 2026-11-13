@@ -84,7 +84,8 @@
     "remarks":    "Remarks",
     "load":       "Load",
     "minLength":  "Minimum {{n}} characters",
-    "moreCount":  "+{{n}} more"
+    "moreCount":  "+{{n}} more",
+    "confirm":    "Confirm"
   },
   "dashboard": {
     "title":              "Dashboard",
@@ -416,6 +417,47 @@
     "stub": {
       "title":       "Coming Soon",
       "description": "This section will be implemented in the next phase."
+    },
+    "tenant": {
+      "name":               "Organization Name",
+      "slug":               "Company Code",
+      "email":              "Email",
+      "phone":              "Phone",
+      "details":            "Tenant Details",
+      "history":            "Lifecycle History",
+      "noHistory":          "No history yet",
+      "reviewNotes":        "Review Notes",
+      "allStatuses":        "All",
+      "searchPlaceholder":  "Search by name or code…",
+      "loadError":          "Failed to load tenants",
+      "emptyTitle":         "No tenants found",
+      "emptyDescription":   "No tenants match your current filters.",
+      "noApprovals":        "No pending approvals",
+      "noApprovalsDesc":    "All tenant applications have been reviewed.",
+      "approvalsSubtitle":  "Review and action pending tenant registrations",
+      "pendingCount":       "{{count}} application(s) awaiting review",
+      "reasonPlaceholder":  "Enter reason (optional for approval)…",
+      "approve":            "Approve",
+      "reject":             "Reject",
+      "suspend":            "Suspend",
+      "reactivate":         "Reactivate",
+      "approveTitle":       "Approve Tenant",
+      "rejectTitle":        "Reject Tenant",
+      "suspendTitle":       "Suspend Tenant",
+      "reactivateTitle":    "Reactivate Tenant",
+      "approveSuccess":     "Tenant approved successfully",
+      "rejectSuccess":      "Tenant rejected",
+      "suspendSuccess":     "Tenant suspended",
+      "reactivateSuccess":  "Tenant reactivated",
+      "actionError":        "Action failed. Please try again.",
+      "status": {
+        "PENDING_REVIEW": "Pending Review",
+        "ACTIVE":         "Active",
+        "SUSPENDED":      "Suspended",
+        "REJECTED":       "Rejected",
+        "TRIAL":          "Trial",
+        "CANCELLED":      "Cancelled"
+      }
     }
   },
   "home": {

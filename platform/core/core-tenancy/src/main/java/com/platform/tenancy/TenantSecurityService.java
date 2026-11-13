@@ -65,6 +65,16 @@ public class TenantSecurityService {
             throw new TenantSecurityException("Tenant account is inactive: " + tenantId);
         }
 
+        if (tenant.getStatus() == Tenant.TenantStatus.PENDING_REVIEW) {
+            log.warn("Access attempt on pending-review tenant: {}", tenantId);
+            throw new TenantSecurityException("Tenant account is pending review: " + tenantId);
+        }
+
+        if (tenant.getStatus() == Tenant.TenantStatus.REJECTED) {
+            log.warn("Access attempt on rejected tenant: {}", tenantId);
+            throw new TenantSecurityException("Tenant account has been rejected: " + tenantId);
+        }
+
         if (tenant.getStatus() == Tenant.TenantStatus.SUSPENDED) {
             log.warn("Access attempt on suspended tenant: {}", tenantId);
             throw new TenantSecurityException("Tenant account is suspended: " + tenantId);

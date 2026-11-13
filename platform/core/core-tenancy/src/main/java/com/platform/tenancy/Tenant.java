@@ -39,7 +39,7 @@ public class Tenant {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private TenantStatus status = TenantStatus.ACTIVE;
+    private TenantStatus status = TenantStatus.PENDING_REVIEW;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -47,12 +47,31 @@ public class Tenant {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
+    @Column(name = "reviewed_by")
+    private String reviewedBy;
+
+    @Column(name = "reviewed_at")
+    private LocalDateTime reviewedAt;
+
+    @Column(name = "review_notes", columnDefinition = "TEXT")
+    private String reviewNotes;
+
     @PrePersist
     protected void prePersist() {
         createdAt = LocalDateTime.now();
     }
 
     public enum TenantStatus {
-        ACTIVE, SUSPENDED, TRIAL, CANCELLED
+        PENDING_REVIEW, ACTIVE, SUSPENDED, REJECTED, TRIAL, CANCELLED;
+
+        /** Returns true if a transition from this status to {@code next} is valid. */
+        public boolean canTransitionTo(TenantStatus next) {
+            return switch (this) {
+                case PENDING_REVIEW -> next == ACTIVE || next == REJECTED;
+                case ACTIVE         -> next == SUSPENDED;
+                case SUSPENDED      -> next == ACTIVE;
+                case REJECTED, TRIAL, CANCELLED -> false;
+            };
+        }
     }
 }
