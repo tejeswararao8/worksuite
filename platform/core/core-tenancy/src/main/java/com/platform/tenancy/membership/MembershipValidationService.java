@@ -1,7 +1,6 @@
 package com.platform.tenancy.membership;
 
 import com.platform.tenancy.TenantSecurityException;
-import com.platform.tenancy.TenantSecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,10 @@ import java.util.UUID;
  * <p>This is the second gate after {@link TenantSecurityService} validates the tenant itself.
  * Even if the tenant is ACTIVE, a user without an ACTIVE membership must be rejected.
  *
- * <p>Platform users (companyId == PLATFORM_TENANT_ID) bypass membership checks because
- * they operate across all tenants via platform roles, not tenant memberships.
+ * <p>Platform users (companyId == PLATFORM_TENANT_ID) are subject to the same membership
+ * check as all other users. A platform role in the JWT is not sufficient — the user must
+ * also have an ACTIVE UserTenantMembership row in the platform pseudo-tenant. This prevents
+ * a JWT with a forged or stale platform role from gaining access without a provisioned record.
  */
 @Slf4j
 @Service
@@ -28,6 +29,7 @@ public class MembershipValidationService {
 
     /**
      * Validates that {@code keycloakUserId} has an ACTIVE membership in {@code tenantId}.
+     * No tenant is exempt — the platform pseudo-tenant is validated identically to any other.
      *
      * @throws TenantSecurityException if no membership exists or membership is not ACTIVE
      */
@@ -35,11 +37,6 @@ public class MembershipValidationService {
     public void validateActiveMembership(String keycloakUserId, String tenantId) {
         if (keycloakUserId == null || tenantId == null) {
             throw new TenantSecurityException("User identity or tenant missing from token");
-        }
-
-        // Platform users bypass membership checks — they use platform roles instead.
-        if (TenantSecurityService.isPlatformTenant(tenantId)) {
-            return;
         }
 
         UUID tenantUuid;

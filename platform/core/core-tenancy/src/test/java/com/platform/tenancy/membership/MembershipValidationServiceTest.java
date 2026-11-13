@@ -109,18 +109,110 @@ class MembershipValidationServiceTest {
                 .hasMessageContaining("no membership");
     }
 
-    // ── 6. Platform tenant bypasses membership check ─────────────────────────
+    // ── 6. Platform tenant membership is enforced (no bypass) ─────────────────
 
     @Test
-    @DisplayName("Platform pseudo-tenant bypasses membership check")
-    void platformTenant_bypassesMembershipCheck() {
+    @DisplayName("Platform pseudo-tenant: ACTIVE membership is required — no bypass")
+    void platformTenant_activeMembershipRequired() {
         String platformTenantId = TenantSecurityService.PLATFORM_TENANT_ID.toString();
+        UUID   platformUuid     = TenantSecurityService.PLATFORM_TENANT_ID;
 
+        Tenant platformTenant = new Tenant();
+        platformTenant.setId(platformUuid);
+        UserTenantMembership active = UserTenantMembership.builder()
+                .id(UUID.randomUUID())
+                .keycloakUserId(USER_ID)
+                .tenant(platformTenant)
+                .roleName("PLATFORM_SUPER_ADMIN")
+                .membershipStatus(MembershipStatus.ACTIVE)
+                .build();
+
+        when(membershipRepository.findByKeycloakUserIdAndTenantId(USER_ID, platformUuid))
+                .thenReturn(Optional.of(active));
+
+        // ACTIVE platform membership must pass
         assertThatNoException()
                 .isThrownBy(() -> service.validateActiveMembership(USER_ID, platformTenantId));
 
-        // Repository must never be called for platform tenant
-        verify(membershipRepository, never()).findByKeycloakUserIdAndTenantId(any(), any());
+        // Repository MUST be called — no bypass
+        verify(membershipRepository).findByKeycloakUserIdAndTenantId(USER_ID, platformUuid);
+    }
+
+    @Test
+    @DisplayName("Platform pseudo-tenant: missing membership is denied")
+    void platformTenant_missingMembership_denied() {
+        String platformTenantId = TenantSecurityService.PLATFORM_TENANT_ID.toString();
+        UUID   platformUuid     = TenantSecurityService.PLATFORM_TENANT_ID;
+
+        when(membershipRepository.findByKeycloakUserIdAndTenantId(USER_ID, platformUuid))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> service.validateActiveMembership(USER_ID, platformTenantId))
+                .isInstanceOf(TenantSecurityException.class)
+                .hasMessageContaining("no membership");
+    }
+
+    @Test
+    @DisplayName("Platform pseudo-tenant: PENDING membership is denied")
+    void platformTenant_pendingMembership_denied() {
+        String platformTenantId = TenantSecurityService.PLATFORM_TENANT_ID.toString();
+        UUID   platformUuid     = TenantSecurityService.PLATFORM_TENANT_ID;
+
+        Tenant platformTenant = new Tenant();
+        platformTenant.setId(platformUuid);
+        UserTenantMembership pending = UserTenantMembership.builder()
+                .keycloakUserId(USER_ID).tenant(platformTenant)
+                .roleName("PLATFORM_SUPER_ADMIN")
+                .membershipStatus(MembershipStatus.PENDING).build();
+
+        when(membershipRepository.findByKeycloakUserIdAndTenantId(USER_ID, platformUuid))
+                .thenReturn(Optional.of(pending));
+
+        assertThatThrownBy(() -> service.validateActiveMembership(USER_ID, platformTenantId))
+                .isInstanceOf(TenantSecurityException.class)
+                .hasMessageContaining("pending");
+    }
+
+    @Test
+    @DisplayName("Platform pseudo-tenant: SUSPENDED membership is denied")
+    void platformTenant_suspendedMembership_denied() {
+        String platformTenantId = TenantSecurityService.PLATFORM_TENANT_ID.toString();
+        UUID   platformUuid     = TenantSecurityService.PLATFORM_TENANT_ID;
+
+        Tenant platformTenant = new Tenant();
+        platformTenant.setId(platformUuid);
+        UserTenantMembership suspended = UserTenantMembership.builder()
+                .keycloakUserId(USER_ID).tenant(platformTenant)
+                .roleName("PLATFORM_SUPER_ADMIN")
+                .membershipStatus(MembershipStatus.SUSPENDED).build();
+
+        when(membershipRepository.findByKeycloakUserIdAndTenantId(USER_ID, platformUuid))
+                .thenReturn(Optional.of(suspended));
+
+        assertThatThrownBy(() -> service.validateActiveMembership(USER_ID, platformTenantId))
+                .isInstanceOf(TenantSecurityException.class)
+                .hasMessageContaining("suspended");
+    }
+
+    @Test
+    @DisplayName("Platform pseudo-tenant: REVOKED membership is denied")
+    void platformTenant_revokedMembership_denied() {
+        String platformTenantId = TenantSecurityService.PLATFORM_TENANT_ID.toString();
+        UUID   platformUuid     = TenantSecurityService.PLATFORM_TENANT_ID;
+
+        Tenant platformTenant = new Tenant();
+        platformTenant.setId(platformUuid);
+        UserTenantMembership revoked = UserTenantMembership.builder()
+                .keycloakUserId(USER_ID).tenant(platformTenant)
+                .roleName("PLATFORM_SUPER_ADMIN")
+                .membershipStatus(MembershipStatus.REVOKED).build();
+
+        when(membershipRepository.findByKeycloakUserIdAndTenantId(USER_ID, platformUuid))
+                .thenReturn(Optional.of(revoked));
+
+        assertThatThrownBy(() -> service.validateActiveMembership(USER_ID, platformTenantId))
+                .isInstanceOf(TenantSecurityException.class)
+                .hasMessageContaining("revoked");
     }
 
     // ── 7. Unauthorized tenant switching is rejected ──────────────────────────
