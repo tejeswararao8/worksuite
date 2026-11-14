@@ -5,6 +5,7 @@ import com.platform.api.PagedResponse;
 import com.platform.hr.employee.dto.EmployeeDto;
 import com.platform.hr.employee.entity.Employee.EmploymentStatus;
 import com.platform.hr.employee.service.EmployeeService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +34,7 @@ public class EmployeeController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create employee")
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> create(@Valid @RequestBody EmployeeDto.CreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)

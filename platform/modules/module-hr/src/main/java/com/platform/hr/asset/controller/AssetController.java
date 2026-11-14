@@ -6,6 +6,7 @@ import com.platform.hr.asset.dto.AssetDto;
 import com.platform.hr.asset.entity.Asset.AssetStatus;
 import com.platform.hr.asset.entity.Asset.AssetType;
 import com.platform.hr.asset.service.AssetService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,6 +33,7 @@ public class AssetController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ASSET_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add new asset")
     public ResponseEntity<ApiResponse<AssetDto.Response>> create(
             @Valid @RequestBody AssetDto.CreateRequest request) {

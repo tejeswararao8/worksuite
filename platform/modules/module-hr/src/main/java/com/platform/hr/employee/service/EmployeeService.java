@@ -6,7 +6,7 @@ import com.platform.audit.AuditService;
 import com.platform.audit.Auditable;
 import com.platform.api.PlatformException;
 import com.platform.config.ConfigService;
-import com.platform.document.MinioStorageService;
+import com.platform.hr.subscription.QuotaAwareStorageService;
 import com.platform.hr.employee.dto.EmployeeDto;
 import com.platform.hr.employee.entity.Employee;
 import com.platform.hr.employee.entity.Employee.EmploymentStatus;
@@ -14,6 +14,8 @@ import com.platform.hr.employee.mapper.EmployeeMapper;
 import com.platform.hr.employee.repository.EmployeeRepository;
 import com.platform.hr.employee.specification.EmployeeSpecification;
 import com.platform.hr.onboarding.service.OnboardingService;
+import com.platform.hr.subscription.QuotaAwareStorageService;
+import com.platform.hr.platform.subscription.SubscriptionService;
 import com.platform.hr.probation.service.ProbationService;
 import com.platform.security.user.UserPrincipal;
 import com.platform.tenancy.TenantContext;
@@ -36,14 +38,19 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final AuditService auditService;
-    private final MinioStorageService storageService;
+    private final QuotaAwareStorageService storageService;
     private final OnboardingService onboardingService;
     private final ProbationService probationService;
     private final ConfigService configService;
+    private final SubscriptionService subscriptionService;
 
     @Auditable(entity = "Employee", action = AuditLog.AuditAction.CREATE)
     public EmployeeDto.Response create(EmployeeDto.CreateRequest request) {
         UUID companyId = UUID.fromString(TenantContext.getTenantId());
+        // Enforce subscription limits before any DB write.
+        // enforceEmployeeLimit acquires a pessimistic write lock to prevent
+        // concurrent requests from exceeding the plan's employee cap.
+        subscriptionService.enforceEmployeeLimit(companyId);
         if (employeeRepository.existsByEmailAndCompanyId(request.getEmail(), companyId)) {
             throw PlatformException.conflict("Employee with email already exists: " + request.getEmail());
         }
@@ -98,7 +105,9 @@ public class EmployeeService {
             .orElseThrow(() -> PlatformException.notFound("Employee"));
         String path;
         try {
-            path = storageService.store(file, companyId.toString(), "employees", id.toString());
+            path = storageService.store(file, "employees", id.toString());
+        } catch (com.platform.tenancy.TenantException e) {
+            throw e; // quota exceeded — propagate as-is
         } catch (Exception e) {
             throw new RuntimeException("Photo upload failed: " + e.getMessage(), e);
         }

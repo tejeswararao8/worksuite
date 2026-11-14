@@ -1,5 +1,6 @@
 package com.platform.hr.reports;
 
+import com.platform.hr.subscription.EnforceModule;
 import com.platform.reporting.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -26,6 +27,7 @@ public class HrReportController {
 
     @GetMapping("/employees")
     @PreAuthorize("hasAnyAuthority('HR_REPORT_EXPORT')")
+    @EnforceModule("HR")
     @Operation(summary = "Export employee master report")
     public ResponseEntity<byte[]> employeeMaster(
             @RequestParam(defaultValue = "EXCEL") ReportService.ReportFormat format) throws IOException {

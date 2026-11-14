@@ -61,6 +61,10 @@ public class TenantSubscription {
     @Column(name = "cancelled_at")
     private LocalDateTime cancelledAt;
 
+    @Column(name = "storage_used_bytes", nullable = false)
+    @Builder.Default
+    private long storageUsedBytes = 0L;
+
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 

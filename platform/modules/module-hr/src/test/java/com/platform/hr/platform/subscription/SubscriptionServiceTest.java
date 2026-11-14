@@ -374,7 +374,7 @@ class SubscriptionServiceTest {
     @DisplayName("enforceEmployeeLimit() throws when employee limit reached")
     void enforceEmployeeLimit_atLimit_throws() {
         TenantSubscription sub = activeSub(TenantSubscription.SubscriptionStatus.ACTIVE);
-        when(subscriptionRepository.findActiveByTenantId(TENANT_ID)).thenReturn(Optional.of(sub));
+        when(subscriptionRepository.findActiveByTenantIdForUpdate(TENANT_ID)).thenReturn(Optional.of(sub));
         when(membershipRepository.countByTenantIdAndMembershipStatus(TENANT_ID, MembershipStatus.ACTIVE))
                 .thenReturn(100L);
 

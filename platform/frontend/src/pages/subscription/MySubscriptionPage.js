@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { CreditCard, Users, HardDrive, Puzzle, AlertTriangle } from 'lucide-react';
-import { PageHeader, Badge, Card, StatCard, Skeleton } from '../../components/ui';
+import { useNavigate } from 'react-router-dom';
+import { Users, HardDrive, Puzzle, AlertTriangle, Clock, XCircle, CheckCircle } from 'lucide-react';
+import { PageHeader, Badge, Skeleton } from '../../components/ui';
 import { tenantSubscriptionApi } from '../../api/services';
 import { QUERY_KEYS } from '../../constants/queryKeys';
 
@@ -14,8 +15,80 @@ function fmt(cents) {
   return cents === 0 ? 'Free' : `$${(cents / 100).toFixed(2)}`;
 }
 
+function fmtBytes(bytes) {
+  if (bytes === 0) return '0 B';
+  const gb = bytes / (1024 ** 3);
+  if (gb >= 1) return `${gb.toFixed(2)} GB`;
+  const mb = bytes / (1024 ** 2);
+  if (mb >= 1) return `${mb.toFixed(1)} MB`;
+  return `${(bytes / 1024).toFixed(0)} KB`;
+}
+
+function UsageBar({ pct, label, warning, danger }) {
+  const color = pct >= 90 ? 'bg-red-500' : pct >= 70 ? 'bg-orange-400' : 'bg-indigo-500';
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <span className="text-sm text-slate-600">{label}</span>
+        {(warning || danger) && (
+          <span className={`text-xs font-medium flex items-center gap-1 ${danger ? 'text-red-600' : 'text-orange-500'}`}>
+            <AlertTriangle size={12} />
+            {danger ? 'Limit reached' : 'Approaching limit'}
+          </span>
+        )}
+      </div>
+      <div className="w-full bg-slate-100 rounded-full h-2">
+        <div className={`h-2 rounded-full transition-all ${color}`} style={{ width: `${Math.min(100, pct)}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function StatusBanner({ status, inGracePeriod, gracePeriodDaysRemaining, t }) {
+  if (status === 'ACTIVE' || status === 'TRIAL') return null;
+
+  const banners = {
+    PAST_DUE: {
+      icon: <Clock size={18} className="shrink-0" />,
+      bg: 'bg-orange-50 border-orange-200 text-orange-800',
+      msg: inGracePeriod
+        ? t('platform.subscription.enforcement.pastDueGrace', { days: gracePeriodDaysRemaining })
+        : t('platform.subscription.enforcement.pastDueExpired'),
+    },
+    SUSPENDED: {
+      icon: <XCircle size={18} className="shrink-0" />,
+      bg: 'bg-red-50 border-red-200 text-red-800',
+      msg: t('platform.subscription.enforcement.suspended'),
+    },
+    EXPIRED: {
+      icon: <XCircle size={18} className="shrink-0" />,
+      bg: 'bg-gray-50 border-gray-200 text-gray-700',
+      msg: t('platform.subscription.enforcement.expired'),
+    },
+    CANCELLED: {
+      icon: <XCircle size={18} className="shrink-0" />,
+      bg: 'bg-gray-50 border-gray-200 text-gray-700',
+      msg: t('platform.subscription.enforcement.cancelled'),
+    },
+  };
+
+  const b = banners[status];
+  if (!b) return null;
+
+  return (
+    <div className={`flex items-start gap-3 p-4 border rounded-xl text-sm ${b.bg}`}>
+      {b.icon}
+      <div>
+        <p className="font-medium">{b.msg}</p>
+        <p className="mt-1 text-xs opacity-80">{t('platform.subscription.enforcement.contactAdmin')}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function MySubscriptionPage() {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRtl = i18n.dir() === 'rtl';
 
   const { data: subData, isLoading: subLoading, isError: subError } = useQuery({
@@ -58,11 +131,25 @@ export default function MySubscriptionPage() {
     ? Math.min(100, Math.round((ent.currentEmployeeCount / plan.maxEmployees) * 100))
     : 0;
 
+  const storageUsagePct = ent && plan.storageGb !== -1
+    ? Math.min(100, Math.round((ent.storageUsedBytes / (plan.storageGb * 1073741824)) * 100))
+    : 0;
+
   return (
     <div className={`space-y-6 ${isRtl ? 'rtl' : ''}`}>
       <PageHeader title={t('platform.subscription.entitlements.title')} />
 
-      {/* Subscription overview card */}
+      {/* Status banner for non-active subscriptions */}
+      {ent && (
+        <StatusBanner
+          status={sub.status}
+          inGracePeriod={ent.inGracePeriod}
+          gracePeriodDaysRemaining={ent.gracePeriodDaysRemaining}
+          t={t}
+        />
+      )}
+
+      {/* Subscription overview */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
         <div className="flex items-start justify-between flex-wrap gap-4">
           <div>
@@ -125,42 +212,56 @@ export default function MySubscriptionPage() {
               <Users size={18} className="text-indigo-600" />
               <h3 className="font-semibold text-slate-800">{t('platform.subscription.entitlements.employees')}</h3>
             </div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-slate-600">
-                {t('platform.subscription.entitlements.usageOf', {
-                  current: ent.currentEmployeeCount,
-                  max: plan.maxEmployees === -1 ? '∞' : plan.maxEmployees,
-                })}
-              </span>
-              {ent.employeeLimitReached && (
-                <span className="text-xs text-red-600 font-medium flex items-center gap-1">
-                  <AlertTriangle size={12} />
-                  {t('platform.subscription.entitlements.limitReached')}
-                </span>
-              )}
-            </div>
+            <p className="text-sm text-slate-600 mb-3">
+              {t('platform.subscription.entitlements.usageOf', {
+                current: ent.currentEmployeeCount,
+                max: plan.maxEmployees === -1 ? '∞' : plan.maxEmployees,
+              })}
+            </p>
             {plan.maxEmployees !== -1 && (
-              <div className="w-full bg-slate-100 rounded-full h-2">
-                <div
-                  className={`h-2 rounded-full transition-all ${
-                    employeeUsagePct >= 90 ? 'bg-red-500' :
-                    employeeUsagePct >= 70 ? 'bg-orange-400' : 'bg-indigo-500'
-                  }`}
-                  style={{ width: `${employeeUsagePct}%` }}
-                />
-              </div>
+              <UsageBar
+                pct={employeeUsagePct}
+                label={`${employeeUsagePct}%`}
+                warning={employeeUsagePct >= 70 && employeeUsagePct < 90}
+                danger={ent.employeeLimitReached}
+              />
+            )}
+            {ent.employeeLimitReached && (
+              <p className="mt-3 text-xs text-red-600">
+                {t('platform.subscription.entitlements.limitReached')}
+              </p>
             )}
           </div>
 
-          {/* Storage */}
+          {/* Storage usage */}
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-4">
               <HardDrive size={18} className="text-indigo-600" />
               <h3 className="font-semibold text-slate-800">{t('platform.subscription.entitlements.storage')}</h3>
             </div>
-            <p className="text-2xl font-bold text-slate-800">
-              {plan.storageGb === -1 ? '∞' : `${plan.storageGb} GB`}
-            </p>
+            {plan.storageGb === -1 ? (
+              <p className="text-2xl font-bold text-slate-800">∞</p>
+            ) : (
+              <>
+                <p className="text-sm text-slate-600 mb-3">
+                  {t('platform.subscription.entitlements.usageOf', {
+                    current: fmtBytes(ent.storageUsedBytes),
+                    max: `${plan.storageGb} GB`,
+                  })}
+                </p>
+                <UsageBar
+                  pct={storageUsagePct}
+                  label={`${storageUsagePct}%`}
+                  warning={storageUsagePct >= 70 && storageUsagePct < 90}
+                  danger={ent.storageQuotaReached}
+                />
+                {ent.storageQuotaReached && (
+                  <p className="mt-3 text-xs text-red-600">
+                    {t('platform.subscription.entitlements.storageQuotaReached')}
+                  </p>
+                )}
+              </>
+            )}
           </div>
 
           {/* Enabled modules */}
@@ -172,12 +273,33 @@ export default function MySubscriptionPage() {
             <div className="flex flex-wrap gap-2">
               {(ent.enabledModules ?? []).map(m => (
                 <span key={m}
-                  className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full border border-indigo-200">
+                  className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full border border-indigo-200">
+                  <CheckCircle size={10} />
                   {m}
                 </span>
               ))}
             </div>
           </div>
+
+          {/* Upgrade CTA when approaching or at limits */}
+          {(ent.employeeLimitReached || ent.storageQuotaReached || employeeUsagePct >= 80 || storageUsagePct >= 80) && (
+            <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5 flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <p className="font-semibold text-indigo-800 text-sm">
+                  {t('platform.subscription.entitlements.upgradeCta')}
+                </p>
+                <p className="text-xs text-indigo-600 mt-1">
+                  {t('platform.subscription.entitlements.upgradeDesc')}
+                </p>
+              </div>
+              <button
+                onClick={() => navigate('/dashboard/subscription')}
+                className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors shrink-0"
+              >
+                {t('platform.subscription.entitlements.upgradeBtn')}
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

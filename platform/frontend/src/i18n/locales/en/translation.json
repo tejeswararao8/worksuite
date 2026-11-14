@@ -480,15 +480,27 @@
         "ANNUAL":  "Annual"
       },
       "entitlements": {
-        "title":          "Your Subscription",
-        "plan":           "Current Plan",
-        "status":         "Status",
-        "employees":      "Employees",
-        "storage":        "Storage",
-        "modules":        "Enabled Modules",
-        "limitReached":   "Employee limit reached — upgrade your plan to add more.",
-        "noSub":          "No active subscription. Contact your administrator.",
-        "usageOf":        "{{current}} of {{max}}"
+        "title":                "Your Subscription",
+        "plan":                 "Current Plan",
+        "status":               "Status",
+        "employees":            "Employees",
+        "storage":              "Storage",
+        "modules":              "Enabled Modules",
+        "limitReached":         "Employee limit reached — upgrade your plan to add more.",
+        "storageQuotaReached":  "Storage quota reached — upgrade your plan for more space.",
+        "noSub":                "No active subscription. Contact your administrator.",
+        "usageOf":              "{{current}} of {{max}}",
+        "upgradeCta":           "You are approaching your plan limits",
+        "upgradeDesc":          "Contact your administrator to upgrade your subscription plan.",
+        "upgradeBtn":           "View Subscription"
+      },
+      "enforcement": {
+        "pastDueGrace":   "Your payment is overdue. You have {{days}} day(s) remaining in the grace period.",
+        "pastDueExpired": "Your payment is overdue and the grace period has expired. Some operations are restricted.",
+        "suspended":      "Your subscription is suspended. Business operations are restricted.",
+        "expired":        "Your subscription has expired. Please renew to restore access.",
+        "cancelled":      "Your subscription has been cancelled.",
+        "contactAdmin":   "Please contact your administrator to resolve this."
       }
     },
     "tenant": {
