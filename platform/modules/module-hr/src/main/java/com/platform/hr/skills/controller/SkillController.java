@@ -48,6 +48,7 @@ public class SkillController {
 
     @PutMapping("/skills/{skillId}")
     @PreAuthorize("hasAnyAuthority('SKILL_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update skill")
     public ResponseEntity<ApiResponse<SkillDto.SkillResponse>> updateSkill(
             @PathVariable UUID employeeId,
@@ -59,6 +60,7 @@ public class SkillController {
 
     @DeleteMapping("/skills/{skillId}")
     @PreAuthorize("hasAnyAuthority('SKILL_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Delete skill")
     public ResponseEntity<ApiResponse<Void>> deleteSkill(
             @PathVariable UUID employeeId, @PathVariable UUID skillId) {
@@ -90,6 +92,7 @@ public class SkillController {
 
     @PutMapping("/certifications/{certId}")
     @PreAuthorize("hasAnyAuthority('SKILL_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update certification")
     public ResponseEntity<ApiResponse<SkillDto.CertificationResponse>> updateCertification(
             @PathVariable UUID employeeId,
@@ -101,6 +104,7 @@ public class SkillController {
 
     @DeleteMapping("/certifications/{certId}")
     @PreAuthorize("hasAnyAuthority('SKILL_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Delete certification")
     public ResponseEntity<ApiResponse<Void>> deleteCertification(
             @PathVariable UUID employeeId, @PathVariable UUID certId) {

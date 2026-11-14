@@ -47,6 +47,7 @@ public class EmergencyContactController {
 
     @PutMapping("/{contactId}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update emergency contact")
     public ResponseEntity<ApiResponse<EmergencyContactDto.Response>> update(
             @PathVariable UUID employeeId,
@@ -58,6 +59,7 @@ public class EmergencyContactController {
 
     @DeleteMapping("/{contactId}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Delete emergency contact")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable UUID employeeId,

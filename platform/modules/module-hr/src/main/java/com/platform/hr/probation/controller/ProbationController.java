@@ -63,6 +63,7 @@ public class ProbationController {
     // ── ADMIN/HR: Extend probation ─────────────────────────────
     @PutMapping("/{id}/extend")
     @PreAuthorize("hasAnyAuthority('PROBATION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Extend probation period")
     public ResponseEntity<ApiResponse<ProbationDto.Response>> extend(
             @PathVariable UUID id,
@@ -73,6 +74,7 @@ public class ProbationController {
     // ── ADMIN/HR: Reject probation ─────────────────────────────
     @PutMapping("/{id}/reject")
     @PreAuthorize("hasAnyAuthority('PROBATION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Reject probation — employee gets TERMINATED")
     public ResponseEntity<ApiResponse<ProbationDto.Response>> reject(
             @PathVariable UUID id,

@@ -65,6 +65,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update employee")
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> update(
         @PathVariable UUID id, @Valid @RequestBody EmployeeDto.UpdateRequest request) {
@@ -73,6 +74,7 @@ public class EmployeeController {
 
     @PostMapping(value = "/{id}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Upload employee photo")
     public ResponseEntity<ApiResponse<EmployeeDto.Response>> uploadPhoto(
         @PathVariable UUID id, @RequestParam("file") MultipartFile file) throws IOException {
@@ -81,6 +83,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Delete employee")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable UUID id) {
         employeeService.delete(id);

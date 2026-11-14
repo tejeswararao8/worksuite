@@ -62,6 +62,7 @@ public class OnboardingController {
 
     @PutMapping("/tasks/{taskId}/complete")
     @PreAuthorize("isAuthenticated()")
+    @EnforceModule("HR")
     @Operation(summary = "Mark task as complete")
     public ResponseEntity<ApiResponse<OnboardingDto.Response>> completeTask(@PathVariable UUID taskId) {
         return ResponseEntity.ok(ApiResponse.success("Task completed", onboardingService.completeTask(taskId)));
@@ -69,6 +70,7 @@ public class OnboardingController {
 
     @PutMapping("/tasks/{taskId}")
     @PreAuthorize("hasAnyAuthority('ONBOARDING_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update onboarding task")
     public ResponseEntity<ApiResponse<OnboardingDto.Response>> updateTask(
             @PathVariable UUID taskId,

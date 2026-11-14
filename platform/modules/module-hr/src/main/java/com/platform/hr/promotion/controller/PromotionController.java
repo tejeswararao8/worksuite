@@ -66,6 +66,7 @@ public class PromotionController {
 
     @PutMapping("/{id}/approve")
     @PreAuthorize("hasAnyAuthority('PROMOTION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Approve promotion")
     public ResponseEntity<ApiResponse<PromotionDto.Response>> approve(
             @PathVariable UUID id,
@@ -75,6 +76,7 @@ public class PromotionController {
 
     @PutMapping("/{id}/reject")
     @PreAuthorize("hasAnyAuthority('PROMOTION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Reject promotion")
     public ResponseEntity<ApiResponse<PromotionDto.Response>> reject(
             @PathVariable UUID id,

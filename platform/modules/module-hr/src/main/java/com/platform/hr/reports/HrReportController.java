@@ -37,6 +37,7 @@ public class HrReportController {
 
     @GetMapping("/new-joiners")
     @PreAuthorize("hasAnyAuthority('HR_REPORT_EXPORT')")
+    @EnforceModule("HR")
     @Operation(summary = "Export new joiners report")
     public ResponseEntity<byte[]> newJoiners(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -48,6 +49,7 @@ public class HrReportController {
 
     @GetMapping("/probation")
     @PreAuthorize("hasAnyAuthority('HR_REPORT_EXPORT')")
+    @EnforceModule("HR")
     @Operation(summary = "Export probation status report")
     public ResponseEntity<byte[]> probation(
             @RequestParam(defaultValue = "EXCEL") ReportService.ReportFormat format) throws IOException {
@@ -57,6 +59,7 @@ public class HrReportController {
 
     @GetMapping("/transfers")
     @PreAuthorize("hasAnyAuthority('HR_REPORT_EXPORT')")
+    @EnforceModule("HR")
     @Operation(summary = "Export transfer history report")
     public ResponseEntity<byte[]> transfers(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -68,6 +71,7 @@ public class HrReportController {
 
     @GetMapping("/promotions")
     @PreAuthorize("hasAnyAuthority('HR_REPORT_EXPORT')")
+    @EnforceModule("HR")
     @Operation(summary = "Export promotion history report")
     public ResponseEntity<byte[]> promotions(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
@@ -79,6 +83,7 @@ public class HrReportController {
 
     @GetMapping("/assets")
     @PreAuthorize("hasAnyAuthority('HR_REPORT_EXPORT')")
+    @EnforceModule("HR")
     @Operation(summary = "Export asset assignment report")
     public ResponseEntity<byte[]> assets(
             @RequestParam(defaultValue = "EXCEL") ReportService.ReportFormat format) throws IOException {

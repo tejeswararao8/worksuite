@@ -74,6 +74,7 @@ public class DepartmentController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('DEPARTMENT_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update department")
     public ResponseEntity<ApiResponse<DepartmentDto.Response>> update(
             @PathVariable UUID id,
@@ -83,6 +84,7 @@ public class DepartmentController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('DEPARTMENT_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Deactivate department")
     public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable UUID id) {
         departmentService.deactivate(id);

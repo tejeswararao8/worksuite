@@ -9,6 +9,7 @@ import com.platform.tenancy.membership.MembershipStatus;
 import com.platform.tenancy.membership.UserTenantMembershipRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -51,6 +52,9 @@ import java.util.UUID;
 public class SubscriptionService {
 
     private static final long BYTES_PER_GB = 1_073_741_824L;
+
+    @Value("${platform.subscription.grace-period-days:7}")
+    private int gracePeriodDays;
 
     private final SubscriptionPlanRepository planRepository;
     private final TenantSubscriptionRepository subscriptionRepository;
@@ -327,14 +331,14 @@ public class SubscriptionService {
         boolean storageQuotaReached = plan.getStorageGb() != -1
                 && storageUsedBytes >= storageQuotaBytes;
 
-        // Grace period: PAST_DUE subscriptions retain access for GRACE_PERIOD_DAYS
-        // after the current period end. This is a documented policy decision.
+        // Grace period: PAST_DUE subscriptions retain access for gracePeriodDays
+        // after the current period end. Configured via platform.subscription.grace-period-days.
         boolean inGracePeriod = false;
         int graceDaysRemaining = 0;
         if (sub.getStatus() == TenantSubscription.SubscriptionStatus.PAST_DUE
                 && sub.getCurrentPeriodEnd() != null) {
             LocalDateTime graceDeadline = sub.getCurrentPeriodEnd()
-                    .plusDays(SubscriptionEntitlementDto.GRACE_PERIOD_DAYS);
+                    .plusDays(gracePeriodDays);
             if (LocalDateTime.now().isBefore(graceDeadline)) {
                 inGracePeriod = true;
                 graceDaysRemaining = (int) ChronoUnit.DAYS.between(
@@ -523,7 +527,7 @@ public class SubscriptionService {
             case PAST_DUE -> {
                 if (sub.getCurrentPeriodEnd() != null) {
                     LocalDateTime graceDeadline = sub.getCurrentPeriodEnd()
-                            .plusDays(SubscriptionEntitlementDto.GRACE_PERIOD_DAYS);
+                            .plusDays(gracePeriodDays);
                     if (LocalDateTime.now().isBefore(graceDeadline)) return; // within grace
                 }
                 throw new TenantException(

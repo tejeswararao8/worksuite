@@ -75,6 +75,7 @@ public class TeamController {
 
     @PostMapping("/{id}/members")
     @PreAuthorize("hasAnyAuthority('TEAM_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add member to team")
     public ResponseEntity<ApiResponse<Void>> addMember(
             @PathVariable UUID id,
@@ -85,6 +86,7 @@ public class TeamController {
 
     @DeleteMapping("/{id}/members/{employeeId}")
     @PreAuthorize("hasAnyAuthority('TEAM_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Remove member from team")
     public ResponseEntity<ApiResponse<Void>> removeMember(
             @PathVariable UUID id,
@@ -95,6 +97,7 @@ public class TeamController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('TEAM_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update team")
     public ResponseEntity<ApiResponse<TeamDto.Response>> update(
             @PathVariable UUID id,
@@ -104,6 +107,7 @@ public class TeamController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('TEAM_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Deactivate team")
     public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable UUID id) {
         teamService.deactivate(id);

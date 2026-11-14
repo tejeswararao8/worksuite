@@ -19,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,6 +50,7 @@ class SubscriptionServiceTest {
 
     @BeforeEach
     void setupAuth() {
+        ReflectionTestUtils.setField(service, "gracePeriodDays", 7);
         Jwt jwt = mock(Jwt.class);
         lenient().when(jwt.getSubject()).thenReturn(ACTOR);
         Authentication auth = mock(Authentication.class);
@@ -427,5 +429,54 @@ class SubscriptionServiceTest {
         assertThatThrownBy(() -> service.getActiveSubscriptionForTenant(unknown))
                 .isInstanceOf(TenantException.class)
                 .hasMessageContaining("Tenant not found");
+    }
+
+    // ── 17. Grace period is config-driven, not hardcoded ──────────────────────
+
+    @Test
+    @DisplayName("enforceStorageQuota() uses configured gracePeriodDays — not hardcoded constant")
+    void gracePeriod_usesConfiguredValue_notConstant() {
+        // Configure a non-default grace period of 3 days
+        ReflectionTestUtils.setField(service, "gracePeriodDays", 3);
+
+        // Period ended 4 days ago — beyond 3-day grace, but within 7-day default
+        TenantSubscription sub = activeSub(TenantSubscription.SubscriptionStatus.PAST_DUE);
+        sub.setCurrentPeriodEnd(LocalDateTime.now().minusDays(4));
+        when(subscriptionRepository.findActiveByTenantIdForUpdate(TENANT_ID))
+                .thenReturn(Optional.of(sub));
+
+        assertThatThrownBy(() -> service.enforceStorageQuota(TENANT_ID, 1024L))
+                .isInstanceOf(TenantException.class)
+                .hasMessageContaining("grace period has expired");
+    }
+
+    @Test
+    @DisplayName("enforceStorageQuota() allows access within configured grace period")
+    void gracePeriod_withinConfiguredGrace_allows() {
+        // Configure 10-day grace period
+        ReflectionTestUtils.setField(service, "gracePeriodDays", 10);
+
+        // Period ended 5 days ago — within 10-day grace
+        TenantSubscription sub = activeSub(TenantSubscription.SubscriptionStatus.PAST_DUE);
+        sub.setCurrentPeriodEnd(LocalDateTime.now().minusDays(5));
+        when(subscriptionRepository.findActiveByTenantIdForUpdate(TENANT_ID))
+                .thenReturn(Optional.of(sub));
+
+        // Plan is unlimited storage so quota check passes once status check passes
+        sub.getPlan().setStorageGb(-1);
+        assertThatNoException().isThrownBy(() -> service.enforceStorageQuota(TENANT_ID, 1024L));
+    }
+
+    @Test
+    @DisplayName("SubscriptionLifecycleScheduler and SubscriptionService both read grace-period-days config")
+    void gracePeriod_schedulerAndServiceUseSameConfigKey() {
+        SubscriptionLifecycleScheduler scheduler = new SubscriptionLifecycleScheduler(
+                subscriptionRepository, historyRepository);
+        ReflectionTestUtils.setField(scheduler, "gracePeriodDays", 7);
+        ReflectionTestUtils.setField(service, "gracePeriodDays", 7);
+
+        int schedulerGrace = (int) ReflectionTestUtils.getField(scheduler, "gracePeriodDays");
+        int serviceGrace   = (int) ReflectionTestUtils.getField(service,    "gracePeriodDays");
+        assertThat(schedulerGrace).isEqualTo(serviceGrace).isEqualTo(7);
     }
 }

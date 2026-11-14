@@ -3,13 +3,10 @@ package com.platform.hr.subscription;
 import com.platform.document.MinioStorageService;
 import com.platform.hr.platform.subscription.SubscriptionService;
 import com.platform.tenancy.TenantContext;
-import com.platform.tenancy.TenantException;
 import com.platform.tenancy.TenantSecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
@@ -17,24 +14,35 @@ import java.util.UUID;
 /**
  * Wraps {@link MinioStorageService} with subscription storage quota enforcement.
  *
- * <p>Storage reservation protocol (prevents concurrent over-allocation):
+ * <h3>Storage reservation protocol</h3>
  * <ol>
  *   <li>Measure actual file size server-side — never trust browser-supplied size.</li>
- *   <li>Atomically reserve the bytes: enforce quota check + increment usage in one
- *       pessimistic-locked transaction. If the quota would be exceeded, the
- *       reservation is rejected before any upload occurs.</li>
+ *   <li>Atomically reserve the bytes via {@link StorageReservationService#reserve}:
+ *       enforces quota + increments usage in one pessimistic-locked transaction that
+ *       commits <em>before</em> the upload begins. The reservation is executed through
+ *       a separate Spring bean to ensure the {@code REQUIRES_NEW} transaction proxy
+ *       is honoured (self-invocation would bypass it).</li>
  *   <li>Upload the file to MinIO outside the reservation transaction so the DB
- *       lock is not held during the network I/O.</li>
- *   <li>If the upload fails, release the reservation atomically.</li>
+ *       lock is not held during network I/O.</li>
+ *   <li>If the upload fails, release the reservation via
+ *       {@link StorageReservationService#release}. Release failures are logged
+ *       with enough context for manual reconciliation — they do not mask the
+ *       original upload exception.</li>
  *   <li>If the upload succeeds, the reservation is already committed — no further
  *       action needed.</li>
  * </ol>
  *
- * <p>Replacement uploads: callers must pass {@code oldFileSizeBytes > 0} to
- * release the old file's quota before reserving for the new file. This is
- * handled atomically in {@link #storeReplacement}.
+ * <h3>Replacement uploads</h3>
+ * <p>Callers must pass {@code oldFileSizeBytes > 0} to release the old file's quota
+ * before reserving for the new file. This is handled atomically in
+ * {@link #storeReplacement}. On upload failure the old quota is restored.
  *
- * <p>Platform admins bypass quota checks (not bound to a tenant subscription).
+ * <h3>Deletion</h3>
+ * <p>Storage usage is only decremented after a confirmed MinIO deletion. If MinIO
+ * deletion fails, usage is NOT decremented — the file still occupies space.
+ *
+ * <h3>Platform bypass</h3>
+ * <p>Platform admins (platform pseudo-tenant) bypass all quota checks.
  */
 @Slf4j
 @Service
@@ -43,6 +51,7 @@ public class QuotaAwareStorageService {
 
     private final MinioStorageService minioStorageService;
     private final SubscriptionService subscriptionService;
+    private final StorageReservationService reservationService;
 
     /**
      * Stores a new file in MinIO after atomically reserving the storage quota.
@@ -51,38 +60,47 @@ public class QuotaAwareStorageService {
      * @param entityType logical entity type (e.g. "employees", "documents")
      * @param entityId   entity UUID string
      * @return the MinIO object path
-     * @throws TenantException if the quota would be exceeded
+     * @throws com.platform.tenancy.TenantException if the quota would be exceeded
      */
     public String store(MultipartFile file, String entityType, String entityId) throws Exception {
         String tenantIdStr = TenantContext.getTenantId();
         UUID tenantId = parseTenantId(tenantIdStr);
-
         long fileSizeBytes = file.getSize();
 
-        // Step 1: atomically reserve quota (enforce + increment in one locked tx)
-        if (tenantId != null && !TenantSecurityService.PLATFORM_TENANT_ID.equals(tenantId)) {
-            reserveStorage(tenantId, fileSizeBytes);
+        boolean enforceQuota = isQuotaEnforced(tenantId);
+
+        // Step 1: atomically reserve quota — commits before upload starts
+        if (enforceQuota) {
+            reservationService.reserve(tenantId, fileSizeBytes);
         }
 
-        // Step 2: upload to MinIO (outside the reservation transaction)
+        // Step 2: upload to MinIO (reservation transaction already committed)
         String objectPath;
         try {
             objectPath = minioStorageService.store(file, tenantIdStr, entityType, entityId);
         } catch (Exception e) {
-            // Step 3: upload failed — release the reservation
-            if (tenantId != null && !TenantSecurityService.PLATFORM_TENANT_ID.equals(tenantId)) {
-                releaseStorageSafe(tenantId, fileSizeBytes);
+            // Step 3: upload failed — release the committed reservation
+            if (enforceQuota) {
+                log.warn("store: upload failed for tenant={} entityType={} size={} — releasing reservation: {}",
+                        tenantId, entityType, fileSizeBytes, e.getMessage());
+                reservationService.release(tenantId, fileSizeBytes);
             }
             throw e;
         }
 
-        log.debug("Stored file: tenant={} path={} size={}", tenantIdStr, objectPath, fileSizeBytes);
+        log.debug("store: tenant={} path={} size={}", tenantId, objectPath, fileSizeBytes);
         return objectPath;
     }
 
     /**
      * Replaces an existing file: releases old quota, reserves new quota, then uploads.
      * If the upload fails, the new reservation is released and the old quota is restored.
+     *
+     * <p>Concurrency note: the release of the old quota and reservation of the new quota
+     * are two separate transactions. A concurrent upload could theoretically use the
+     * freed bytes between these two operations. This is an acceptable trade-off — the
+     * window is sub-millisecond and the quota check in {@code reserve} uses a pessimistic
+     * write lock that serialises concurrent reservations for the same tenant.
      *
      * @param file             the new file
      * @param entityType       logical entity type
@@ -94,15 +112,17 @@ public class QuotaAwareStorageService {
                                    long oldFileSizeBytes) throws Exception {
         String tenantIdStr = TenantContext.getTenantId();
         UUID tenantId = parseTenantId(tenantIdStr);
-
         long newFileSizeBytes = file.getSize();
 
-        if (tenantId != null && !TenantSecurityService.PLATFORM_TENANT_ID.equals(tenantId)) {
-            // Release old quota first, then reserve for new file
+        boolean enforceQuota = isQuotaEnforced(tenantId);
+
+        if (enforceQuota) {
+            // Release old quota first so the new reservation sees the freed space
             if (oldFileSizeBytes > 0) {
                 subscriptionService.releaseStorage(tenantId, oldFileSizeBytes);
             }
-            reserveStorage(tenantId, newFileSizeBytes);
+            // Reserve for the new file — commits before upload
+            reservationService.reserve(tenantId, newFileSizeBytes);
         }
 
         String objectPath;
@@ -110,17 +130,24 @@ public class QuotaAwareStorageService {
             objectPath = minioStorageService.store(file, tenantIdStr, entityType, entityId);
         } catch (Exception e) {
             // Rollback: release new reservation, restore old quota
-            if (tenantId != null && !TenantSecurityService.PLATFORM_TENANT_ID.equals(tenantId)) {
-                releaseStorageSafe(tenantId, newFileSizeBytes);
+            if (enforceQuota) {
+                log.warn("storeReplacement: upload failed for tenant={} entityType={} newSize={} oldSize={} — rolling back quota: {}",
+                        tenantId, entityType, newFileSizeBytes, oldFileSizeBytes, e.getMessage());
+                reservationService.release(tenantId, newFileSizeBytes);
                 if (oldFileSizeBytes > 0) {
-                    subscriptionService.recordStorageUsed(tenantId, oldFileSizeBytes);
+                    try {
+                        subscriptionService.recordStorageUsed(tenantId, oldFileSizeBytes);
+                    } catch (Exception restoreEx) {
+                        log.error("storeReplacement: failed to restore old quota for tenant={} oldSize={} — manual reconciliation needed: {}",
+                                tenantId, oldFileSizeBytes, restoreEx.getMessage(), restoreEx);
+                    }
                 }
             }
             throw e;
         }
 
-        log.debug("Replaced file: tenant={} path={} oldSize={} newSize={}",
-                tenantIdStr, objectPath, oldFileSizeBytes, newFileSizeBytes);
+        log.debug("storeReplacement: tenant={} path={} oldSize={} newSize={}",
+                tenantId, objectPath, oldFileSizeBytes, newFileSizeBytes);
         return objectPath;
     }
 
@@ -141,6 +168,7 @@ public class QuotaAwareStorageService {
             UUID tenantId = UUID.fromString(tenantIdStr);
             if (!TenantSecurityService.PLATFORM_TENANT_ID.equals(tenantId)) {
                 subscriptionService.releaseStorage(tenantId, fileSizeBytes);
+                log.debug("delete: released {} bytes for tenant={} path={}", fileSizeBytes, tenantId, objectPath);
             }
         }
     }
@@ -157,30 +185,8 @@ public class QuotaAwareStorageService {
 
     // ── Internal helpers ──────────────────────────────────────────────────────
 
-    /**
-     * Atomically enforces quota and increments usage in a single pessimistic-locked
-     * transaction. This is the reservation step — it must complete before the upload
-     * begins so concurrent uploads cannot both pass the quota check.
-     */
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void reserveStorage(UUID tenantId, long fileSizeBytes) {
-        // enforceStorageQuota acquires a pessimistic write lock and checks the quota
-        subscriptionService.enforceStorageQuota(tenantId, fileSizeBytes);
-        // Immediately increment — the lock is still held, preventing races
-        subscriptionService.recordStorageUsed(tenantId, fileSizeBytes);
-    }
-
-    /**
-     * Releases a storage reservation safely — logs but does not throw on failure
-     * to avoid masking the original upload exception.
-     */
-    private void releaseStorageSafe(UUID tenantId, long fileSizeBytes) {
-        try {
-            subscriptionService.releaseStorage(tenantId, fileSizeBytes);
-        } catch (Exception ex) {
-            log.error("Failed to release storage reservation for tenant={} size={}: {}",
-                    tenantId, fileSizeBytes, ex.getMessage(), ex);
-        }
+    private boolean isQuotaEnforced(UUID tenantId) {
+        return tenantId != null && !TenantSecurityService.PLATFORM_TENANT_ID.equals(tenantId);
     }
 
     private static UUID parseTenantId(String tenantIdStr) {

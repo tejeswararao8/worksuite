@@ -72,6 +72,7 @@ public class BranchController {
     // ── ADMIN: Update branch ───────────────────────────────────
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('BRANCH_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update branch")
     public ResponseEntity<ApiResponse<BranchDto.Response>> update(
             @PathVariable UUID id,
@@ -82,6 +83,7 @@ public class BranchController {
     // ── ADMIN: Deactivate branch ───────────────────────────────
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('BRANCH_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Deactivate branch (only if no active employees)")
     public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable UUID id) {
         branchService.deactivate(id);

@@ -51,6 +51,7 @@ public class OffboardingController {
 
     @PostMapping("/employees/{employeeId}/tasks")
     @PreAuthorize("hasAnyAuthority('OFFBOARDING_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add offboarding task")
     public ResponseEntity<ApiResponse<OffboardingDto.Response>> addTask(
             @PathVariable UUID employeeId,
@@ -60,6 +61,7 @@ public class OffboardingController {
 
     @PutMapping("/tasks/{taskId}/complete")
     @PreAuthorize("isAuthenticated()")
+    @EnforceModule("HR")
     @Operation(summary = "Mark offboarding task as complete")
     public ResponseEntity<ApiResponse<OffboardingDto.Response>> completeTask(@PathVariable UUID taskId) {
         return ResponseEntity.ok(ApiResponse.success("Task completed", offboardingService.completeTask(taskId)));

@@ -3,6 +3,7 @@ package com.platform.hr.platform.subscription;
 import com.platform.document.MinioStorageService;
 import com.platform.hr.platform.subscription.SubscriptionService;
 import com.platform.hr.subscription.QuotaAwareStorageService;
+import com.platform.hr.subscription.StorageReservationService;
 import com.platform.tenancy.TenantContext;
 import com.platform.tenancy.TenantException;
 import com.platform.tenancy.TenantSecurityService;
@@ -24,26 +25,34 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Unit tests for QuotaAwareStorageService — Phase 3C.6 storage reservation.
+ * Unit tests for QuotaAwareStorageService and StorageReservationService.
+ *
+ * <p>Key fix verified: {@code reserveStorage()} is now delegated to
+ * {@link StorageReservationService} — a separate Spring bean — so the
+ * {@code @Transactional(REQUIRES_NEW)} proxy is honoured. Self-invocation
+ * within {@code QuotaAwareStorageService} would bypass the proxy entirely.
  *
  * <p>Covers:
  * <ul>
- *   <li>Reservation within quota succeeds</li>
- *   <li>Reservation exceeding quota fails before upload</li>
- *   <li>Failed upload releases reservation</li>
+ *   <li>Reservation within quota: enforce → record order enforced</li>
+ *   <li>Quota exceeded: MinIO never called</li>
+ *   <li>Upload failure: reservation released via StorageReservationService</li>
  *   <li>Successful deletion releases storage</li>
- *   <li>Failed deletion does NOT reduce usage</li>
- *   <li>Replacement upload accounts for old and new sizes</li>
- *   <li>Storage usage never becomes negative (floor at 0 via decrementStorageUsed)</li>
+ *   <li>Failed deletion does NOT release storage</li>
+ *   <li>Replacement: release old → reserve new → upload</li>
+ *   <li>Replacement upload failure: new reservation released, old quota restored</li>
  *   <li>Platform tenant bypasses all quota checks</li>
+ *   <li>StorageReservationService.reserve() calls enforce then record in order</li>
+ *   <li>StorageReservationService.release() swallows exceptions and logs</li>
  * </ul>
  */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("QuotaAwareStorageService — Storage Reservation Tests")
+@DisplayName("QuotaAwareStorageService + StorageReservationService — Storage Reservation Tests")
 class StorageReservationTest {
 
     @Mock private MinioStorageService minioStorageService;
     @Mock private SubscriptionService subscriptionService;
+    @Mock private StorageReservationService reservationService;
 
     @InjectMocks
     private QuotaAwareStorageService storageService;
@@ -70,47 +79,44 @@ class StorageReservationTest {
     // ── 1. Reservation within quota succeeds ─────────────────────────────────
 
     @Test
-    @DisplayName("store() enforces quota then records usage before returning path")
-    void store_withinQuota_succeeds() throws Exception {
-        long fileSize = 5L * 1024 * 1024; // 5 MB
+    @DisplayName("store() calls reservationService.reserve() before MinIO upload")
+    void store_withinQuota_reservesBeforeUpload() throws Exception {
+        long fileSize = 5L * 1024 * 1024;
         MultipartFile file = mockFile(fileSize);
         when(minioStorageService.store(any(), any(), any(), any())).thenReturn(OBJECT_PATH);
 
         String result = storageService.store(file, "employees", "emp-1");
 
         assertThat(result).isEqualTo(OBJECT_PATH);
-        // enforceStorageQuota must be called before recordStorageUsed
-        InOrder inOrder = inOrder(subscriptionService);
-        inOrder.verify(subscriptionService).enforceStorageQuota(TENANT_ID, fileSize);
-        inOrder.verify(subscriptionService).recordStorageUsed(TENANT_ID, fileSize);
+        // Reservation must happen before MinIO upload
+        InOrder inOrder = inOrder(reservationService, minioStorageService);
+        inOrder.verify(reservationService).reserve(TENANT_ID, fileSize);
+        inOrder.verify(minioStorageService).store(any(), any(), any(), any());
     }
 
-    // ── 2. Reservation exceeding quota fails before upload ────────────────────
+    // ── 2. Quota exceeded — MinIO never called ────────────────────────────────
 
     @Test
     @DisplayName("store() rejects upload when quota would be exceeded — MinIO never called")
     void store_exceedsQuota_rejectsBeforeUpload() throws Exception {
-        long fileSize = 200L * 1024 * 1024; // 200 MB
+        long fileSize = 200L * 1024 * 1024;
         MultipartFile file = mockFile(fileSize);
         doThrow(new TenantException("Storage quota exceeded"))
-                .when(subscriptionService).enforceStorageQuota(TENANT_ID, fileSize);
+                .when(reservationService).reserve(TENANT_ID, fileSize);
 
         assertThatThrownBy(() -> storageService.store(file, "employees", "emp-1"))
                 .isInstanceOf(TenantException.class)
                 .hasMessageContaining("Storage quota exceeded");
 
-        // MinIO must never be called if quota check fails
         verifyNoInteractions(minioStorageService);
-        // recordStorageUsed must never be called
-        verify(subscriptionService, never()).recordStorageUsed(any(), anyLong());
     }
 
-    // ── 3. Failed upload releases reservation ────────────────────────────────
+    // ── 3. Upload failure releases reservation ────────────────────────────────
 
     @Test
-    @DisplayName("store() releases reservation when MinIO upload fails")
+    @DisplayName("store() calls reservationService.release() when MinIO upload fails")
     void store_uploadFails_releasesReservation() throws Exception {
-        long fileSize = 10L * 1024 * 1024; // 10 MB
+        long fileSize = 10L * 1024 * 1024;
         MultipartFile file = mockFile(fileSize);
         when(minioStorageService.store(any(), any(), any(), any()))
                 .thenThrow(new RuntimeException("MinIO connection refused"));
@@ -119,11 +125,8 @@ class StorageReservationTest {
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("MinIO connection refused");
 
-        // Quota was reserved (enforced + incremented) before upload
-        verify(subscriptionService).enforceStorageQuota(TENANT_ID, fileSize);
-        verify(subscriptionService).recordStorageUsed(TENANT_ID, fileSize);
-        // Reservation must be released after failure
-        verify(subscriptionService).releaseStorage(TENANT_ID, fileSize);
+        verify(reservationService).reserve(TENANT_ID, fileSize);
+        verify(reservationService).release(TENANT_ID, fileSize);
     }
 
     // ── 4. Successful deletion releases storage ───────────────────────────────
@@ -131,7 +134,7 @@ class StorageReservationTest {
     @Test
     @DisplayName("delete() releases storage after successful MinIO deletion")
     void delete_success_releasesStorage() throws Exception {
-        long fileSize = 3L * 1024 * 1024; // 3 MB
+        long fileSize = 3L * 1024 * 1024;
 
         storageService.delete(OBJECT_PATH, fileSize);
 
@@ -139,7 +142,7 @@ class StorageReservationTest {
         verify(subscriptionService).releaseStorage(TENANT_ID, fileSize);
     }
 
-    // ── 5. Failed deletion does NOT reduce usage ──────────────────────────────
+    // ── 5. Failed deletion does NOT release storage ───────────────────────────
 
     @Test
     @DisplayName("delete() does NOT release storage when MinIO deletion fails")
@@ -150,33 +153,32 @@ class StorageReservationTest {
         assertThatThrownBy(() -> storageService.delete(OBJECT_PATH, fileSize))
                 .isInstanceOf(RuntimeException.class);
 
-        // Storage must NOT be released — file still exists in MinIO
         verify(subscriptionService, never()).releaseStorage(any(), anyLong());
     }
 
-    // ── 6. Replacement upload accounts for old and new sizes ─────────────────
+    // ── 6. Replacement: release old → reserve new → upload ───────────────────
 
     @Test
-    @DisplayName("storeReplacement() releases old quota then reserves new quota")
+    @DisplayName("storeReplacement() releases old quota then reserves new quota before upload")
     void storeReplacement_correctQuotaAccounting() throws Exception {
-        long oldSize = 2L * 1024 * 1024;  // 2 MB old file
-        long newSize = 5L * 1024 * 1024;  // 5 MB new file
+        long oldSize = 2L * 1024 * 1024;
+        long newSize = 5L * 1024 * 1024;
         MultipartFile file = mockFile(newSize);
         when(minioStorageService.store(any(), any(), any(), any())).thenReturn(OBJECT_PATH);
 
         storageService.storeReplacement(file, "employees", "emp-1", oldSize);
 
-        InOrder inOrder = inOrder(subscriptionService);
-        // Old quota released first
+        InOrder inOrder = inOrder(subscriptionService, reservationService, minioStorageService);
         inOrder.verify(subscriptionService).releaseStorage(TENANT_ID, oldSize);
-        // New quota enforced and reserved
-        inOrder.verify(subscriptionService).enforceStorageQuota(TENANT_ID, newSize);
-        inOrder.verify(subscriptionService).recordStorageUsed(TENANT_ID, newSize);
+        inOrder.verify(reservationService).reserve(TENANT_ID, newSize);
+        inOrder.verify(minioStorageService).store(any(), any(), any(), any());
     }
 
+    // ── 7. Replacement upload failure: rollback ───────────────────────────────
+
     @Test
-    @DisplayName("storeReplacement() restores old quota and releases new reservation on upload failure")
-    void storeReplacement_uploadFails_restoresOldQuota() throws Exception {
+    @DisplayName("storeReplacement() releases new reservation and restores old quota on upload failure")
+    void storeReplacement_uploadFails_rollsBack() throws Exception {
         long oldSize = 2L * 1024 * 1024;
         long newSize = 5L * 1024 * 1024;
         MultipartFile file = mockFile(newSize);
@@ -186,13 +188,11 @@ class StorageReservationTest {
         assertThatThrownBy(() -> storageService.storeReplacement(file, "employees", "emp-1", oldSize))
                 .isInstanceOf(RuntimeException.class);
 
-        // New reservation released
-        verify(subscriptionService).releaseStorage(TENANT_ID, newSize);
-        // Old quota restored
+        verify(reservationService).release(TENANT_ID, newSize);
         verify(subscriptionService).recordStorageUsed(TENANT_ID, oldSize);
     }
 
-    // ── 7. Platform tenant bypasses all quota checks ─────────────────────────
+    // ── 8. Platform tenant bypasses all quota checks ─────────────────────────
 
     @Test
     @DisplayName("store() bypasses quota for platform pseudo-tenant")
@@ -203,6 +203,7 @@ class StorageReservationTest {
 
         storageService.store(file, "platform", "doc-1");
 
+        verifyNoInteractions(reservationService);
         verify(subscriptionService, never()).enforceStorageQuota(any(), anyLong());
         verify(subscriptionService, never()).recordStorageUsed(any(), anyLong());
     }
@@ -218,19 +219,29 @@ class StorageReservationTest {
         verify(subscriptionService, never()).releaseStorage(any(), anyLong());
     }
 
-    // ── 8. File size measured server-side ────────────────────────────────────
+    // ── 9. StorageReservationService.reserve() calls enforce then record ──────
 
     @Test
-    @DisplayName("store() uses file.getSize() — never a caller-supplied size")
-    void store_usesServerSideFileSize() throws Exception {
-        long actualSize = 7L * 1024 * 1024;
-        MultipartFile file = mockFile(actualSize);
-        when(minioStorageService.store(any(), any(), any(), any())).thenReturn(OBJECT_PATH);
+    @DisplayName("StorageReservationService.reserve() calls enforceStorageQuota then recordStorageUsed in order")
+    void reservationService_reserve_callsEnforceThenRecord() {
+        StorageReservationService svc = new StorageReservationService(subscriptionService);
+        long fileSize = 5L * 1024 * 1024;
 
-        storageService.store(file, "employees", "emp-1");
+        svc.reserve(TENANT_ID, fileSize);
 
-        // The exact server-side size must be used for both enforce and record
-        verify(subscriptionService).enforceStorageQuota(TENANT_ID, actualSize);
-        verify(subscriptionService).recordStorageUsed(TENANT_ID, actualSize);
+        InOrder inOrder = inOrder(subscriptionService);
+        inOrder.verify(subscriptionService).enforceStorageQuota(TENANT_ID, fileSize);
+        inOrder.verify(subscriptionService).recordStorageUsed(TENANT_ID, fileSize);
+    }
+
+    // ── 10. StorageReservationService.release() swallows exceptions ───────────
+
+    @Test
+    @DisplayName("StorageReservationService.release() does not throw when releaseStorage fails")
+    void reservationService_release_swallowsException() {
+        StorageReservationService svc = new StorageReservationService(subscriptionService);
+        doThrow(new RuntimeException("DB error")).when(subscriptionService).releaseStorage(any(), anyLong());
+
+        assertThatNoException().isThrownBy(() -> svc.release(TENANT_ID, 1024L));
     }
 }

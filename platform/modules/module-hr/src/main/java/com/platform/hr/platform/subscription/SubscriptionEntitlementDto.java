@@ -64,7 +64,15 @@ public class SubscriptionEntitlementDto {
     /** Number of days remaining in the grace period, or 0 if not applicable. */
     private int gracePeriodDaysRemaining;
 
-    /** Platform-defined grace period for PAST_DUE subscriptions (days). */
+    /**
+     * Default grace period for PAST_DUE subscriptions (days).
+     *
+     * <p><strong>Do not use this constant for enforcement logic.</strong>
+     * The authoritative value is {@code platform.subscription.grace-period-days}
+     * in application.yml, injected into {@code SubscriptionService} and
+     * {@code SubscriptionLifecycleScheduler} via {@code @Value}.
+     * This constant exists only as a fallback default reference.
+     */
     public static final int GRACE_PERIOD_DAYS = 7;
 
     // ── Helpers ───────────────────────────────────────────────────────────────

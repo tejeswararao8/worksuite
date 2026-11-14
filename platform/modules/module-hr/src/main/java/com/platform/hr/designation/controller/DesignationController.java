@@ -67,6 +67,7 @@ public class DesignationController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('DESIGNATION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update designation")
     public ResponseEntity<ApiResponse<DesignationDto.Response>> update(
             @PathVariable UUID id,
@@ -76,6 +77,7 @@ public class DesignationController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('DESIGNATION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Deactivate designation")
     public ResponseEntity<ApiResponse<Void>> deactivate(@PathVariable UUID id) {
         designationService.deactivate(id);

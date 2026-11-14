@@ -73,6 +73,7 @@ public class TransferController {
 
     @PutMapping("/{id}/approve")
     @PreAuthorize("hasAnyAuthority('TRANSFER_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Approve transfer request")
     public ResponseEntity<ApiResponse<TransferDto.Response>> approve(
             @PathVariable UUID id,
@@ -82,6 +83,7 @@ public class TransferController {
 
     @PutMapping("/{id}/reject")
     @PreAuthorize("hasAnyAuthority('TRANSFER_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Reject transfer request")
     public ResponseEntity<ApiResponse<TransferDto.Response>> reject(
             @PathVariable UUID id,

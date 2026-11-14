@@ -48,6 +48,7 @@ public class BankDetailController {
 
     @PutMapping("/{bankId}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update bank detail")
     public ResponseEntity<ApiResponse<BankDetailDto.Response>> update(
             @PathVariable UUID employeeId,
@@ -59,6 +60,7 @@ public class BankDetailController {
 
     @DeleteMapping("/{bankId}")
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Delete bank detail")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable UUID employeeId,

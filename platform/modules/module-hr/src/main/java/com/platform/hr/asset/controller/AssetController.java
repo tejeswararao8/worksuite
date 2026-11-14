@@ -72,6 +72,7 @@ public class AssetController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ASSET_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Update asset details")
     public ResponseEntity<ApiResponse<AssetDto.Response>> update(
             @PathVariable UUID id,
@@ -81,6 +82,7 @@ public class AssetController {
 
     @PutMapping("/{id}/assign")
     @PreAuthorize("hasAnyAuthority('ASSET_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Assign asset to employee")
     public ResponseEntity<ApiResponse<AssetDto.Response>> assign(
             @PathVariable UUID id,
@@ -90,6 +92,7 @@ public class AssetController {
 
     @PutMapping("/{id}/return")
     @PreAuthorize("hasAnyAuthority('ASSET_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Return asset from employee")
     public ResponseEntity<ApiResponse<AssetDto.Response>> returnAsset(
             @PathVariable UUID id,
@@ -99,6 +102,7 @@ public class AssetController {
 
     @DeleteMapping("/{id}/retire")
     @PreAuthorize("hasAnyAuthority('ASSET_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Retire asset")
     public ResponseEntity<ApiResponse<Void>> retire(@PathVariable UUID id) {
         assetService.retire(id);
