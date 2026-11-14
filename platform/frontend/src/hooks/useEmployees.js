@@ -12,12 +12,14 @@ export function useEmployees() {
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState('');
   const [deptFilter, setDeptFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
 
   const { data, isLoading } = useQuery({
     queryKey: QUERY_KEYS.EMPLOYEES(page, search, deptFilter),
     queryFn: () => employeeApi.search({
       q: search || undefined,
       departmentId: deptFilter || undefined,
+      status: statusFilter || undefined,
       page,
       size: DEFAULT_PAGE_SIZE,
     }),
@@ -48,12 +50,14 @@ export function useEmployees() {
 
   const handleSearch = (value) => { setSearch(value); setPage(0); };
   const handleDeptFilter = (value) => { setDeptFilter(value); setPage(0); };
+  const handleStatusFilter = (value) => { setStatusFilter(value); setPage(0); };
 
   return {
     employees, totalPages, isLoading,
     page, setPage,
     search, handleSearch,
     deptFilter, handleDeptFilter,
+    statusFilter, handleStatusFilter,
     createMutation, updateMutation, deleteMutation,
   };
 }

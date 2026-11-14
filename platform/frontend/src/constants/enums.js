@@ -1,10 +1,11 @@
 // ─── Employment ──────────────────────────────────────────────────────────────
 export const EMPLOYMENT_STATUS = {
-  ACTIVE:      'ACTIVE',
-  PROBATION:   'PROBATION',
-  RESIGNED:    'RESIGNED',
-  TERMINATED:  'TERMINATED',
-  ON_LEAVE:    'ON_LEAVE',
+  ACTIVE:              'ACTIVE',
+  PROBATION:           'PROBATION',
+  RESIGNED:            'RESIGNED',
+  TERMINATED:          'TERMINATED',
+  ON_LEAVE:            'ON_LEAVE',
+  PENDING_INVITATION:  'PENDING_INVITATION',
 };
 
 export const EMPLOYMENT_TYPE = {
@@ -61,11 +62,51 @@ export const NOTIFICATION_TYPE = {
 
 // ─── Badge color maps (centralized — no per-page duplication) ─────────────────
 export const EMPLOYMENT_STATUS_COLOR = {
-  [EMPLOYMENT_STATUS.ACTIVE]:     'green',
-  [EMPLOYMENT_STATUS.PROBATION]:  'yellow',
-  [EMPLOYMENT_STATUS.RESIGNED]:   'red',
-  [EMPLOYMENT_STATUS.TERMINATED]: 'red',
-  [EMPLOYMENT_STATUS.ON_LEAVE]:   'blue',
+  [EMPLOYMENT_STATUS.ACTIVE]:              'green',
+  [EMPLOYMENT_STATUS.PROBATION]:           'yellow',
+  [EMPLOYMENT_STATUS.RESIGNED]:            'red',
+  [EMPLOYMENT_STATUS.TERMINATED]:          'red',
+  [EMPLOYMENT_STATUS.ON_LEAVE]:            'blue',
+  [EMPLOYMENT_STATUS.PENDING_INVITATION]:  'purple',
+};
+
+// ─── Invitation ──────────────────────────────────────────────────────────────────────────────
+export const INVITATION_STATUS = {
+  PENDING:  'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  EXPIRED:  'EXPIRED',
+  REVOKED:  'REVOKED',
+};
+
+export const INVITATION_STATUS_COLOR = {
+  [INVITATION_STATUS.PENDING]:  'yellow',
+  [INVITATION_STATUS.ACCEPTED]: 'green',
+  [INVITATION_STATUS.EXPIRED]:  'gray',
+  [INVITATION_STATUS.REVOKED]:  'red',
+};
+
+// Tenant roles that can be assigned via invitation (mirrors backend ALLOWED_TENANT_ROLES)
+export const ALLOWED_TENANT_ROLES = [
+  'TENANT_OWNER',
+  'TENANT_ADMIN',
+  'HR_ADMIN',
+  'HR_MANAGER',
+  'EMPLOYEE',
+];
+
+// Bulk import row statuses
+export const BULK_ROW_STATUS = {
+  SUCCESS:              'SUCCESS',
+  INVITATION_PENDING:   'INVITATION_PENDING',
+  FAILED:               'FAILED',
+  EMAIL_DELIVERY_FAILED:'EMAIL_DELIVERY_FAILED',
+};
+
+export const BULK_ROW_STATUS_COLOR = {
+  [BULK_ROW_STATUS.SUCCESS]:               'green',
+  [BULK_ROW_STATUS.INVITATION_PENDING]:    'yellow',
+  [BULK_ROW_STATUS.FAILED]:               'red',
+  [BULK_ROW_STATUS.EMAIL_DELIVERY_FAILED]: 'orange',
 };
 
 export const ASSET_STATUS_COLOR = {

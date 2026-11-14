@@ -50,6 +50,9 @@ const ModuleManagementPage    = lazy(() => import('./pages/platform/modules/Modu
 const SupportTicketsPage      = lazy(() => import('./pages/platform/support/SupportTicketsPage'));
 const PlatformAuditPage       = lazy(() => import('./pages/platform/audit/PlatformAuditPage'));
 const MySubscriptionPage      = lazy(() => import('./pages/subscription/MySubscriptionPage'));
+const InvitationsPage         = lazy(() => import('./pages/invitations/InvitationsPage'));
+const BulkImportPage          = lazy(() => import('./pages/bulk-import/BulkImportPage'));
+const AcceptInvitePage        = lazy(() => import('./pages/accept-invite/AcceptInvitePage'));
 
 // ─── QueryClient ──────────────────────────────────────────────────────────────
 const queryClient = new QueryClient({
@@ -90,6 +93,7 @@ function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
+      <Route path="/accept-invite" element={<AcceptInvitePage />} />
 
       {/* Tenant HRMS workspace */}
       <Route
@@ -123,6 +127,8 @@ function AppRoutes() {
                     <Route path="audit"         element={<AuditPage />} />
                     <Route path="profile"       element={<ProfilePage />} />
                     <Route path="subscription"  element={<MySubscriptionPage />} />
+                    <Route path="invitations"   element={<InvitationsPage />} />
+                    <Route path="bulk-import"   element={<BulkImportPage />} />
                     <Route path="*"             element={<Navigate to="/" replace />} />
                   </Routes>
                 </Suspense>

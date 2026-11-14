@@ -257,6 +257,30 @@ export const auditApi = {
   getByRecord: (entityId, params)   => api.get(`/audit-logs/record/${entityId}`, { params }),
 };
 
+// ─── Tenant Employee Invitations ─────────────────────────────────────────────
+export const tenantInvitationApi = {
+  invite:  (data)   => api.post('/hr/invitations', data),
+  list:    (params) => api.get('/hr/invitations', { params }),
+  resend:  (id)     => api.post(`/hr/invitations/${id}/resend`),
+  revoke:  (id)     => api.post(`/hr/invitations/${id}/revoke`),
+  // Token is sent in the POST body only — never in a query string.
+  accept:  (token)  => api.post('/hr/invitations/accept', { token }),
+};
+
+// ─── Bulk Employee Onboarding ─────────────────────────────────────────────────
+export const bulkOnboardingApi = {
+  downloadTemplate: () =>
+    api.get('/hr/employees/bulk/template', { responseType: 'blob' }),
+  importFile: (file) => {
+    const form = new FormData();
+    form.append('file', file);
+    // Do NOT set Content-Type manually — browser sets multipart boundary automatically.
+    return api.post('/hr/employees/bulk/import', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+};
+
 // ─── Tenant Subscription (tenant-facing) ────────────────────────────────────
 export const tenantSubscriptionApi = {
   getMy:          () => api.get('/tenant/subscription'),

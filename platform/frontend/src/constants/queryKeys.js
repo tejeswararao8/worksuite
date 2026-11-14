@@ -79,4 +79,7 @@ export const QUERY_KEYS = {
   TENANT_ENTITLEMENTS:  (tenantId) => ['tenant-entitlements', tenantId],
   MY_SUBSCRIPTION:      ['my-subscription'],
   MY_ENTITLEMENTS:      ['my-entitlements'],
+
+  // Tenant Employee Invitations
+  TENANT_INVITATIONS:   (page, status) => ['tenant-invitations', page, status],
 };

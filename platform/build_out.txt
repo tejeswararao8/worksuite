@@ -1,0 +1,743 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24473 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Platform Parent                                                    [pom]
+[INFO] Core Tenancy                                                       [jar]
+[INFO] Core API                                                           [jar]
+[INFO] Core Security                                                      [jar]
+[INFO] Core Audit                                                         [jar]
+[INFO] Core Logging                                                       [jar]
+[INFO] Core Config                                                        [jar]
+[INFO] Core Notification                                                  [jar]
+[INFO] Core Document                                                      [jar]
+[INFO] Core Workflow                                                      [jar]
+[INFO] Core Reporting                                                     [jar]
+[INFO] Core Cache                                                         [jar]
+[INFO] Core Messaging                                                     [jar]
+[INFO] Core Search                                                        [jar]
+[INFO] Module HR                                                          [jar]
+[INFO] Platform App                                                       [jar]
+[INFO] 
+[INFO] --------------------< com.platform:platform-parent >--------------------
+[INFO] Building Platform Parent 1.0.0-SNAPSHOT                           [1/16]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] Loaded 64 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ platform-parent ---
+[INFO] 
+[INFO] ---------------------< com.platform:core-tenancy >----------------------
+[INFO] Building Core Tenancy 1.0.0-SNAPSHOT                              [2/16]
+[INFO]   from core\core-tenancy\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-tenancy ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-tenancy ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-tenancy ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 15 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-tenancy/src/main/java/com/platform/tenancy/Tenant.java:[42,26] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-tenancy/src/main/java/com/platform/tenancy/Tenant.java:[48,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-tenancy ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-tenancy ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-tenancy ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.platform.tenancy.membership.MembershipValidationServiceTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\vinit\.m2\repository\net\bytebuddy\byte-buddy-agent\1.15.11\byte-buddy-agent-1.15.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+22:38:25.534 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Suspended membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=40a6a76b-0622-4406-9ca8-822d61dbc32d
+22:38:25.565 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- No membership found for user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=00000000-0000-0000-0000-000000000001
+22:38:25.589 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- No membership found for user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=7c421069-fb78-4141-973f-4024db2e13ac
+22:38:25.592 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Suspended membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=00000000-0000-0000-0000-000000000001
+22:38:25.595 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- No membership found for user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=40a6a76b-0622-4406-9ca8-822d61dbc32d
+22:38:25.601 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Revoked membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=00000000-0000-0000-0000-000000000001
+22:38:25.603 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Pending membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=00000000-0000-0000-0000-000000000001
+22:38:25.606 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Revoked membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=40a6a76b-0622-4406-9ca8-822d61dbc32d
+22:38:25.608 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Pending membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=40a6a76b-0622-4406-9ca8-822d61dbc32d
+22:38:25.612 [main] WARN com.platform.tenancy.membership.MembershipValidationService -- Pending membership access attempt: user=8635194d-15f2-46c2-b52e-3ba7259ba8c7 tenant=40a6a76b-0622-4406-9ca8-822d61dbc32d
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.014 s -- in com.platform.tenancy.membership.MembershipValidationServiceTest
+[INFO] Running com.platform.tenancy.TenantContextTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s -- in com.platform.tenancy.TenantContextTest
+[INFO] Running com.platform.tenancy.TenantSecurityServiceTest
+22:38:25.709 [main] WARN com.platform.tenancy.TenantSecurityService -- Access attempt on cancelled tenant: 90431455-9019-449f-a4ff-2c7a14469bdb
+22:38:25.717 [main] WARN com.platform.tenancy.TenantSecurityService -- Access attempt on suspended tenant: 620cff89-1cbe-4fb3-9b9b-78b73f2b847b
+22:38:25.720 [main] WARN com.platform.tenancy.TenantSecurityService -- Access attempt on inactive tenant: d05cef55-3800-45d0-946e-9b06d9d869f2
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.079 s -- in com.platform.tenancy.TenantSecurityServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-tenancy ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-tenancy\target\core-tenancy-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------------------< com.platform:core-api >------------------------
+[INFO] Building Core API 1.0.0-SNAPSHOT                                  [3/16]
+[INFO]   from core\core-api\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-api ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-api\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-api ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-api\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-api\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-api ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-api\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-api ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-api ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-api ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-api\target\core-api-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ---------------------< com.platform:core-security >---------------------
+[INFO] Building Core Security 1.0.0-SNAPSHOT                             [4/16]
+[INFO]   from core\core-security\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-security ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-security\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-security ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-security ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 10 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-security/src/main/java/com/platform/security/rbac/Role.java:[27,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-security/src/main/java/com/platform/security/SecurityConfig.java: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-security\src\main\java\com\platform\security\SecurityConfig.java uses or overrides a deprecated API.
+[INFO] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-security/src/main/java/com/platform/security/SecurityConfig.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-security ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-security\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-security ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-security ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.platform.security.authorization.AuthorizationServiceTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.154 s -- in com.platform.security.authorization.AuthorizationServiceTest
+[INFO] Running com.platform.security.authorization.PlatformAuthorizationTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.platform.security.authorization.PlatformAuthorizationTest
+[INFO] Running com.platform.security.UserPrincipalTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.platform.security.UserPrincipalTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-security ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-security\target\core-security-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ----------------------< com.platform:core-audit >-----------------------
+[INFO] Building Core Audit 1.0.0-SNAPSHOT                                [5/16]
+[INFO]   from core\core-audit\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-audit ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-audit\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-audit ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-audit\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-audit\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-audit ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-audit ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-audit\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-audit ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-audit ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-audit ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-audit\target\core-audit-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ---------------------< com.platform:core-logging >----------------------
+[INFO] Building Core Logging 1.0.0-SNAPSHOT                              [6/16]
+[INFO]   from core\core-logging\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-logging ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-logging\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-logging ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-logging\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-logging\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-logging ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-logging ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-logging\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-logging ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-logging ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-logging ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-logging\target\core-logging-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ----------------------< com.platform:core-config >----------------------
+[INFO] Building Core Config 1.0.0-SNAPSHOT                               [7/16]
+[INFO]   from core\core-config\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-config ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-config\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-config ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-config\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-config\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-config ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-config/src/main/java/com/platform/config/PlatformConfig.java:[30,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-config ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-config\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-config ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-config ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-config ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-config\target\core-config-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -------------------< com.platform:core-notification >-------------------
+[INFO] Building Core Notification 1.0.0-SNAPSHOT                         [8/16]
+[INFO]   from core\core-notification\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-notification ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-notification\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-notification ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-notification ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-notification/src/main/java/com/platform/notification/Notification.java:[36,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-notification ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-notification\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-notification ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-notification ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-notification ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-notification\target\core-notification-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ---------------------< com.platform:core-document >---------------------
+[INFO] Building Core Document 1.0.0-SNAPSHOT                             [9/16]
+[INFO]   from core\core-document\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-document ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-document\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-document ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-document ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-document/src/main/java/com/platform/document/Document.java:[55,26] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-document ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-document\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-document ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-document ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-document ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-document\target\core-document-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ---------------------< com.platform:core-workflow >---------------------
+[INFO] Building Core Workflow 1.0.0-SNAPSHOT                            [10/16]
+[INFO]   from core\core-workflow\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-workflow ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-workflow\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-workflow ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-workflow\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-workflow\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-workflow ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-workflow/src/main/java/com/platform/workflow/WorkflowInstance.java:[30,28] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-workflow/src/main/java/com/platform/workflow/WorkflowInstance.java:[33,17] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/core/core-workflow/src/main/java/com/platform/workflow/WorkflowDefinition.java:[26,17] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-workflow ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-workflow\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-workflow ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-workflow ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-workflow ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-workflow\target\core-workflow-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --------------------< com.platform:core-reporting >---------------------
+[INFO] Building Core Reporting 1.0.0-SNAPSHOT                           [11/16]
+[INFO]   from core\core-reporting\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-reporting ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-reporting\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-reporting ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-reporting\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-reporting\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-reporting ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-reporting ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-reporting\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-reporting ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-reporting ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-reporting ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-reporting\target\core-reporting-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ----------------------< com.platform:core-cache >-----------------------
+[INFO] Building Core Cache 1.0.0-SNAPSHOT                               [12/16]
+[INFO]   from core\core-cache\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-cache ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-cache\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-cache ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-cache ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-cache ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-cache\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-cache ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-cache ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-cache ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-cache\target\core-cache-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --------------------< com.platform:core-messaging >---------------------
+[INFO] Building Core Messaging 1.0.0-SNAPSHOT                           [13/16]
+[INFO]   from core\core-messaging\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-messaging ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-messaging\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-messaging ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-messaging ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-messaging ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-messaging\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-messaging ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-messaging ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-messaging ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-messaging\target\core-messaging-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] ----------------------< com.platform:core-search >----------------------
+[INFO] Building Core Search 1.0.0-SNAPSHOT                              [14/16]
+[INFO]   from core\core-search\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ core-search ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\core\core-search\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ core-search ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ core-search ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ core-search ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\core\core-search\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ core-search ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ core-search ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ core-search ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\core\core-search\target\core-search-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------------------< com.platform:module-hr >-----------------------
+[INFO] Building Module HR 1.0.0-SNAPSHOT                                [15/16]
+[INFO]   from modules\module-hr\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ module-hr ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ module-hr ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\resources
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ module-hr ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 128 source files with javac [debug parameters release 21] to target\classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/offboarding/entity/OffboardingChecklist.java:[17,67] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/emergency/entity/EmergencyContact.java:[36,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/bank/entity/BankDetail.java:[39,20] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/bank/entity/BankDetail.java:[42,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/onboarding/entity/OnboardingChecklist.java:[17,67] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/team/mapper/TeamMapper.java:[10,22] Unmapped target properties: "departmentName, leadEmployeeName, memberCount".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/team/mapper/TeamMapper.java:[14,10] Unmapped target properties: "id, companyId, createdBy, createdAt, updatedBy, updatedAt, version, isActive".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/branch/mapper/BranchMapper.java:[10,24] Unmapped target property: "employeeCount".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/branch/mapper/BranchMapper.java:[14,10] Unmapped target properties: "id, companyId, createdBy, createdAt, updatedBy, updatedAt, version, isActive, code".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/employee/mapper/EmployeeMapper.java:[9,14] Unmapped target properties: "employeeCode, photoUrl, employmentStatus, keycloakUserId".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/employee/mapper/EmployeeMapper.java:[14,10] Unmapped target properties: "id, companyId, createdBy, createdAt, updatedBy, updatedAt, version, isActive, employeeCode, email, photoUrl, joiningDate, branchId, departmentId, teamId, designationId, managerId, employmentStatus, employmentType, keycloakUserId".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/department/mapper/DepartmentMapper.java:[10,28] Unmapped target properties: "parentDepartmentName, headEmployeeName, employeeCount, teamCount".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/department/mapper/DepartmentMapper.java:[14,10] Unmapped target properties: "id, companyId, createdBy, createdAt, updatedBy, updatedAt, version, isActive, code".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/designation/mapper/DesignationMapper.java:[10,29] Unmapped target property: "employeeCount".
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/main/java/com/platform/hr/designation/mapper/DesignationMapper.java:[14,10] Unmapped target properties: "id, companyId, createdBy, createdAt, updatedBy, updatedAt, version, isActive".
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ module-hr ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ module-hr ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug parameters release 21] to target\test-classes
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/invitation/TenantInvitationSecurityIT.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/invitation/TenantInvitationSecurityIT.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/invitation/TenantInvitationSecurityIT.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/invitation/TenantInvitationSecurityIT.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/invitation/TenantInvitationSecurityIT.java:[33,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/PlatformEmployeeSecurityIT.java:[102,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/PlatformEmployeeSecurityIT.java:[102,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/PlatformEmployeeSecurityIT.java:[102,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/PlatformEmployeeSecurityIT.java:[102,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/PlatformEmployeeSecurityIT.java:[102,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/TenantManagementSecurityIT.java:[98,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/TenantManagementSecurityIT.java:[98,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/TenantManagementSecurityIT.java:[98,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/TenantManagementSecurityIT.java:[98,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/integration/TenantManagementSecurityIT.java:[98,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/EnforcementSecurityIT.java:[80,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/EnforcementSecurityIT.java:[80,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/EnforcementSecurityIT.java:[80,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/EnforcementSecurityIT.java:[80,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/EnforcementSecurityIT.java:[80,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[81,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[81,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[81,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[81,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[81,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[82,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[82,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[82,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[82,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/ModuleEnforcementIT.java:[82,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/SubscriptionSecurityIT.java:[70,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/SubscriptionSecurityIT.java:[70,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/SubscriptionSecurityIT.java:[70,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/SubscriptionSecurityIT.java:[70,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[WARNING] /D:/Vinit P/VTTHRMS/worksuite/platform/modules/module-hr/src/test/java/com/platform/hr/platform/subscription/SubscriptionSecurityIT.java:[70,6] org.springframework.boot.test.mock.mockito.MockBean in org.springframework.boot.test.mock.mockito has been deprecated and marked for removal
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ module-hr ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.platform.hr.invitation.BulkOnboardingServiceTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\vinit\.m2\repository\net\bytebuddy\byte-buddy-agent\1.15.11\byte-buddy-agent-1.15.11.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+22:38:42.079 [main] INFO com.platform.hr.invitation.bulk.BulkOnboardingService -- Bulk import completed: tenantId=6b6363c9-43cd-492f-8403-7c9c7c980502 total=1 success=1 failed=0 emailFailed=1
+22:38:42.114 [main] INFO com.platform.hr.invitation.bulk.BulkOnboardingService -- Bulk import completed: tenantId=6b6363c9-43cd-492f-8403-7c9c7c980502 total=1 success=0 failed=1 emailFailed=0
+22:38:42.127 [main] INFO com.platform.hr.invitation.bulk.BulkOnboardingService -- Bulk import completed: tenantId=6b6363c9-43cd-492f-8403-7c9c7c980502 total=1 success=0 failed=1 emailFailed=0
+22:38:42.134 [main] INFO com.platform.hr.invitation.bulk.BulkOnboardingService -- Bulk import completed: tenantId=6b6363c9-43cd-492f-8403-7c9c7c980502 total=1 success=0 failed=1 emailFailed=0
+22:38:42.142 [main] INFO com.platform.hr.invitation.bulk.BulkOnboardingService -- Bulk import completed: tenantId=6b6363c9-43cd-492f-8403-7c9c7c980502 total=1 success=1 failed=0 emailFailed=0
+22:38:42.159 [main] INFO com.platform.hr.invitation.bulk.BulkOnboardingService -- Bulk import completed: tenantId=6b6363c9-43cd-492f-8403-7c9c7c980502 total=2 success=1 failed=1 emailFailed=0
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.566 s -- in com.platform.hr.invitation.BulkOnboardingServiceTest
+[INFO] Running com.platform.hr.invitation.TenantInvitationServiceTest
+Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+22:38:42.448 [main] INFO com.platform.hr.invitation.TenantInvitationService -- Tenant invitation resent with token rotation: id=f62326cb-4050-4206-b038-d265bad7d257
+22:38:42.465 [main] INFO com.platform.hr.invitation.TenantInvitationService -- Tenant invitation accepted: invitationId=8841d3b5-3fd5-493d-acfb-f3a69adc4b20 keycloakUserId=eb6ea11b-f2d5-4fb4-8290-5db35f6dd40d tenantId=ecbca002-188b-493e-98f9-a03148082dbe role=EMPLOYEE
+22:38:42.476 [main] INFO com.platform.hr.invitation.TenantInvitationService -- Tenant invitation created: tenantId=ecbca002-188b-493e-98f9-a03148082dbe employeeId=5431fa88-3bfa-4755-bded-a4b18e05d724 email=emp@company.com invitationId=null
+22:38:42.476 [main] WARN com.platform.hr.invitation.TenantInvitationService -- Invitation created but email delivery failed: id=null email=emp@company.com
+22:38:42.504 [main] INFO com.platform.hr.invitation.TenantInvitationService -- Tenant invitation created: tenantId=ecbca002-188b-493e-98f9-a03148082dbe employeeId=5431fa88-3bfa-4755-bded-a4b18e05d724 email=emp@company.com invitationId=null
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.344 s -- in com.platform.hr.invitation.TenantInvitationServiceTest
+[INFO] Running com.platform.hr.platform.employees.PlatformEmployeeServiceTest
+22:38:42.623 [main] INFO com.platform.hr.platform.employees.PlatformEmployeeService -- Platform invitation accepted: invitationId=905a6859-5cda-4aea-8a78-6a039d27bc93 keycloakUserId=df7f469d-cc7d-4d2a-be47-dd7e379b3449 role=PLATFORM_ADMIN
+22:38:42.635 [main] INFO com.platform.hr.platform.employees.PlatformEmployeeService -- Platform invitation created: email=new@platform.com role=PLATFORM_ADMIN id=e86e5b6d-0586-4a0f-bd68-aad49bfe3f1c
+22:38:42.652 [main] INFO com.platform.hr.platform.employees.PlatformEmployeeService -- Platform employee suspended: membership=43c3a1b5-904f-4899-8fb3-14be420e1c3a
+22:38:42.655 [main] INFO com.platform.hr.platform.employees.PlatformEmployeeService -- Platform employee reactivated: membership=43c3a1b5-904f-4899-8fb3-14be420e1c3a
+22:38:42.665 [main] INFO com.platform.hr.platform.employees.PlatformEmployeeService -- Platform invitation resent with token rotation: id=ed86aa3e-e4c8-4339-9f83-15822d364ee2
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.187 s -- in com.platform.hr.platform.employees.PlatformEmployeeServiceTest
+[INFO] Running com.platform.hr.platform.subscription.EnforcementServiceTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.205 s -- in com.platform.hr.platform.subscription.EnforcementServiceTest
+[INFO] Running com.platform.hr.platform.subscription.LifecycleSchedulerTest
+22:38:42.927 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: expiring 1 trial subscription(s)
+22:38:42.929 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: suspending 1 grace-expired PAST_DUE subscription(s)
+22:38:42.935 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: suspending 2 grace-expired PAST_DUE subscription(s)
+22:38:42.939 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: suspended subscription id=3529d3a1-eb7e-417d-ba18-acfae6055066 tenantId=534dc4e7-1d6c-4223-8e50-0ea6928bf293
+22:38:42.939 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: suspended subscription id=64ae6b39-c93b-4796-9225-a51eb89dabc5 tenantId=455ee504-52f9-42cb-90af-efd72d43c6cf
+22:38:42.942 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: expiring 1 trial subscription(s)
+22:38:42.942 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: expired trial subscription id=ea6ea32d-8b49-415b-8fe8-944efff692bc tenantId=2370c1b0-bf5a-4f14-8c68-785f633c6684
+22:38:42.960 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: suspending 1 grace-expired PAST_DUE subscription(s)
+22:38:42.960 [main] INFO com.platform.hr.platform.subscription.SubscriptionLifecycleScheduler -- LifecycleScheduler: suspended subscription id=b474eb2b-a502-4be6-b65e-86b698c672b3 tenantId=fd0e5a61-6a28-44ff-bb2a-6010a91b2981
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in com.platform.hr.platform.subscription.LifecycleSchedulerTest
+[INFO] Running com.platform.hr.platform.subscription.StorageReservationTest
+22:38:43.058 [main] ERROR com.platform.hr.subscription.StorageReservationService -- StorageReservation: failed to release 1024 bytes for tenant=6d6c857f-c22a-412b-8846-dfbc4c2e85a7 ? manual reconciliation may be needed: DB error
+java.lang.RuntimeException: DB error
+	at com.platform.hr.platform.subscription.SubscriptionService.releaseStorage(SubscriptionService.java:503)
+	at com.platform.hr.subscription.StorageReservationService.release(StorageReservationService.java:65)
+	at com.platform.hr.platform.subscription.StorageReservationTest.lambda$reservationService_release_swallowsException$4(StorageReservationTest.java:245)
+	at org.assertj.core.api.ThrowableAssert.catchThrowable(ThrowableAssert.java:63)
+	at org.assertj.core.api.NotThrownAssert.isThrownBy(NotThrownAssert.java:43)
+	at com.platform.hr.platform.subscription.StorageReservationTest.reservationService_release_swallowsException(StorageReservationTest.java:245)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:767)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$8(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:194)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:150)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:124)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+22:38:43.077 [main] WARN com.platform.hr.subscription.QuotaAwareStorageService -- storeReplacement: upload failed for tenant=6d6c857f-c22a-412b-8846-dfbc4c2e85a7 entityType=employees newSize=5242880 oldSize=2097152 ? rolling back quota: MinIO error
+22:38:43.086 [main] WARN com.platform.hr.subscription.QuotaAwareStorageService -- store: upload failed for tenant=6d6c857f-c22a-412b-8846-dfbc4c2e85a7 entityType=employees size=10485760 ? releasing reservation: MinIO connection refused
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.123 s -- in com.platform.hr.platform.subscription.StorageReservationTest
+[INFO] Running com.platform.hr.platform.subscription.SubscriptionServiceTest
+22:38:43.102 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription renewed: id=574b0b47-207d-472e-b7e6-2bdebc0e033b newPeriodEnd=2026-12-14T22:38:43.102479100
+22:38:43.119 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription transitioned: id=574b0b47-207d-472e-b7e6-2bdebc0e033b TRIAL ? ACTIVE
+22:38:43.127 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription transitioned: id=574b0b47-207d-472e-b7e6-2bdebc0e033b ACTIVE ? SUSPENDED
+22:38:43.130 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription transitioned: id=574b0b47-207d-472e-b7e6-2bdebc0e033b SUSPENDED ? ACTIVE
+22:38:43.136 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription assigned: tenantId=8ec2f768-493e-4156-9e8f-19c34e113010 planId=286f9187-eacd-48c1-b071-157859c19918 status=ACTIVE
+22:38:43.158 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription plan changed: id=574b0b47-207d-472e-b7e6-2bdebc0e033b from=286f9187-eacd-48c1-b071-157859c19918 to=73329099-ce30-4dd5-a9c9-65e42e147fce
+22:38:43.166 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Previous subscription cancelled on reassignment: id=574b0b47-207d-472e-b7e6-2bdebc0e033b
+22:38:43.166 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription assigned: tenantId=8ec2f768-493e-4156-9e8f-19c34e113010 planId=286f9187-eacd-48c1-b071-157859c19918 status=ACTIVE
+22:38:43.170 [main] INFO com.platform.hr.platform.subscription.SubscriptionService -- Subscription assigned: tenantId=8ec2f768-493e-4156-9e8f-19c34e113010 planId=286f9187-eacd-48c1-b071-157859c19918 status=TRIAL
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.085 s -- in com.platform.hr.platform.subscription.SubscriptionServiceTest
+[INFO] Running com.platform.hr.platform.tenants.TenantManagementServiceTest
+22:38:43.222 [main] INFO com.platform.hr.platform.tenants.TenantManagementService -- Tenant suspended: id=c0c5db98-4f40-4e2f-ab00-cca600ea793f
+22:38:43.257 [main] INFO com.platform.hr.platform.tenants.TenantManagementService -- Tenant reactivated: id=c0c5db98-4f40-4e2f-ab00-cca600ea793f
+22:38:43.259 [main] INFO com.platform.hr.platform.tenants.TenantManagementService -- Tenant approved: id=c0c5db98-4f40-4e2f-ab00-cca600ea793f
+22:38:43.270 [main] INFO com.platform.hr.platform.tenants.TenantManagementService -- Tenant registered: id=c0c5db98-4f40-4e2f-ab00-cca600ea793f slug=acme
+22:38:43.272 [main] INFO com.platform.hr.platform.tenants.TenantManagementService -- Tenant rejected: id=c0c5db98-4f40-4e2f-ab00-cca600ea793f
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.093 s -- in com.platform.hr.platform.tenants.TenantManagementServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 132, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ module-hr ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\target\module-hr-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --------------------------< com.platform:app >--------------------------
+[INFO] Building Platform App 1.0.0-SNAPSHOT                             [16/16]
+[INFO]   from app\pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 24473 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ app ---
+[INFO] Deleting D:\Vinit P\VTTHRMS\worksuite\platform\app\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ app ---
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] Copying 16 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ app ---
+[INFO] skip non existing resourceDirectory D:\Vinit P\VTTHRMS\worksuite\platform\app\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ app ---
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ app ---
+[INFO] Building jar: D:\Vinit P\VTTHRMS\worksuite\platform\app\target\app-1.0.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.4.5:repackage (repackage) @ app ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact D:\Vinit P\VTTHRMS\worksuite\platform\app\target\app-1.0.0-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to D:\Vinit P\VTTHRMS\worksuite\platform\app\target\app-1.0.0-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Platform Parent 1.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Platform Parent .................................... SUCCESS [  0.967 s]
+[INFO] Core Tenancy ....................................... SUCCESS [  4.968 s]
+[INFO] Core API ........................................... SUCCESS [  0.815 s]
+[INFO] Core Security ...................................... SUCCESS [  2.387 s]
+[INFO] Core Audit ......................................... SUCCESS [  0.608 s]
+[INFO] Core Logging ....................................... SUCCESS [  0.423 s]
+[INFO] Core Config ........................................ SUCCESS [  0.544 s]
+[INFO] Core Notification .................................. SUCCESS [  0.613 s]
+[INFO] Core Document ...................................... SUCCESS [  0.710 s]
+[INFO] Core Workflow ...................................... SUCCESS [  0.670 s]
+[INFO] Core Reporting ..................................... SUCCESS [  0.701 s]
+[INFO] Core Cache ......................................... SUCCESS [  0.587 s]
+[INFO] Core Messaging ..................................... SUCCESS [  0.587 s]
+[INFO] Core Search ........................................ SUCCESS [  0.701 s]
+[INFO] Module HR .......................................... SUCCESS [  8.051 s]
+[INFO] Platform App ....................................... SUCCESS [  1.552 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  25.414 s
+[INFO] Finished at: 2026-11-14T22:38:45+05:30
+[INFO] ------------------------------------------------------------------------

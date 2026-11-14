@@ -5,7 +5,7 @@ import { useEmployees } from '../../hooks/useEmployees';
 import { useReferenceData } from '../../hooks/useReferenceData';
 import { Button, Input, Select, Modal, Table, Badge, Pagination, ConfirmDialog, SearchBar } from '../../components/ui';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import { EMPLOYMENT_STATUS_COLOR } from '../../constants/enums';
+import { EMPLOYMENT_STATUS_COLOR, EMPLOYMENT_STATUS } from '../../constants/enums';
 
 export default function EmployeesPage() {
   const { t } = useTranslation();
@@ -14,6 +14,7 @@ export default function EmployeesPage() {
     page, setPage,
     search, handleSearch,
     deptFilter, handleDeptFilter,
+    statusFilter, handleStatusFilter,
     createMutation, updateMutation, deleteMutation,
   } = useEmployees();
 
@@ -71,6 +72,16 @@ export default function EmployeesPage() {
           >
             <option value="">{t('common.allDepartments')}</option>
             {departments.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+          </select>
+          <select
+            className="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+            value={statusFilter}
+            onChange={(e) => handleStatusFilter(e.target.value)}
+          >
+            <option value="">{t('employee.allStatuses')}</option>
+            {Object.values(EMPLOYMENT_STATUS).map((s) => (
+              <option key={s} value={s}>{t(`employee.status.${s}`, { defaultValue: s })}</option>
+            ))}
           </select>
         </div>
         <Button onClick={openCreate}><Plus size={16} /> {t('common.add')} {t('employee.entity')}</Button>

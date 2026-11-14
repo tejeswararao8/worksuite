@@ -2,7 +2,7 @@ import {
   LayoutDashboard, Users, Building2, GitBranch, Briefcase,
   Package, FileText, Bell, BarChart2, ArrowLeftRight,
   TrendingUp, UserCheck, Shield, UserCog, ClipboardList,
-  UserX, Building, ScrollText, UsersRound,
+  UserX, Building, ScrollText, UsersRound, UserPlus, Upload,
 } from 'lucide-react';
 
 export const ROUTES = {
@@ -28,6 +28,9 @@ export const ROUTES = {
   ROLES:        '/roles',
   AUDIT:        '/audit',
   PROFILE:      '/profile',
+  INVITATIONS:  '/invitations',
+  BULK_IMPORT:  '/bulk-import',
+  ACCEPT_INVITE:'/accept-invite',
 };
 
 // Single source of truth — consumed by Sidebar and AppLayout
@@ -35,6 +38,8 @@ export const ROUTES = {
 export const NAV_ITEMS = [
   { to: '/dashboard',              icon: LayoutDashboard, labelKey: 'nav.dashboard',    group: null },
   { to: '/dashboard/employees',    icon: Users,           labelKey: 'nav.employees',    group: 'People' },
+  { to: '/dashboard/invitations',  icon: UserPlus,        labelKey: 'nav.invitations',  group: 'People' },
+  { to: '/dashboard/bulk-import',  icon: Upload,          labelKey: 'nav.bulkImport',   group: 'People' },
   { to: '/dashboard/users',        icon: UserCog,         labelKey: 'nav.users',        group: 'People' },
   { to: '/dashboard/skills',       icon: ClipboardList,   labelKey: 'nav.skills',       group: 'People' },
   { to: '/dashboard/departments',  icon: Building2,       labelKey: 'nav.departments',  group: 'Organization' },
