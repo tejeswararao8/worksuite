@@ -89,8 +89,16 @@ public class Employee extends BaseEntity {
     @Column(name = "employment_type")
     private EmploymentType employmentType;
 
+    /**
+     * Keycloak subject UUID — set when the employee accepts their invitation.
+     * Null for employees in PENDING_INVITATION status who have not yet accepted.
+     * Never set speculatively before acceptance.
+     */
+    @Column(name = "keycloak_user_id", length = 36)
+    private String keycloakUserId;
+
     public enum Gender { MALE, FEMALE, OTHER }
     public enum MaritalStatus { SINGLE, MARRIED, DIVORCED, WIDOWED }
-    public enum EmploymentStatus { ACTIVE, PROBATION, ON_LEAVE, RESIGNED, TERMINATED, RETIRED }
+    public enum EmploymentStatus { ACTIVE, PROBATION, ON_LEAVE, RESIGNED, TERMINATED, RETIRED, PENDING_INVITATION }
     public enum EmploymentType { FULL_TIME, PART_TIME, CONTRACT, INTERN }
 }

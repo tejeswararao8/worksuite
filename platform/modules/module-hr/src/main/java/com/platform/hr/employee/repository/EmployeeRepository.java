@@ -16,6 +16,9 @@ import java.util.UUID;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID>, JpaSpecificationExecutor<Employee> {
     boolean existsByEmailAndCompanyId(String email, UUID companyId);
+    boolean existsByEmployeeCodeAndCompanyId(String employeeCode, UUID companyId);
+    Optional<Employee> findByEmailAndCompanyId(String email, UUID companyId);
+    Optional<Employee> findByIdAndCompanyId(UUID id, UUID companyId);
     Optional<Employee> findByIdAndCompanyIdAndIsActiveTrue(UUID id, UUID companyId);
     long countByCompanyIdAndEmploymentStatus(UUID companyId, EmploymentStatus status);
     long countByCompanyIdAndIsActiveTrue(UUID companyId);

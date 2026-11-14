@@ -39,6 +39,14 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\employee\repository\EmployeeRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\employee\service\EmployeeService.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\employee\specification\EmployeeSpecification.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\bulk\BulkOnboardingController.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\bulk\BulkOnboardingDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\bulk\BulkOnboardingService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\TenantEmployeeInvitation.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\TenantEmployeeInvitationRepository.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\TenantInvitationController.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\TenantInvitationDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\invitation\TenantInvitationService.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\offboarding\controller\OffboardingController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\offboarding\dto\OffboardingDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\offboarding\entity\OffboardingChecklist.java
