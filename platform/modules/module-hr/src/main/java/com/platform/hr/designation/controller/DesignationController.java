@@ -4,6 +4,7 @@ import com.platform.api.ApiResponse;
 import com.platform.api.PagedResponse;
 import com.platform.hr.designation.dto.DesignationDto;
 import com.platform.hr.designation.service.DesignationService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,7 @@ public class DesignationController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DESIGNATION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create designation")
     public ResponseEntity<ApiResponse<DesignationDto.Response>> create(
             @Valid @RequestBody DesignationDto.CreateRequest request) {

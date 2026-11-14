@@ -4,6 +4,7 @@ import com.platform.api.ApiResponse;
 import com.platform.api.PagedResponse;
 import com.platform.hr.team.dto.TeamDto;
 import com.platform.hr.team.service.TeamService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,7 @@ public class TeamController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('TEAM_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create team")
     public ResponseEntity<ApiResponse<TeamDto.Response>> create(
             @Valid @RequestBody TeamDto.CreateRequest request) {

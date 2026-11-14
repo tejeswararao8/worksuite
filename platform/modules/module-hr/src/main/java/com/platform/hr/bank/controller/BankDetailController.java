@@ -3,6 +3,7 @@ package com.platform.hr.bank.controller;
 import com.platform.api.ApiResponse;
 import com.platform.hr.bank.dto.BankDetailDto;
 import com.platform.hr.bank.service.BankDetailService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,7 @@ public class BankDetailController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add bank detail")
     public ResponseEntity<ApiResponse<BankDetailDto.Response>> create(
             @PathVariable UUID employeeId,

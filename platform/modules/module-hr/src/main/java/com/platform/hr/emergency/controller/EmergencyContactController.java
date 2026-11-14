@@ -3,6 +3,7 @@ package com.platform.hr.emergency.controller;
 import com.platform.api.ApiResponse;
 import com.platform.hr.emergency.dto.EmergencyContactDto;
 import com.platform.hr.emergency.service.EmergencyContactService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,7 @@ public class EmergencyContactController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('EMPLOYEE_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add emergency contact")
     public ResponseEntity<ApiResponse<EmergencyContactDto.Response>> create(
             @PathVariable UUID employeeId,

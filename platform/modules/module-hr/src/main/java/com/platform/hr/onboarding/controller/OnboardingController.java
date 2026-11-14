@@ -3,6 +3,7 @@ package com.platform.hr.onboarding.controller;
 import com.platform.api.ApiResponse;
 import com.platform.hr.onboarding.dto.OnboardingDto;
 import com.platform.hr.onboarding.service.OnboardingService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -27,6 +28,7 @@ public class OnboardingController {
 
     @PostMapping("/employees/{employeeId}/tasks")
     @PreAuthorize("hasAnyAuthority('ONBOARDING_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add onboarding task for employee")
     public ResponseEntity<ApiResponse<OnboardingDto.Response>> addTask(
             @PathVariable UUID employeeId,

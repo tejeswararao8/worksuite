@@ -81,6 +81,7 @@ com\platform\hr\onboarding\dto\OnboardingDto$ProgressResponse.class
 com\platform\hr\branch\controller\BranchController.class
 com\platform\hr\bank\entity\BankDetail.class
 com\platform\hr\promotion\entity\Promotion$PromotionStatus.class
+com\platform\hr\subscription\QuotaAwareStorageService.class
 com\platform\hr\offboarding\dto\OffboardingDto$UpdateTaskRequest.class
 com\platform\hr\team\controller\TeamController.class
 com\platform\hr\onboarding\dto\OnboardingDto$CreateTaskRequest.class
@@ -127,6 +128,7 @@ com\platform\hr\team\dto\TeamDto$Response.class
 com\platform\hr\platform\tenants\TenantRegistrationRequest.class
 com\platform\hr\emergency\dto\EmergencyContactDto$CreateRequest.class
 com\platform\hr\platform\subscription\TenantSubscription$TenantSubscriptionBuilder.class
+com\platform\hr\platform\subscription\SubscriptionEntitlementDto$1.class
 com\platform\hr\onboarding\controller\OnboardingController.class
 com\platform\hr\platform\employees\PlatformEmployeeDto.class
 com\platform\hr\platform\employees\PlatformInvitation$PlatformInvitationBuilder.class
@@ -158,10 +160,12 @@ com\platform\hr\asset\entity\Asset$AssetType.class
 com\platform\hr\designation\mapper\DesignationMapperImpl.class
 com\platform\hr\emergency\dto\EmergencyContactDto$Response.class
 com\platform\hr\platform\subscription\SubscriptionPlan$PlanStatus.class
+com\platform\hr\subscription\EnforceModule.class
 com\platform\hr\platform\employees\InvitationDto.class
 com\platform\hr\team\mapper\TeamMapper.class
 com\platform\hr\platform\tenants\TenantDto$TenantDtoBuilder.class
 com\platform\hr\team\dto\TeamDto$UpdateRequest.class
+com\platform\hr\platform\subscription\SubscriptionService$1.class
 com\platform\hr\platform\subscription\SubscriptionPlanDto.class
 com\platform\hr\team\service\TeamService.class
 com\platform\hr\probation\entity\Probation$ProbationStatus.class
@@ -204,6 +208,7 @@ com\platform\hr\designation\dto\DesignationDto$Summary.class
 com\platform\hr\designation\entity\Designation$DesignationBuilder.class
 com\platform\hr\probation\repository\ProbationRepository.class
 com\platform\hr\onboarding\dto\OnboardingDto$Response.class
+com\platform\hr\platform\subscription\SubscriptionLifecycleScheduler.class
 com\platform\hr\platform\subscription\SubscriptionEntitlementDto$SubscriptionEntitlementDtoBuilder.class
 com\platform\hr\platform\employees\PlatformInvitationRepository.class
 com\platform\hr\promotion\dto\PromotionDto$ApproveRequest.class
@@ -229,3 +234,4 @@ com\platform\hr\onboarding\entity\OnboardingChecklist$OnboardingChecklistBuilder
 com\platform\hr\bank\dto\BankDetailDto$Response.class
 com\platform\hr\asset\controller\AssetController.class
 com\platform\hr\platform\subscription\SubscriptionPlan$SubscriptionPlanBuilder.class
+com\platform\hr\subscription\ModuleAccessAspect.class

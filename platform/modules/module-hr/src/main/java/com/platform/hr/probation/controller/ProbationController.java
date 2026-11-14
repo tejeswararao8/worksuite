@@ -5,6 +5,7 @@ import com.platform.api.PagedResponse;
 import com.platform.hr.probation.dto.ProbationDto;
 import com.platform.hr.probation.entity.Probation.ProbationStatus;
 import com.platform.hr.probation.service.ProbationService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -51,6 +52,7 @@ public class ProbationController {
     // ── ADMIN/HR: Confirm probation ────────────────────────────
     @PutMapping("/{id}/confirm")
     @PreAuthorize("hasAnyAuthority('PROBATION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Confirm probation — employee becomes ACTIVE")
     public ResponseEntity<ApiResponse<ProbationDto.Response>> confirm(
             @PathVariable UUID id,

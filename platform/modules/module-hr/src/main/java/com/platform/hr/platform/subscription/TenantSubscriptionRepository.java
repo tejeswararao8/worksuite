@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -62,4 +63,26 @@ public interface TenantSubscriptionRepository extends JpaRepository<TenantSubscr
     long countByStatus(TenantSubscription.SubscriptionStatus status);
 
     List<TenantSubscription> findByStatus(TenantSubscription.SubscriptionStatus status);
+
+    /**
+     * Finds PAST_DUE subscriptions whose grace period has expired.
+     * Used by the lifecycle scheduler to transition them to SUSPENDED.
+     * The grace deadline is computed as currentPeriodEnd + gracePeriodDays.
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT s FROM TenantSubscription s WHERE s.status = 'PAST_DUE' " +
+           "AND s.currentPeriodEnd IS NOT NULL " +
+           "AND s.currentPeriodEnd < :graceDeadline")
+    List<TenantSubscription> findPastDueGraceExpiredForUpdate(
+            @Param("graceDeadline") LocalDateTime graceDeadline);
+
+    /**
+     * Finds TRIAL subscriptions whose trial period has expired.
+     * Used by the lifecycle scheduler to transition them to EXPIRED.
+     */
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT s FROM TenantSubscription s WHERE s.status = 'TRIAL' " +
+           "AND s.trialEndsAt IS NOT NULL " +
+           "AND s.trialEndsAt < :now")
+    List<TenantSubscription> findExpiredTrialsForUpdate(@Param("now") LocalDateTime now);
 }

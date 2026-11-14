@@ -33,6 +33,8 @@ platform:
   pagination:
     default-size: 20
     max-size: 100
+  subscription:
+    grace-period-days: 7
 
 server:
   port: ${SERVER_PORT:8081}

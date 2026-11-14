@@ -69,6 +69,7 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionHistory.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionHistoryDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionHistoryRepository.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionLifecycleScheduler.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionPlan.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionPlanDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionPlanRepository.java
@@ -101,6 +102,9 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\skills\repository\CertificationRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\skills\repository\SkillRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\skills\service\SkillService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\EnforceModule.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\ModuleAccessAspect.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\QuotaAwareStorageService.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\controller\TeamController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\dto\TeamDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\entity\Team.java

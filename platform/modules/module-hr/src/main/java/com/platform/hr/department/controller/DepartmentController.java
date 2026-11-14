@@ -4,6 +4,7 @@ import com.platform.api.ApiResponse;
 import com.platform.api.PagedResponse;
 import com.platform.hr.department.dto.DepartmentDto;
 import com.platform.hr.department.service.DepartmentService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,7 @@ public class DepartmentController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('DEPARTMENT_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create department")
     public ResponseEntity<ApiResponse<DepartmentDto.Response>> create(
             @Valid @RequestBody DepartmentDto.CreateRequest request) {

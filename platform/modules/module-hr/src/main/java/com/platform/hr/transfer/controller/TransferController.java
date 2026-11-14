@@ -5,6 +5,7 @@ import com.platform.api.PagedResponse;
 import com.platform.hr.transfer.dto.TransferDto;
 import com.platform.hr.transfer.entity.Transfer.TransferStatus;
 import com.platform.hr.transfer.service.TransferService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,7 @@ public class TransferController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('TRANSFER_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create transfer request")
     public ResponseEntity<ApiResponse<TransferDto.Response>> create(
             @Valid @RequestBody TransferDto.CreateRequest request) {

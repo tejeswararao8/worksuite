@@ -5,6 +5,7 @@ import com.platform.api.PagedResponse;
 import com.platform.hr.promotion.dto.PromotionDto;
 import com.platform.hr.promotion.entity.Promotion.PromotionStatus;
 import com.platform.hr.promotion.service.PromotionService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +31,7 @@ public class PromotionController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('PROMOTION_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create promotion request")
     public ResponseEntity<ApiResponse<PromotionDto.Response>> create(
             @Valid @RequestBody PromotionDto.CreateRequest request) {

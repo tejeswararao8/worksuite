@@ -4,6 +4,7 @@ import com.platform.api.ApiResponse;
 import com.platform.api.PagedResponse;
 import com.platform.hr.branch.dto.BranchDto;
 import com.platform.hr.branch.service.BranchService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,6 +32,7 @@ public class BranchController {
     // ── ADMIN: Create branch ───────────────────────────────────
     @PostMapping
     @PreAuthorize("hasAnyAuthority('BRANCH_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Create a new branch")
     public ResponseEntity<ApiResponse<BranchDto.Response>> create(
             @Valid @RequestBody BranchDto.CreateRequest request) {

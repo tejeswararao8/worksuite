@@ -3,6 +3,7 @@ package com.platform.hr.skills.controller;
 import com.platform.api.ApiResponse;
 import com.platform.hr.skills.dto.SkillDto;
 import com.platform.hr.skills.service.SkillService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,6 +30,7 @@ public class SkillController {
 
     @PostMapping("/skills")
     @PreAuthorize("hasAnyAuthority('SKILL_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add skill to employee")
     public ResponseEntity<ApiResponse<SkillDto.SkillResponse>> addSkill(
             @PathVariable UUID employeeId,
@@ -68,6 +70,7 @@ public class SkillController {
 
     @PostMapping("/certifications")
     @PreAuthorize("hasAnyAuthority('SKILL_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Add certification to employee")
     public ResponseEntity<ApiResponse<SkillDto.CertificationResponse>> addCertification(
             @PathVariable UUID employeeId,

@@ -3,6 +3,7 @@ package com.platform.hr.offboarding.controller;
 import com.platform.api.ApiResponse;
 import com.platform.hr.offboarding.dto.OffboardingDto;
 import com.platform.hr.offboarding.service.OffboardingService;
+import com.platform.hr.subscription.EnforceModule;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,6 +27,7 @@ public class OffboardingController {
 
     @PostMapping("/initiate")
     @PreAuthorize("hasAnyAuthority('OFFBOARDING_WRITE')")
+    @EnforceModule("HR")
     @Operation(summary = "Initiate offboarding for employee")
     public ResponseEntity<ApiResponse<OffboardingDto.ProgressResponse>> initiate(
             @Valid @RequestBody OffboardingDto.InitiateRequest request) {
