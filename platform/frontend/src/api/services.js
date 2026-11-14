@@ -272,6 +272,9 @@ export const platformApi = {
   getPlatformEmployees:(params) => api.get('/platform/employees', { params }),
   getPlatformEmployee: (id)     => api.get(`/platform/employees/${id}`),
   inviteEmployee:      (data)   => api.post('/platform/employees/invite', data),
+  // Token is sent in the POST body — never in a query string — to keep it out of
+  // server access logs, browser history, and HTTP Referer headers.
+  acceptInvitation:    (token)  => api.post('/platform/employees/invitations/accept', { token }),
   getInvitations:      (params) => api.get('/platform/employees/invitations', { params }),
   resendInvitation:    (id)     => api.post(`/platform/employees/invitations/${id}/resend`),
   revokeInvitation:    (id)     => api.post(`/platform/employees/invitations/${id}/revoke`),

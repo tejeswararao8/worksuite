@@ -14,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -62,12 +61,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("PlatformEmployeeController — Security Integration Tests")
 class PlatformEmployeeSecurityIT {
 
-    private static final String BASE = "/api/v1/platform/employees";
+    private static final String BASE   = "/api/v1/platform/employees";
+    private static final String ACCEPT = BASE + "/invitations/accept";
 
     /**
      * Minimal security config for tests.
-     * Replicates the URL-guard and method-security rules from the real SecurityConfig
-     * but omits JwtAuthFilter (which cannot be mocked — its doFilter is final).
+     *
+     * <p>Replicates the URL-guard and method-security rules from the real SecurityConfig.
+     * CRITICAL: the invitation accept exception must be declared BEFORE the broad
+     * /api/v1/platform/** rule — Spring Security evaluates rules in declaration order.
      * The jwt() MockMvc post-processor injects the test principal directly.
      */
     @Configuration
@@ -79,13 +81,14 @@ class PlatformEmployeeSecurityIT {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                    // Accept endpoint: authenticated users without a platform role may access.
+                    // MUST be declared before the broad /api/v1/platform/** rule.
+                    .requestMatchers("/api/v1/platform/employees/invitations/accept")
+                        .authenticated()
                     .requestMatchers("/api/v1/platform/**")
                         .hasAnyAuthority(
                             "PLATFORM_SUPER_ADMIN", "PLATFORM_ADMIN",
                             "PLATFORM_SUPPORT", "PLATFORM_IMPLEMENTATION")
-                    // Accept endpoint is authenticated-only (invitee may not yet be a platform member)
-                    .requestMatchers("/api/v1/platform/employees/invitations/accept")
-                        .authenticated()
                     .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> {}));
@@ -124,6 +127,12 @@ class PlatformEmployeeSecurityIT {
                 .build();
     }
 
+    private String acceptBody(String token) throws Exception {
+        return objectMapper.writeValueAsString(new java.util.HashMap<String, String>() {{
+            put("token", token);
+        }});
+    }
+
     // ── 1. Unauthenticated returns 401 ────────────────────────────────────────
 
     @Test
@@ -140,6 +149,66 @@ class PlatformEmployeeSecurityIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"x@x.com\",\"firstName\":\"X\",\"lastName\":\"X\",\"roleName\":\"PLATFORM_ADMIN\"}"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    // ── NEW: Unauthenticated cannot accept invitation ─────────────────────────
+
+    @Test
+    @DisplayName("Unauthenticated POST /invitations/accept returns 401")
+    void unauthenticated_accept_returns401() throws Exception {
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("sometoken")))
+                .andExpect(status().isUnauthorized());
+    }
+
+    // ── NEW: Authenticated user without platform role can accept ──────────────
+
+    @Test
+    @DisplayName("Authenticated user without platform role can accept a valid invitation — returns 200")
+    void authenticatedWithoutPlatformRole_canAcceptInvitation() throws Exception {
+        when(employeeService.acceptInvitation("validtoken")).thenReturn(activeDto());
+
+        // HR_ADMIN has no platform role — but the accept endpoint only requires authenticated()
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("validtoken"))
+                        .with(jwt().authorities(new SimpleGrantedAuthority("HR_ADMIN"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.membershipStatus").value("ACTIVE"));
+    }
+
+    // ── NEW: Tenant user cannot access employee listing ───────────────────────
+
+    @Test
+    @DisplayName("Tenant user (HR_ADMIN) cannot list platform employees — returns 403")
+    void tenantUser_cannotListPlatformEmployees() throws Exception {
+        mockMvc.perform(get(BASE)
+                        .with(jwt().authorities(new SimpleGrantedAuthority("HR_ADMIN"))))
+                .andExpect(status().isForbidden());
+    }
+
+    // ── NEW: Tenant user cannot invite or change platform employee roles ───────
+
+    @Test
+    @DisplayName("Tenant user (HR_ADMIN) cannot invite platform employee — returns 403")
+    void tenantUser_cannotInvitePlatformEmployee() throws Exception {
+        mockMvc.perform(post(BASE + "/invite")
+                        .with(jwt().authorities(new SimpleGrantedAuthority("HR_ADMIN")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"x@x.com\",\"firstName\":\"X\",\"lastName\":\"X\",\"roleName\":\"PLATFORM_ADMIN\"}"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("Tenant user (EMPLOYEE) cannot change platform employee role — returns 403")
+    void tenantUser_cannotChangePlatformEmployeeRole() throws Exception {
+        mockMvc.perform(put(BASE + "/{id}/role", MEMBERSHIP_ID)
+                        .with(jwt().authorities(new SimpleGrantedAuthority("EMPLOYEE")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"roleName\":\"PLATFORM_ADMIN\"}"))
+                .andExpect(status().isForbidden());
     }
 
     // ── 2. Tenant employee cannot access platform employee APIs ───────────────
@@ -318,8 +387,9 @@ class PlatformEmployeeSecurityIT {
         when(employeeService.acceptInvitation(anyString()))
                 .thenThrow(new TenantException("This invitation has already been accepted"));
 
-        mockMvc.perform(post(BASE + "/invitations/accept")
-                        .param("token", "sometoken")
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("sometoken"))
                         .with(jwt().authorities(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_ADMIN))))
                 .andExpect(status().isBadRequest());
     }
@@ -332,8 +402,9 @@ class PlatformEmployeeSecurityIT {
         when(employeeService.acceptInvitation(anyString()))
                 .thenThrow(new TenantException("This invitation has expired"));
 
-        mockMvc.perform(post(BASE + "/invitations/accept")
-                        .param("token", "expiredtoken")
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("expiredtoken"))
                         .with(jwt().authorities(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_ADMIN))))
                 .andExpect(status().isBadRequest());
     }
@@ -346,8 +417,9 @@ class PlatformEmployeeSecurityIT {
         when(employeeService.acceptInvitation(anyString()))
                 .thenThrow(new TenantException("This invitation has been revoked"));
 
-        mockMvc.perform(post(BASE + "/invitations/accept")
-                        .param("token", "revokedtoken")
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("revokedtoken"))
                         .with(jwt().authorities(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_ADMIN))))
                 .andExpect(status().isBadRequest());
     }
@@ -361,8 +433,9 @@ class PlatformEmployeeSecurityIT {
                 .thenThrow(new TenantSecurityException(
                         "Authenticated user email does not match the invitation email"));
 
-        mockMvc.perform(post(BASE + "/invitations/accept")
-                        .param("token", "mismatchtoken")
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("mismatchtoken"))
                         .with(jwt().authorities(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_ADMIN))))
                 .andExpect(status().isForbidden());
     }
@@ -414,12 +487,13 @@ class PlatformEmployeeSecurityIT {
     // ── 17. Valid acceptance returns 200 ──────────────────────────────────────
 
     @Test
-    @DisplayName("Valid invitation acceptance returns 200 with ACTIVE membership")
+    @DisplayName("Valid invitation acceptance (platform role) returns 200 with ACTIVE membership")
     void accept_valid_returns200() throws Exception {
         when(employeeService.acceptInvitation("validtoken")).thenReturn(activeDto());
 
-        mockMvc.perform(post(BASE + "/invitations/accept")
-                        .param("token", "validtoken")
+        mockMvc.perform(post(ACCEPT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(acceptBody("validtoken"))
                         .with(jwt().authorities(new SimpleGrantedAuthority(PlatformRoles.PLATFORM_ADMIN))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))

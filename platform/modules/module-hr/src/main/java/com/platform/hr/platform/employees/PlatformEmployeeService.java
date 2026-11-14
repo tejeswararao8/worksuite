@@ -121,9 +121,18 @@ public class PlatformEmployeeService {
         log.info("Platform invitation created: email={} role={} id={}",
                 req.getEmail(), req.getRoleName(), invitation.getId());
 
-        sendInvitationEmail(invitation, rawToken);
+        boolean emailSent = sendInvitationEmail(invitation, rawToken);
         // rawToken is discarded after this point — never stored or returned in any response
-        return InvitationDto.from(invitation);
+        InvitationDto dto = InvitationDto.from(invitation);
+        if (!emailSent) {
+            log.warn("Invitation created but email delivery failed: id={} email={}",
+                    invitation.getId(), invitation.getEmail());
+            // Invitation is preserved — admin can resend via the resend endpoint.
+            // We do NOT return a false-success message; the caller receives the DTO
+            // with a flag indicating delivery status so the UI can warn the admin.
+            dto = InvitationDto.fromWithDeliveryFailure(invitation);
+        }
+        return dto;
     }
 
     // ── Accept invitation ─────────────────────────────────────────────────────
@@ -239,7 +248,12 @@ public class PlatformEmployeeService {
         invitationRepository.save(inv);
         log.info("Platform invitation resent with token rotation: id={}", invitationId);
 
-        sendInvitationEmail(inv, rawToken);
+        boolean emailSent = sendInvitationEmail(inv, rawToken);
+        if (!emailSent) {
+            log.warn("Invitation resent but email delivery failed: id={} email={}",
+                    invitationId, inv.getEmail());
+            return InvitationDto.fromWithDeliveryFailure(inv);
+        }
         return InvitationDto.from(inv);
     }
 
@@ -447,28 +461,36 @@ public class PlatformEmployeeService {
      * The raw token is included in the email body for the invitee to use.
      * It is NOT logged at any level.
      *
-     * <p>Email delivery is async — a send failure does NOT roll back the invitation record.
-     * The admin can resend via the resend endpoint if delivery fails.
+     * <p>The token is delivered as a POST body value — the email instructs the
+     * recipient to copy the token and submit it via POST body, not a URL parameter.
      *
-     * <p>NOTE: Actual delivery depends on JavaMailSender being configured in the environment
-     * (spring.mail.* properties). In local/test profiles without mail config, the send
-     * will fail silently (logged as error by NotificationService) but the invitation is saved.
+     * <p>Returns {@code true} if the send succeeded, {@code false} on failure.
+     * A failure does NOT roll back the invitation record; the admin can resend.
+     *
+     * <p>NOTE: Actual delivery depends on JavaMailSender being configured
+     * (spring.mail.* properties). Without mail config the send will fail and
+     * this method returns false.
      */
-    private void sendInvitationEmail(PlatformInvitation inv, String rawToken) {
+    private boolean sendInvitationEmail(PlatformInvitation inv, String rawToken) {
         String subject = "You have been invited to WorkSuite Platform";
         String body = String.format(
                 "Hello %s %s,%n%n" +
                 "You have been invited to join the WorkSuite Platform as: %s%n%n" +
-                "Use the following token to accept your invitation:%n%n" +
-                "  %s%n%n" +
+                "To accept your invitation, submit the following token in the POST body:%n%n" +
+                "  POST /api/v1/platform/employees/invitations/accept%n" +
+                "  Content-Type: application/json%n" +
+                "  { \"token\": \"<your-token>\" }%n%n" +
+                "Your token (copy exactly):%n" +
+                "  [token omitted from log — see email delivery]%n%n" +
                 "This invitation expires on: %s%n%n" +
-                "To accept, POST to: /api/v1/platform/employees/invitations/accept?token=<above>%n%n" +
                 "If you did not expect this invitation, please ignore this email.",
                 inv.getFirstName(), inv.getLastName(),
                 inv.getRoleName(),
-                rawToken,
                 inv.getExpiresAt().toLocalDate()
         );
-        notificationService.sendEmail(inv.getEmail(), subject, body);
+        // Build the actual body with the token only for the email recipient — not for logs
+        String bodyWithToken = body.replace(
+                "[token omitted from log — see email delivery]", rawToken);
+        return notificationService.sendEmailWithResult(inv.getEmail(), subject, bodyWithToken);
     }
 }

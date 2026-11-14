@@ -72,6 +72,12 @@ public class SecurityConfig implements WebMvcConfigurer {
         "/api/v1/platform/**"
     };
 
+    // Invitation acceptance: authenticated users without a platform role must be
+    // able to reach this endpoint. Declared before PLATFORM_ADMIN_URLS so Spring
+    // Security matches it first (rules are evaluated in declaration order).
+    private static final String INVITATION_ACCEPT_URL =
+        "/api/v1/platform/employees/invitations/accept";
+
     // ─────────────────────────────────────────────
     // Security filter chain
     // ─────────────────────────────────────────────
@@ -85,6 +91,10 @@ public class SecurityConfig implements WebMvcConfigurer {
             )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PUBLIC_URLS).permitAll()
+                // Invitation acceptance: authenticated users without a platform role
+                // must be able to accept. This rule must come BEFORE the broad
+                // /api/v1/platform/** rule — Spring Security matches in declaration order.
+                .requestMatchers(INVITATION_ACCEPT_URL).authenticated()
                 .requestMatchers(PLATFORM_ADMIN_URLS)
                     .hasAnyAuthority(
                         PlatformRoles.PLATFORM_SUPER_ADMIN,

@@ -72,16 +72,22 @@ public class PlatformEmployeeController {
 
     /**
      * Accepts a platform invitation.
-     * The authenticated user must have an email matching the invitation.
-     * The role is taken from the invitation record — no role parameter is accepted.
-     * Any platform role is sufficient to call this endpoint (the user is not yet a member).
+     *
+     * <p>Authorization: any authenticated user (no platform role required).
+     * The URL-level exception in SecurityConfig permits authenticated users without
+     * a platform role to reach this endpoint. Unauthenticated requests receive 401.
+     *
+     * <p>The token is in the POST body — never in a query string — so it does not
+     * appear in server access logs, browser history, or HTTP Referer headers.
+     *
+     * <p>The role is taken from the invitation record — no role parameter is accepted.
      */
     @PostMapping("/invitations/accept")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiResponse<PlatformEmployeeDto>> acceptInvitation(
-            @RequestParam String token) {
+            @Valid @RequestBody AcceptInvitationRequest req) {
         return ResponseEntity.ok(ApiResponse.success(
-                "Invitation accepted", employeeService.acceptInvitation(token)));
+                "Invitation accepted", employeeService.acceptInvitation(req.getToken())));
     }
 
     // ── List invitations ──────────────────────────────────────────────────────

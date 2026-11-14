@@ -119,6 +119,7 @@ class PlatformEmployeeServiceTest {
         when(invitationRepository.existsByEmailAndStatus(
                 eq("new@platform.com"), eq(PlatformInvitation.InvitationStatus.PENDING)))
                 .thenReturn(false);
+        when(notificationService.sendEmailWithResult(anyString(), anyString(), anyString())).thenReturn(true);
 
         PlatformInvitation saved = PlatformInvitation.builder()
                 .id(UUID.randomUUID())
@@ -136,8 +137,8 @@ class PlatformEmployeeServiceTest {
 
         assertThat(result.getStatus()).isEqualTo(PlatformInvitation.InvitationStatus.PENDING);
         assertThat(result.getRoleName()).isEqualTo(PlatformRoles.PLATFORM_ADMIN);
-        // Verify email was sent (async via NotificationService)
-        verify(notificationService).sendEmail(eq("new@platform.com"), anyString(), anyString());
+        // Verify email was attempted (via NotificationService)
+        verify(notificationService).sendEmailWithResult(eq("new@platform.com"), anyString(), anyString());
     }
 
     // ── 2. Invite with invalid role is rejected ───────────────────────────────
@@ -386,12 +387,13 @@ class PlatformEmployeeServiceTest {
 
         when(invitationRepository.findById(inv.getId())).thenReturn(Optional.of(inv));
         when(invitationRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(notificationService.sendEmailWithResult(anyString(), anyString(), anyString())).thenReturn(true);
 
         service.resendInvitation(inv.getId());
 
         assertThat(inv.getTokenHash()).isNotEqualTo(originalHash);
         assertThat(inv.getStatus()).isEqualTo(PlatformInvitation.InvitationStatus.PENDING);
-        verify(notificationService).sendEmail(eq("x@platform.com"), anyString(), anyString());
+        verify(notificationService).sendEmailWithResult(eq("x@platform.com"), anyString(), anyString());
     }
 
     // ── 14. Suspend ACTIVE employee ───────────────────────────────────────────

@@ -57,6 +57,32 @@ public class NotificationService {
         }
     }
 
+    /**
+     * Synchronous email send that returns the delivery outcome.
+     *
+     * <p>Unlike {@link #sendEmail} (which is {@code @Async} and swallows failures),
+     * this method is synchronous and returns {@code false} on failure so the caller
+     * can distinguish a created-but-undelivered invitation from a successfully
+     * delivered one. The raw exception is logged but never propagated to the caller.
+     *
+     * @return {@code true} if the mail was accepted by the mail server,
+     *         {@code false} on any delivery failure
+     */
+    public boolean sendEmailWithResult(String to, String subject, String body) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(to);
+            message.setSubject(subject);
+            message.setText(body);
+            mailSender.send(message);
+            log.info("Email sent to {}", to);
+            return true;
+        } catch (Exception e) {
+            log.error("Email send failed to {}: {}", to, e.getMessage());
+            return false;
+        }
+    }
+
     public Page<Notification> getForCurrentUser(UUID userId, Pageable pageable) {
         UUID companyId = UUID.fromString(TenantContext.getTenantId());
         return notificationRepository.findByRecipientIdAndCompanyIdOrderByCreatedAtDesc(userId, companyId, pageable);
