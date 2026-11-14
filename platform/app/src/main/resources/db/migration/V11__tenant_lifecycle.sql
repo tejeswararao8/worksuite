@@ -20,8 +20,8 @@ ALTER TABLE tenants
 -- 3. Tenant lifecycle events — immutable audit trail.
 --    One row per status transition. Never updated or deleted.
 CREATE TABLE tenant_lifecycle_events (
-    id            CHAR(36)     NOT NULL PRIMARY KEY,
-    tenant_id     CHAR(36)     NOT NULL,
+    id            UUID         NOT NULL PRIMARY KEY,
+    tenant_id     UUID         NOT NULL,
     actor_id      VARCHAR(255) NOT NULL,   -- Keycloak user ID of the platform admin
     actor_role    VARCHAR(100) NOT NULL,   -- Role at time of action
     from_status   VARCHAR(50)  NOT NULL,

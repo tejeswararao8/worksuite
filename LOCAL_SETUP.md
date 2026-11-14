@@ -172,9 +172,16 @@ If you see `BUILD FAILURE`, check the error message and refer to the Troubleshoo
 
 ## Step 4 — Run the Backend
 
-```bash
-cd app
+A `run.bat` script is provided in `platform/app/` that sets all required environment variables and starts the app.
 
+```bash
+cd path\to\worksuite\platform\app
+
+run.bat
+```
+
+The script sets DB, Keycloak, MinIO, and RabbitMQ credentials automatically, then runs:
+```
 mvn spring-boot:run -Dspring-boot.run.profiles=docker -Dspring-boot.run.jvmArguments="-Duser.timezone=Asia/Kolkata"
 ```
 
@@ -289,11 +296,7 @@ docker compose down -v
 
 PostgreSQL 15+ does not recognise the old `Asia/Calcutta` timezone name. The JVM default on some Windows machines is still set to that value.
 
-Always start the backend with the timezone JVM argument:
-
-```bash
-mvn spring-boot:run -Dspring-boot.run.profiles=docker -Dspring-boot.run.jvmArguments="-Duser.timezone=Asia/Kolkata"
-```
+Always start the backend using `run.bat` (located in `platform/app/`) — it passes `-Duser.timezone=Asia/Kolkata` automatically.
 
 ---
 

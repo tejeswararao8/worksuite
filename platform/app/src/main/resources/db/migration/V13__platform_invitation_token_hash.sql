@@ -28,8 +28,9 @@ WHERE  status = 'PENDING';
 -- Step 3: Set a placeholder hash for non-PENDING rows so NOT NULL can be applied.
 --         ACCEPTED/EXPIRED/REVOKED invitations are historical records; their token
 --         is no longer usable. We store a deterministic sentinel derived from the id.
+--         Uses md5 (built-in, no pgcrypto required) padded to 64 chars.
 UPDATE platform_invitations
-SET    token_hash = encode(digest(id::text, 'sha256'), 'hex')
+SET    token_hash = lpad(md5(id::text), 64, '0')
 WHERE  token_hash IS NULL;
 
 -- Step 4: Apply NOT NULL and UNIQUE constraints.
