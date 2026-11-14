@@ -257,6 +257,12 @@ export const auditApi = {
   getByRecord: (entityId, params)   => api.get(`/audit-logs/record/${entityId}`, { params }),
 };
 
+// ─── Tenant Subscription (tenant-facing) ────────────────────────────────────
+export const tenantSubscriptionApi = {
+  getMy:          () => api.get('/tenant/subscription'),
+  getEntitlements:() => api.get('/tenant/subscription/entitlements'),
+};
+
 // ─── Platform Admin ───────────────────────────────────────────────────────────
 export const platformApi = {
   getDashboardSummary: () => api.get('/platform/dashboard/summary'),
@@ -282,4 +288,26 @@ export const platformApi = {
   suspendEmployee:     (id)     => api.post(`/platform/employees/${id}/suspend`),
   reactivateEmployee:  (id)     => api.post(`/platform/employees/${id}/reactivate`),
   revokeEmployee:      (id)     => api.post(`/platform/employees/${id}/revoke`),
+  // Subscription plans
+  getPlans:            (params) => api.get('/platform/subscriptions/plans', { params }),
+  getPlan:             (id)     => api.get(`/platform/subscriptions/plans/${id}`),
+  createPlan:          (data)   => api.post('/platform/subscriptions/plans', data),
+  updatePlan:          (id, data) => api.put(`/platform/subscriptions/plans/${id}`, data),
+  deactivatePlan:      (id)     => api.post(`/platform/subscriptions/plans/${id}/deactivate`),
+  activatePlan:        (id)     => api.post(`/platform/subscriptions/plans/${id}/activate`),
+  // Tenant subscriptions
+  getAllSubscriptions:  (params) => api.get('/platform/subscriptions', { params }),
+  getSubscription:     (id)     => api.get(`/platform/subscriptions/${id}`),
+  getTenantSubscription:(tenantId) => api.get(`/platform/subscriptions/tenant/${tenantId}`),
+  getTenantSubHistory: (tenantId, params) => api.get(`/platform/subscriptions/tenant/${tenantId}/history`, { params }),
+  getTenantSubAudit:   (tenantId) => api.get(`/platform/subscriptions/tenant/${tenantId}/audit`),
+  getTenantEntitlements:(tenantId) => api.get(`/platform/subscriptions/tenant/${tenantId}/entitlements`),
+  assignSubscription:  (tenantId, data) => api.post(`/platform/subscriptions/tenant/${tenantId}/assign`, data),
+  activateSubscription:(id, data) => api.post(`/platform/subscriptions/${id}/activate`, data ?? {}),
+  cancelSubscription:  (id, data) => api.post(`/platform/subscriptions/${id}/cancel`, data ?? {}),
+  suspendSubscription: (id, data) => api.post(`/platform/subscriptions/${id}/suspend`, data ?? {}),
+  reactivateSubscription:(id, data) => api.post(`/platform/subscriptions/${id}/reactivate`, data ?? {}),
+  renewSubscription:   (id, data) => api.post(`/platform/subscriptions/${id}/renew`, data ?? {}),
+  markPastDue:         (id, data) => api.post(`/platform/subscriptions/${id}/mark-past-due`, data ?? {}),
+  changePlan:          (id, planId, data) => api.post(`/platform/subscriptions/${id}/change-plan?planId=${planId}`, data ?? {}),
 };

@@ -52,6 +52,7 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\dashboard\PlatformDashboardController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\dashboard\PlatformDashboardDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\dashboard\PlatformDashboardService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\AcceptInvitationRequest.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\InvitationDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\InviteRequest.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\PlatformEmployeeController.java
@@ -60,6 +61,21 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\PlatformInvitation.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\PlatformInvitationRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\employees\RoleChangeRequest.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\AssignSubscriptionRequest.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\PlanRequest.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionActionRequest.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionController.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionEntitlementDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionHistory.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionHistoryDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionHistoryRepository.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionPlan.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionPlanDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionPlanRepository.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\SubscriptionService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\TenantSubscription.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\TenantSubscriptionDto.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\subscription\TenantSubscriptionRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\tenants\TenantActionRequest.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\tenants\TenantDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\platform\tenants\TenantLifecycleEventDto.java
@@ -91,6 +107,7 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\mapper\TeamMapper.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\repository\TeamRepository.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\service\TeamService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\tenant\subscription\TenantSubscriptionController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\transfer\controller\TransferController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\transfer\dto\TransferDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\transfer\entity\Transfer.java

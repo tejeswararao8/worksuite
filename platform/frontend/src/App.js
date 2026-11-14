@@ -49,6 +49,7 @@ const SubscriptionsPage       = lazy(() => import('./pages/platform/subscription
 const ModuleManagementPage    = lazy(() => import('./pages/platform/modules/ModuleManagementPage'));
 const SupportTicketsPage      = lazy(() => import('./pages/platform/support/SupportTicketsPage'));
 const PlatformAuditPage       = lazy(() => import('./pages/platform/audit/PlatformAuditPage'));
+const MySubscriptionPage      = lazy(() => import('./pages/subscription/MySubscriptionPage'));
 
 // ─── QueryClient ──────────────────────────────────────────────────────────────
 const queryClient = new QueryClient({
@@ -121,6 +122,7 @@ function AppRoutes() {
                     <Route path="roles"         element={<RolesPage />} />
                     <Route path="audit"         element={<AuditPage />} />
                     <Route path="profile"       element={<ProfilePage />} />
+                    <Route path="subscription"  element={<MySubscriptionPage />} />
                     <Route path="*"             element={<Navigate to="/" replace />} />
                   </Routes>
                 </Suspense>

@@ -68,4 +68,15 @@ export const QUERY_KEYS = {
   PLATFORM_EMPLOYEES:   (page, status) => ['platform-employees', page, status],
   PLATFORM_EMPLOYEE_BY_ID:(id) => ['platform-employee', id],
   PLATFORM_INVITATIONS: (page, status) => ['platform-invitations', page, status],
+
+  // Subscriptions
+  SUBSCRIPTION_PLANS:   (page, status) => ['subscription-plans', page, status],
+  SUBSCRIPTION_PLAN:    (id) => ['subscription-plan', id],
+  ALL_SUBSCRIPTIONS:    (page) => ['all-subscriptions', page],
+  TENANT_SUBSCRIPTION:  (tenantId) => ['tenant-subscription', tenantId],
+  TENANT_SUB_HISTORY:   (tenantId, page) => ['tenant-sub-history', tenantId, page],
+  TENANT_SUB_AUDIT:     (tenantId) => ['tenant-sub-audit', tenantId],
+  TENANT_ENTITLEMENTS:  (tenantId) => ['tenant-entitlements', tenantId],
+  MY_SUBSCRIPTION:      ['my-subscription'],
+  MY_ENTITLEMENTS:      ['my-entitlements'],
 };
