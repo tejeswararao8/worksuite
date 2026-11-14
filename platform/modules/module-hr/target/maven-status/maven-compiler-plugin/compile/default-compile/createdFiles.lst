@@ -158,6 +158,7 @@ com\platform\hr\platform\employees\InvitationDto$InvitationDtoBuilder.class
 com\platform\hr\platform\dashboard\PlatformDashboardDto$PlatformDashboardDtoBuilder.class
 com\platform\hr\asset\entity\Asset$AssetType.class
 com\platform\hr\designation\mapper\DesignationMapperImpl.class
+com\platform\hr\subscription\StorageReservationService.class
 com\platform\hr\emergency\dto\EmergencyContactDto$Response.class
 com\platform\hr\platform\subscription\SubscriptionPlan$PlanStatus.class
 com\platform\hr\subscription\EnforceModule.class

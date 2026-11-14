@@ -105,6 +105,7 @@ D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platfo
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\EnforceModule.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\ModuleAccessAspect.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\QuotaAwareStorageService.java
+D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\subscription\StorageReservationService.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\controller\TeamController.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\dto\TeamDto.java
 D:\Vinit P\VTTHRMS\worksuite\platform\modules\module-hr\src\main\java\com\platform\hr\team\entity\Team.java
